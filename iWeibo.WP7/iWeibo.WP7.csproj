@@ -88,6 +88,7 @@
     <Compile Include="Services\ContainerLocator.cs" />
     <Compile Include="Util\ConvertContentBehavior.cs" />
     <Compile Include="Util\DataTimeHelper.cs" />
+    <Compile Include="Util\TextBoxAttach.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\PostNewViewModel.cs" />
     <Compile Include="ViewModels\TencentViewModels\TencentTimelineViewModel.cs" />

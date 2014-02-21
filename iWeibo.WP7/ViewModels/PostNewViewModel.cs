@@ -3,16 +3,12 @@ using iWeibo.WP7.Adapters;
 using iWeibo.WP7.Models.SinaModels;
 using iWeibo.WP7.Models.TencentModels;
 using iWeibo.WP7.Services;
+using iWeibo.WP7.Util;
 using Microsoft.Phone;
 using Microsoft.Phone.Reactive;
 using Microsoft.Practices.Prism.Commands;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.IO.IsolatedStorage;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -24,10 +20,55 @@ using WeiboSdk.Services;
 
 namespace iWeibo.WP7.ViewModels
 {
-    public class PostNewViewModel:ViewModel
+    public class PostNewViewModel:ViewModel,ITextBoxController
     {
-        private IPhotoChooserTask task;
+        #region Fields
+
+        private IPhotoChooserTask photoChoosertask;
         private IMessageBox messageBox;
+
+        public event FocusEventHandler Focus;
+        public event SelectEventHandler Select;
+
+        #endregion
+
+        #region Notification Properties
+
+        private bool isSendTencent;
+
+        public bool IsSendTencent
+        {
+            get
+            {
+                return isSendTencent;
+            }
+            set
+            {
+                if (value != isSendTencent)
+                {
+                    isSendTencent = value;
+                    RaisePropertyChanged(() => this.IsSendTencent);
+                }
+            }
+        }
+
+        private bool isSendSina;
+
+        public bool IsSendSina
+        {
+            get
+            {
+                return isSendSina;
+            }
+            set
+            {
+                if (value != isSendSina)
+                {
+                    isSendSina = value;
+                    RaisePropertyChanged(() => this.IsSendSina);
+                }
+            }
+        }
 
         private bool isSending;
 
@@ -46,9 +87,6 @@ namespace iWeibo.WP7.ViewModels
                 }
             }
         }
-
-        public bool IsSendTencent { get; set; }
-        public bool IsSendSina { get; set; }
 
         private string statusText;
 
@@ -105,7 +143,6 @@ namespace iWeibo.WP7.ViewModels
             }
         }
 
-
         private bool isTencentAuthorized;
 
         public bool IsTencentAuthorized
@@ -132,24 +169,6 @@ namespace iWeibo.WP7.ViewModels
                 {
                     isSinaAuthorized = value;
                     RaisePropertyChanged(() => this.IsSinaAuthorized);
-                }
-            }
-        }
-
-        private bool savingPicFile;
-
-        public bool SavingPicFile
-        {
-            get
-            {
-                return savingPicFile;
-            }
-            set
-            {
-                if (value != savingPicFile)
-                {
-                    savingPicFile = value;
-                    RaisePropertyChanged(() => this.SavingPicFile);
                 }
             }
         }
@@ -226,26 +245,31 @@ namespace iWeibo.WP7.ViewModels
             }
         }
 
+        #endregion
 
-
+        #region DelegateCommands
         public DelegateCommand PageLoadedCommand { get; set; }
         public DelegateCommand ClearTextCommand { get; set; }
         public DelegateCommand ClearPicCommand { get; set; }
         public DelegateCommand SendCommand { get; set; }
         public DelegateCommand ChoosePhotoCommand { get; set; }
+        public DelegateCommand AddTopicCommand { get; set; }
+        #endregion
 
+        #region Constructor
 
         public PostNewViewModel(
             INavigationService navigationService,
             IPhoneApplicationServiceFacade phoneApplicationServiceFacade,
+            IPhotoChooserTask photoChooserTask,
             IMessageBox messageBox)
             :base(navigationService,phoneApplicationServiceFacade,new Uri(Constants.PostNewView,UriKind.Relative))
         {
-            this.task = new PhotoChooserTaskAdapter();
+            this.photoChoosertask = photoChooserTask;
             this.messageBox = messageBox;
 
             // Subscribe to handle new photo stream
-            Observable.FromEvent<SettablePhotoResult>(h => this.task.Completed += h, h => this.task.Completed -= h)
+            Observable.FromEvent<SettablePhotoResult>(h => this.photoChoosertask.Completed += h, h => this.photoChoosertask.Completed -= h)
                 .Where(e => e.EventArgs.ChosenPhoto != null)
                 .Subscribe(result =>
                 {
@@ -256,7 +280,7 @@ namespace iWeibo.WP7.ViewModels
                 });
 
             // Subscribe to user cancelling photo capture to re-enable Capture command
-            Observable.FromEvent<SettablePhotoResult>(h => this.task.Completed += h, h => this.task.Completed -= h)
+            Observable.FromEvent<SettablePhotoResult>(h => this.photoChoosertask.Completed += h, h => this.photoChoosertask.Completed -= h)
                 .Where(e => e.EventArgs.ChosenPhoto == null && e.EventArgs.Error == null)
                 .Subscribe(p =>
                 {
@@ -265,7 +289,7 @@ namespace iWeibo.WP7.ViewModels
                 });
 
             // Subscribe to Error condition
-            Observable.FromEvent<SettablePhotoResult>(h => this.task.Completed += h, h => this.task.Completed -= h)
+            Observable.FromEvent<SettablePhotoResult>(h => this.photoChoosertask.Completed += h, h => this.photoChoosertask.Completed -= h)
                 .Where(e => e.EventArgs.Error != null && !string.IsNullOrEmpty(e.EventArgs.Error.Message))
                 .Subscribe(p =>
                 {
@@ -276,6 +300,10 @@ namespace iWeibo.WP7.ViewModels
 
             this.PageLoadedCommand = new DelegateCommand(() =>
                 {
+                    if (Focus != null)
+                    {
+                        Focus(this);
+                    }
                     this.IsTencentAuthorized = TencentConfig.Validate();
                     this.IsSinaAuthorized = SinaConfig.Validate();
                     this.IsSendSina = this.IsSinaAuthorized;
@@ -295,12 +323,24 @@ namespace iWeibo.WP7.ViewModels
                         SendSina();
                     if (IsSendTencent)
                         SendTencent();
-                }, () => !this.IsSending && !string.IsNullOrWhiteSpace(StatusText) && !(StatusText.Length > 140));
+                }, () => !this.IsSending && !string.IsNullOrEmpty(StatusText) && !(StatusText.Length > 140));
 
             this.ChoosePhotoCommand = new DelegateCommand(this.ChoosePhoto, () => !this.ChoosingPhoto);
+            this.AddTopicCommand = new DelegateCommand(() =>
+                {
+                    if (this.Select != null)
+                    {
+                        int start = string.IsNullOrEmpty(StatusText)?1:StatusText.Length + 1;
+                        int length = 7;
+                        StatusText += "#在此处输入话题#";
+                        Select(this, start, length);
+                    }
+                });
         }
 
+        #endregion
 
+        #region Methods
         private void SendTencent()
         {
             IsSending = true;
@@ -427,7 +467,7 @@ namespace iWeibo.WP7.ViewModels
         {
             if (!this.ChoosingPhoto)
             {
-                this.task.Show();
+                this.photoChoosertask.Show();
                 this.ChoosingPhoto = true;
                 this.ChoosePhotoCommand.RaiseCanExecuteChanged();
             }
@@ -462,31 +502,12 @@ namespace iWeibo.WP7.ViewModels
             //SavingPicFile = false;
         }
 
-        //private void LoadPictureBitmap(string path)
-        //{
-        //    using (var filesystem = IsolatedStorageFile.GetUserStoreForApplication())
-        //    {
-        //        if (filesystem.FileExists(path))
-        //        {
-        //            using (var fs = new IsolatedStorageFileStream(path, FileMode.Open, filesystem))
-        //            {
-        //                this.Picture = PictureDecoder.DecodeJpeg(fs);
-        //            }
-        //        }
-        //    }
-        //}
-
-
-
-        //private void AddTopic()
-        //{
-
-        //}
-
         public override void OnPageResumeFromTombstoning()
         {
             //throw new NotImplementedException();
         }
+
+        #endregion
 
     }
 }

@@ -42,8 +42,9 @@ namespace iWeibo.WP7.Services
         private void ConfigureContainer()
         {
             this.Container.Register<IPhoneApplicationServiceFacade>(c => new PhoneApplicationServiceFacade());
-            this.Container.Register<INavigationService>(_ => new ApplicationFrameNavigationService(((App)Application.Current).RootFrame));
+            this.Container.Register<INavigationService>(c => new ApplicationFrameNavigationService(((App)Application.Current).RootFrame));
             this.Container.Register<IMessageBox>(c => new MessageBoxAdapter());
+            this.Container.Register<IPhotoChooserTask>(c => new PhotoChooserTaskAdapter());
 
             //View Model
             this.Container.Register(
@@ -60,6 +61,7 @@ namespace iWeibo.WP7.Services
                 c => new PostNewViewModel(
                     c.Resolve<INavigationService>(),
                     c.Resolve<IPhoneApplicationServiceFacade>(),
+                    c.Resolve<IPhotoChooserTask>(),
                     c.Resolve<IMessageBox>()));
 
         }

@@ -16,21 +16,5 @@ namespace iWeibo.WP7.Views
         {
             InitializeComponent();
         }
-
-        //private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    statusTextBox.Focus();
-        //}
-
-        private void ApplicationBarIconButton_Click(object sender, EventArgs e)
-        {
-            int num = statusTextBox.Text.Length + 1;
-            int num2 = 7;
-            statusTextBox.Text += "#在此处输入话题#";
-            statusTextBox.Select(num, num2);
-            statusTextBox.Focus();
-        }
-
-
     }
 }

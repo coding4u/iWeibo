@@ -9,6 +9,7 @@
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:prismInteractivity="clr-namespace:Microsoft.Practices.Prism.Interactivity;assembly=Microsoft.Practices.Prism.Interactivity" 
+    xmlns:util="clr-namespace:iWeibo.WP7.Util"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -49,7 +50,9 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0">
-                        <TextBox x:Name="statusTextBox"  Height="220" Text="{Binding StatusText, Mode=TwoWay}" TextWrapping="Wrap">
+                        <TextBox x:Name="statusTextBox"  Height="220" 
+                                 Text="{Binding StatusText, Mode=TwoWay}" TextWrapping="Wrap"
+                                 util:TextBoxAttach.TextBoxController="{Binding}">
                             <i:Interaction.Behaviors>
                                 <prismInteractivity:UpdateTextBindingOnPropertyChanged/>
                             </i:Interaction.Behaviors>
@@ -99,14 +102,14 @@
             <shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.send.png" Text="发送" />
             <shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.camera.png" Text="图片"   />
             <!--<shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.at.png" Text="提及" />-->
-            <shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.topic.png" Text="话题" Click="ApplicationBarIconButton_Click" />
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.topic.png" Text="话题"  />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
     <i:Interaction.Behaviors>
         <prismInteractivity:ApplicationBarButtonCommand ButtonText="发送" CommandBinding="{Binding SendCommand}"/>
         <prismInteractivity:ApplicationBarButtonCommand ButtonText="图片" CommandBinding="{Binding ChoosePhotoCommand}"/>
         <!--<prismInteractivity:ApplicationBarButtonCommand ButtonText="提及" CommandBinding="{Binding AtSomeBodyCommand}"/>-->
-        <!--<prismInteractivity:ApplicationBarButtonCommand ButtonText="话题" CommandBinding="{Binding AddTopicCommand}"/>--> 
+        <prismInteractivity:ApplicationBarButtonCommand ButtonText="话题" CommandBinding="{Binding AddTopicCommand}"/> 
     </i:Interaction.Behaviors>
 
 
