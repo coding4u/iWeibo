@@ -1,0 +1,113 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="iWeibo.WP7.Views.PostNew"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:prismInteractivity="clr-namespace:Microsoft.Practices.Prism.Interactivity;assembly=Microsoft.Practices.Prism.Interactivity" 
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    DataContext="{Binding Source={StaticResource ViewModelLocator},Path=PostNewViewModel}"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True" >
+    
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator x:Name="Indicator" IsIndeterminate="True" IsVisible="{Binding IsSending}" Text="正在发送..."/>
+    </shell:SystemTray.ProgressIndicator>
+    
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding PageLoadedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
+    <!--LayoutRoot 是包含所有页面内容的根网格-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel 包含应用程序的名称和页标题-->
+        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock Text="新微博" Style="{StaticResource PhoneTextNormalStyle}"/>
+        </StackPanel>
+
+        <!--ContentPanel - 在此处放置其他内容-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+                <ScrollViewer >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <TextBox x:Name="statusTextBox"  Height="220" Text="{Binding StatusText, Mode=TwoWay}" TextWrapping="Wrap">
+                            <i:Interaction.Behaviors>
+                                <prismInteractivity:UpdateTextBindingOnPropertyChanged/>
+                            </i:Interaction.Behaviors>
+                        </TextBox>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Height="30" TextAlignment="Right" Margin="30,0,0,0"
+                                       Text="{Binding WordsCount}"
+                                       Foreground="{Binding WordsCountColor}"/>
+                            <Image Source="/Resources/Images/Icons/Cancel.png" Stretch="Uniform">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Tap">
+                                        <i:InvokeCommandAction Command="{Binding ClearTextCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Image>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1">
+                        <toolkit:ToggleSwitch  Header="同时发布到腾讯微博" HorizontalAlignment="Left" Height="112"  VerticalAlignment="Top" Width="456" 
+                                               IsChecked="{Binding IsSendTencent, Mode=TwoWay}"
+                                               IsEnabled="{Binding IsTencentAuthorized}"/>
+                        <toolkit:ToggleSwitch  Header="同时发布到新浪微博" HorizontalAlignment="Left" Height="112"  VerticalAlignment="Top" Width="456" 
+                                               IsChecked="{Binding IsSendSina,Mode=TwoWay}"
+                                               IsEnabled="{Binding IsSinaAuthorized}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2">
+                        <Grid Width="100" HorizontalAlignment="Left" Height="150">
+                            <Image Source="{Binding Picture}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="150" Width="100" Margin="5,5"/>
+                            <Image Source="/Resources/Images/Icons/Cancel.png" Stretch="None" Height="48" Width="48" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-20,-25,0"
+                                Visibility="{Binding HasPic, Converter={StaticResource BoolToVisibilityConverter}}" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Tap">
+                                        <i:InvokeCommandAction Command="{Binding ClearPicCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Image>
+
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar >
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.send.png" Text="发送" />
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.camera.png" Text="图片"   />
+            <!--<shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.at.png" Text="提及" />-->
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.topic.png" Text="话题" Click="ApplicationBarIconButton_Click" />
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+    <i:Interaction.Behaviors>
+        <prismInteractivity:ApplicationBarButtonCommand ButtonText="发送" CommandBinding="{Binding SendCommand}"/>
+        <prismInteractivity:ApplicationBarButtonCommand ButtonText="图片" CommandBinding="{Binding ChoosePhotoCommand}"/>
+        <!--<prismInteractivity:ApplicationBarButtonCommand ButtonText="提及" CommandBinding="{Binding AtSomeBodyCommand}"/>-->
+        <!--<prismInteractivity:ApplicationBarButtonCommand ButtonText="话题" CommandBinding="{Binding AddTopicCommand}"/>--> 
+    </i:Interaction.Behaviors>
+
+
+</phone:PhoneApplicationPage>

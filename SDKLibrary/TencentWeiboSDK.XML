@@ -1,0 +1,1691 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TencentWeiboSDK</name>
+    </assembly>
+    <members>
+        <member name="T:TencentWeiboSDK.Deserializer.BaseDeserializer`1">
+            <summary>
+            反序列化器基类，提供各种数据格式都可能用到的接口.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Deserializer.BaseDeserializer`1.Read(System.String)">
+            <summary>
+            反序列化单个对象.
+            </summary>
+            <param name="content">需要反序列化成单个对象的字符串.</param>
+            <returns>返回对象.</returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Deserializer.BaseDeserializer`1.ReadList(System.String)">
+            <summary>
+            反序列化对象列表.
+            </summary>
+            <param name="content">需要反序列化成列表的字符串.</param>
+            <returns>返回对象列表</returns>
+        </member>
+        <member name="F:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthTools._encoding">
+            <summary>
+            All text parameters are UTF-8 encoded (per section 5.1).
+            </summary>
+            <seealso cref="!:http://www.hueniverse.com/hueniverse/2008/10/beginners-gui-1.html"/> 
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthTools.GetNonce">
+            <summary>
+            Generates a random 16-byte lowercase alphanumeric string. 
+            </summary>
+            <seealso cref="!:http://oauth.net/core/1.0#nonce"/>
+            <returns></returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthTools.GetTimestamp">
+            <summary>
+            Generates a timestamp based on the current elapsed seconds since '01/01/1970 0000 GMT"
+            </summary>
+            <seealso cref="!:http://oauth.net/core/1.0#nonce"/>
+            <returns></returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthTools.GetTimestamp(System.DateTime)">
+            <summary>
+            Generates a timestamp based on the elapsed seconds of a given time since '01/01/1970 0000 GMT"
+            </summary>
+            <seealso cref="!:http://oauth.net/core/1.0#nonce"/>
+            <param name="dateTime">A specified point in time.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthTools.UrlEncodeRelaxed(System.String)">
+            <summary>
+            URL encodes a string based on section 5.1 of the OAuth spec.
+            Namely, percent encoding with [RFC3986], avoiding unreserved characters,
+            upper-casing hexadecimal characters, and UTF-8 encoding for text value pairs.
+            </summary>
+            <param name="value"></param>
+            <seealso cref="!:http://oauth.net/core/1.0#encoding_parameters"/>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthTools.UrlEncodeStrict(System.String)">
+            <summary>
+            URL encodes a string based on section 5.1 of the OAuth spec.
+            Namely, percent encoding with [RFC3986], avoiding unreserved characters,
+            upper-casing hexadecimal characters, and UTF-8 encoding for text value pairs.
+            </summary>
+            <param name="value"></param>
+            <seealso cref="!:http://oauth.net/core/1.0#encoding_parameters"/>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthTools.NormalizeRequestParameters(TencentWeiboSDK.Hammock.Web.WebParameterCollection)">
+            <summary>
+            Sorts a collection of key-value pairs by name, and then value if equal,
+            concatenating them into a single string. This string should be encoded
+            prior to, or after normalization is run.
+            </summary>
+            <seealso cref="!:http://oauth.net/core/1.0#rfc.section.9.1.1"/>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthTools.SortParametersExcludingSignature(TencentWeiboSDK.Hammock.Web.WebParameterCollection)">
+            <summary>
+            Sorts a <see cref="T:TencentWeiboSDK.Hammock.Web.WebParameterCollection"/> by name, and then value if equal.
+            </summary>
+            <param name="parameters">A collection of parameters to sort</param>
+            <returns>A sorted parameter collection</returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthTools.ConstructRequestUrl(System.Uri)">
+            <summary>
+            Creates a request URL suitable for making OAuth requests.
+            Resulting URLs must exclude port 80 or port 443 when accompanied by HTTP and HTTPS, respectively.
+            Resulting URLs must be lower case.
+            </summary>
+            <seealso cref="!:http://oauth.net/core/1.0#rfc.section.9.1.2"/>
+            <param name="url">The original request URL</param>
+            <returns></returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthTools.ConcatenateRequestElements(TencentWeiboSDK.Hammock.Web.WebMethod,System.String,TencentWeiboSDK.Hammock.Web.WebParameterCollection)">
+            <summary>
+            Creates a request elements concatentation value to send with a request. 
+            This is also known as the signature base.
+            </summary>
+            <seealso cref="!:http://oauth.net/core/1.0#rfc.section.9.1.3"/>
+            <seealso cref="!:http://oauth.net/core/1.0#sig_base_example"/>
+            <param name="method">The request's HTTP method type</param>
+            <param name="url">The request URL</param>
+            <param name="parameters">The request's parameters</param>
+            <returns>A signature base string</returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthTools.GetSignature(TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthSignatureMethod,System.String,System.String)">
+            <summary>
+            Creates a signature value given a signature base and the consumer secret.
+            This method is used when the token secret is currently unknown.
+            </summary>
+            <seealso cref="!:http://oauth.net/core/1.0#rfc.section.9.2"/>
+            <param name="signatureMethod">The hashing method</param>
+            <param name="signatureBase">The signature base</param>
+            <param name="consumerSecret">The consumer key</param>
+            <returns></returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthTools.GetSignature(TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthSignatureMethod,TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthSignatureTreatment,System.String,System.String)">
+            <summary>
+            Creates a signature value given a signature base and the consumer secret.
+            This method is used when the token secret is currently unknown.
+            </summary>
+            <seealso cref="!:http://oauth.net/core/1.0#rfc.section.9.2"/>
+            <param name="signatureMethod">The hashing method</param>
+            <param name="signatureTreatment">The treatment to use on a signature value</param>
+            <param name="signatureBase">The signature base</param>
+            <param name="consumerSecret">The consumer key</param>
+            <returns></returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthTools.GetSignature(TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthSignatureMethod,System.String,System.String,System.String)">
+            <summary>
+            Creates a signature value given a signature base and the consumer secret and a known token secret.
+            </summary>
+            <seealso cref="!:http://oauth.net/core/1.0#rfc.section.9.2"/>
+            <param name="signatureMethod">The hashing method</param>
+            <param name="signatureBase">The signature base</param>
+            <param name="consumerSecret">The consumer secret</param>
+            <param name="tokenSecret">The token secret</param>
+            <returns></returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthTools.GetSignature(TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthSignatureMethod,TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthSignatureTreatment,System.String,System.String,System.String)">
+            <summary>
+            Creates a signature value given a signature base and the consumer secret and a known token secret.
+            </summary>
+            <seealso cref="!:http://oauth.net/core/1.0#rfc.section.9.2"/>
+            <param name="signatureMethod">The hashing method</param>
+            <param name="signatureTreatment">The treatment to use on a signature value</param>
+            <param name="signatureBase">The signature base</param>
+            <param name="consumerSecret">The consumer secret</param>
+            <param name="tokenSecret">The token secret</param>
+            <returns></returns>
+        </member>
+        <member name="T:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWorkflow">
+            <summary>
+            A class to encapsulate OAuth authentication flow.
+            <seealso cref="!:http://oauth.net/core/1.0#anchor9"/>
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWorkflow.BuildRequestTokenInfo(TencentWeiboSDK.Hammock.Web.WebMethod)">
+            <summary>
+            Generates a <see cref="T:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWebQueryInfo"/> instance to pass to an
+            <see cref="T:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWebQuery"/> for the purpose of requesting an
+            unauthorized request token.
+            </summary>
+            <param name="method">The HTTP method for the intended request</param>
+            <seealso cref="!:http://oauth.net/core/1.0#anchor9"/>
+            <returns></returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWorkflow.#ctor(TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthCredentials)">
+            <summary>
+            Creates a new instance of <see cref="T:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWorkflow"/> using
+            an <see cref="T:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthCredentials"/> instance.
+            </summary>
+            <param name="credentials">The credentials to copy</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWorkflow.BuildRequestTokenInfo(TencentWeiboSDK.Hammock.Web.WebMethod,TencentWeiboSDK.Hammock.Web.WebParameterCollection)">
+            <summary>
+            Generates a <see cref="T:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWebQueryInfo"/> instance to pass to an
+            <see cref="T:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWebQuery"/> for the purpose of requesting an
+            unauthorized request token.
+            </summary>
+            <param name="method">The HTTP method for the intended request</param>
+            <param name="parameters">Any existing, non-OAuth query parameters desired in the request</param>
+            <seealso cref="!:http://oauth.net/core/1.0#anchor9"/>
+            <returns></returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWorkflow.BuildAccessTokenInfo(TencentWeiboSDK.Hammock.Web.WebMethod)">
+            <summary>
+            Generates a <see cref="T:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWebQueryInfo"/> instance to pass to an
+            <see cref="T:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWebQuery"/> for the purpose of exchanging a request token
+            for an access token authorized by the user at the Service Provider site.
+            </summary>
+            <param name="method">The HTTP method for the intended request</param>
+            <seealso cref="!:http://oauth.net/core/1.0#anchor9"/>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWorkflow.BuildAccessTokenInfo(TencentWeiboSDK.Hammock.Web.WebMethod,TencentWeiboSDK.Hammock.Web.WebParameterCollection)">
+            <summary>
+            Generates a <see cref="T:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWebQueryInfo"/> instance to pass to an
+            <see cref="T:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWebQuery"/> for the purpose of exchanging a request token
+            for an access token authorized by the user at the Service Provider site.
+            </summary>
+            <param name="method">The HTTP method for the intended request</param>
+            <seealso cref="!:http://oauth.net/core/1.0#anchor9"/>
+            <param name="parameters">Any existing, non-OAuth query parameters desired in the request</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWorkflow.BuildClientAuthAccessTokenInfo(TencentWeiboSDK.Hammock.Web.WebMethod,TencentWeiboSDK.Hammock.Web.WebParameterCollection)">
+            <summary>
+            Generates a <see cref="T:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWebQueryInfo"/> instance to pass to an
+            <see cref="T:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWebQuery"/> for the purpose of exchanging user credentials
+            for an access token authorized by the user at the Service Provider site.
+            </summary>
+            <param name="method">The HTTP method for the intended request</param>
+            <seealso cref="!:http://tools.ietf.org/html/draft-dehora-farrell-oauth-accesstoken-creds-00#section-4"/>
+            <param name="parameters">Any existing, non-OAuth query parameters desired in the request</param>
+        </member>
+        <member name="P:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWorkflow.RequestTokenUrl">
+            <seealso cref="!:http://oauth.net/core/1.0#request_urls"/>
+        </member>
+        <member name="P:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWorkflow.AccessTokenUrl">
+            <seealso cref="!:http://oauth.net/core/1.0#request_urls"/>
+        </member>
+        <member name="P:TencentWeiboSDK.Hammock.Authentication.OAuth.OAuthWorkflow.AuthorizationUrl">
+            <seealso cref="!:http://oauth.net/core/1.0#request_urls"/>
+        </member>
+        <member name="M:System.Web.HttpUtility.HtmlDecode(System.String)">
+            <summary>
+            Decodes an HTML-encoded string and returns the decoded string.
+            </summary>
+            <param name="s">The HTML string to decode. </param>
+            <returns>The decoded text.</returns>
+        </member>
+        <member name="M:System.Web.HttpUtility.HtmlDecode(System.String,System.IO.TextWriter)">
+            <summary>
+            Decodes an HTML-encoded string and sends the resulting output to a TextWriter output stream.
+            </summary>
+            <param name="s">The HTML string to decode</param>
+            <param name="output">The TextWriter output stream containing the decoded string. </param>
+        </member>
+        <member name="M:System.Web.HttpUtility.HtmlEncode(System.String)">
+            <summary>
+            HTML-encodes a string and returns the encoded string.
+            </summary>
+            <param name="s">The text string to encode. </param>
+            <returns>The HTML-encoded text.</returns>
+        </member>
+        <member name="M:System.Web.HttpUtility.HtmlEncode(System.String,System.IO.TextWriter)">
+            <summary>
+            HTML-encodes a string and sends the resulting output to a TextWriter output stream.
+            </summary>
+            <param name="s">The string to encode. </param>
+            <param name="output">The TextWriter output stream containing the encoded string. </param>
+        </member>
+        <member name="F:TencentWeiboSDK.Hammock.QueryHandling.None">
+            <summary>
+            Query strings present in paths are left alone.
+            </summary>
+        </member>
+        <member name="F:TencentWeiboSDK.Hammock.QueryHandling.AppendToParameters">
+            <summary>
+            Query string pairs present in paths are added to the parameter collection,
+            where they are appended back in the case of GET, HEAD, DELETE, and OPTIONS, or added to the
+            request body in the case of POST, or PUT.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Hammock.RestClient.SILVERLIGHTAcceptEncodingHeader">
+            <summary>
+            Used to set the name of the "Accept" header used by your SILVERLIGHT proxy.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Hammock.RestClient.SILVERLIGHTAuthorizationHeader">
+            <summary>
+            Used to set the name of the "Authorization" header used by your SILVERLIGHT proxy.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Hammock.RestClient.SILVERLIGHTMethodHeader">
+            <summary>
+            Used to set the name of the "Method" header used by your SILVERLIGHT proxy.
+            This passes the correct HTTP method to the header as all proxy calls use POST.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Hammock.RestClient.SILVERLIGHTUserAgentHeader">
+            <summary>
+            Used to set the name of the "User-Agent" header used by your SILVERLIGHT proxy.
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Hammock.Serialization.JsonToken">
+            <summary>
+            Possible JSON tokens in parsed input.
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Hammock.Serialization.InvalidJsonException">
+            <summary>
+            Exception raised when <see cref="T:TencentWeiboSDK.Hammock.Serialization.JsonParser"/> encounters an invalid token.
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Hammock.Serialization.JsonParser">
+            <summary>
+            A parser for JSON.
+            <seealso cref="!:http://json.org"/>
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Hammock.Tasks.IRateLimitStatus">
+            <summary>
+            Describes the current status of a rate limited API or other resource
+            <remarks>Based mostly on Twitter's rate limit status</remarks>
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Hammock.Tasks.IRateLimitStatus.RemainingUses">
+            <summary>
+            Gets the current number of resource uses available
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Hammock.Tasks.IRateLimitStatus.NextReset">
+            <summary>
+            Gets the next time the <see cref="P:TencentWeiboSDK.Hammock.Tasks.IRateLimitStatus.RemainingUses"/> is due to be refreshed
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Hammock.Web.BasicAuthWebQuery">
+            <summary>
+            A web query engine for making requests that use basic HTTP authorization.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Model.AccessTokens.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Model.Company">
+            <summary>
+            公司信息
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Model.BaseModel">
+            <summary>
+            BaseModel 为所有 Model 的基类. 实现了 INotifyPropertyChanged 接口.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Model.BaseModel.NotifyPropertyChanged(System.String)">
+            <summary>
+            若该属性绑定到了UI，则触发 PropertyChanged事件
+            </summary>
+            <param name="propertyName"></param>
+        </member>
+        <member name="E:TencentWeiboSDK.Model.BaseModel.PropertyChanged">
+            <summary>
+            Model 的属性发生变更时触发 PropertyChanged 事件.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Company.Begin_Year">
+            <summary>
+            开始年
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Company.Company_Name">
+            <summary>
+            公司名称
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Company.Department_Name">
+            <summary>
+            部门名称
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Company.End_Year">
+            <summary>
+            结束年
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Company.Id">
+            <summary>
+            公司Id
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Result.Ret">
+            <summary>
+            返回是否成功
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Result.Msg">
+            <summary>
+            返回消息内容
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Services.BaseService">
+            <summary>
+            所有 Service(除了 OAuthService) 的基类，用于和底层网络接口 Hammock 进行通信.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.BaseService.#ctor(TencentWeiboSDK.Model.TencentAccessToken)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="accessToken">
+            指示该 Service 所需要的 AccessToken，优先级高于 OAuthConfigruation.AccessToken, 若该值为 null,
+            SDK 将默认使用 OAuthConfigruation.AccessToken.
+            </param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.BaseService.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.BaseService.Get(System.String,TencentWeiboSDK.Services.Util.ServiceArgument,TencentWeiboSDK.Hammock.RestCallback)">
+            <summary>
+            通过Get方法异步调用API.
+            </summary>
+            <param name="path">API的相对地址.</param>
+            <param name="arg">参数列表.</param>
+            <param name="handler">需要回调的委托.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.BaseService.Post(System.String,TencentWeiboSDK.Services.Util.ServiceArgument,TencentWeiboSDK.Hammock.RestCallback)">
+            <summary>
+            用 Post 方法异步上传数据
+            </summary>
+            <param name="path">API的要对路径</param>
+            <param name="arg">参数列表</param>
+            <param name="handler">回调委托</param>
+        </member>
+        <member name="T:TencentWeiboSDK.Controls.OAuthLoginBrowser">
+            <summary>
+            OAuth 登录控件，用于 OAuth 授权，并返回 AccessToken 对象.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Controls.OAuthLoginBrowser.#ctor">
+            <summary>
+            构造函数.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Controls.OAuthLoginBrowser.OAuthLogin(System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.TencentAccessToken}})">
+            <summary>
+            开始进行 OAuth 授权，若用户授权成功，则返回 AccessToken.
+            </summary>
+            <param name="actionTokenCallback">回调返回 AccessToken.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Controls.OAuthLoginBrowser.MergeAccessToken(TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.TencentAccessToken})">
+            <summary>
+            合并AccessToken并清空缓存
+            </summary>
+            <param name="callback"></param>
+        </member>
+        <member name="M:TencentWeiboSDK.Controls.OAuthLoginBrowser.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Services.FriendsService">
+            <summary>
+            FriendsService 包含了关系链相关的 Open API.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.FriendsService.#ctor">
+            <summary>
+            构造函数.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.FriendsService.#ctor(TencentWeiboSDK.Model.TencentAccessToken)">
+            <summary>
+            构造函数.
+            </summary>
+            <param name="accessToken">
+            指示该 Service 所需要的 AccessToken，优先级高于 OAuthConfigruation.AccessToken, 若该值为 null,
+            SDK 将默认使用 OAuthConfigruation.AccessToken.
+            </param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.FriendsService.Add(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{System.Boolean}})">
+            <summary>
+            收听某个用户.
+            </summary>
+            <param name="argment">参数列表, 其中Name或FOpenIds必填一个.</param>
+            <param name="action">回调Result返回空.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.FriendsService.Del(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{System.Boolean}})">
+            <summary>
+            取消收听某个用户.
+            </summary>
+            <param name="argment">参数列表, 其中Name或FOpenIds必填一个.</param>
+            <param name="action">回调Result返回空.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.FriendsService.Fanlist(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.UserColloection}})">
+            <summary>
+            我的听众列表.
+            </summary>
+            <param name="argment">参数列表, 可以为 null.</param>
+            <param name="action">回调返回我的听众的集合.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.FriendsService.Idolist(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.UserColloection}})">
+            <summary>
+            我收听的人列表.
+            </summary>
+            <param name="argment">参数列表, 可以为 null.</param>
+            <param name="action">回调返回我收听的人集合.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.FriendsService.UserFanslist(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.UserColloection}})">
+            <summary>
+            其他帐户听众列表.
+            </summary>
+            <param name="argment">参数列表，Name和FOpenId至少选一个，若同时存在则以name值为主.</param>
+            <param name="action"></param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.FriendsService.UserIdollist(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.UserColloection}})">
+            <summary>
+            其他帐户收听的人列表
+            </summary>
+            <param name="argment">参数列表，Name和FOpenId至少选一个，若同时存在则以name值为主</param>
+            <param name="action"></param>
+        </member>
+        <member name="T:TencentWeiboSDK.Model.Status">
+            <summary>
+            微博的 Model, 用于表示微博的对象.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Model.Status.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.City_Code">
+            <summary>
+            城市代码
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Count">
+            <summary>
+            微博被转次数
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Country_Code">
+            <summary>
+            国家代码
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.EmotionType">
+            <summary>
+            心情类型
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.EmotionUrl">
+            <summary>
+            心情图片url
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.From">
+            <summary>
+            来源
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.FromUrl">
+            <summary>
+            来源url
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Geo">
+            <summary>
+            发表者地理信息
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Head">
+            <summary>
+            发表者头像url
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Https_Head">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Id">
+            <summary>
+            微博唯一id
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Image">
+            <summary>
+            图片url列表
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.IsRealName">
+            <summary>
+            是否实名认证，0-老用户，1-已实名认证，2-未实名认证,
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.IsVIP">
+            <summary>
+            是否微博认证用户，0-不是，1-是
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Latitude">
+            <summary>
+            纬度
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Longitude">
+            <summary>
+            经度
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Location">
+            <summary>
+            发表者所在地
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.MCount">
+            <summary>
+            点评次数
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Name">
+            <summary>
+            发表人帐户名
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Nick">
+            <summary>
+            发表人昵称
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.OpenId">
+            <summary>
+            用户唯一id，与name相对应
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.OrigText">
+            <summary>
+            原始内容
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Pic">
+            <summary>
+            图片信息列表
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Province_Code">
+            <summary>
+            省份代码
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.ReadCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Self">
+            <summary>
+            是否自已发的的微博
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Source">
+            <summary>
+            当type=2时，source即为源tweet
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.State">
+            <summary>
+            微博状态，0-正常，1-系统删除，2-审核中，3-用户删除，4-根删除
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Text">
+            <summary>
+            微博内容
+            </summary>      
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.TimeStamp">
+            <summary>
+            发表时间
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.Type">
+            <summary>
+            微博类型，1-原创发表，2-转载，3-私信，4-回复，5-空回，6-提及，7-评论
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.IsFavorite">
+            <summary>
+            （自定义属性）是否已添加到收藏
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Model.StatusCollection">
+            <summary>
+            微腾微博列表，包含微博对象，以及微博所提到的用户列表
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Model.StatusCollection.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.StatusCollection.Users">
+            <summary>
+            该列表中所提到的用户列表.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.StatusCollection.LastTimeStamp">
+            <summary>
+            列表中最后一条微博的时间戳
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.StatusCollection.FirstTimeStamp">
+            <summary>
+            列表中第一条微博的时间戳
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Model.Tag">
+            <summary>
+            标签 Model, 用于表示用户标签的对象.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Model.Tag.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Tag.Id">
+            <summary>
+            标签id
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Tag.Name">
+            <summary>
+            标签名
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Model.Token">
+            <summary>
+            Access Token 和 Request Token 的基类.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Model.Token.#ctor(System.String)">
+            <summary>
+            构造函数.
+            </summary>
+            <param name="content">回调的字符串.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Model.Token.#ctor">
+            <summary>
+            构造函数，用于反序列化.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Token.TokenKey">
+            <summary>
+            获取或设置 Toekn 的 Key.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Token.TokenSecret">
+            <summary>
+            获取或设置 Toekn 的 Secret.
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Model.RequestToken">
+            <summary>
+            Request Toekn 类，用于表示服务器所返回的 Request Token 对象.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Model.RequestToken.#ctor(System.String)">
+            <summary>
+            构造函数.
+            </summary>
+            <param name="content">请求 Request Token 后, 服务器返回的结果.</param>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.RequestToken.Verifier">
+            <summary>
+            获取或设置验证码.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.RequestToken.AccessUrl">
+            <summary>
+            获取或设置请求用户授址地址.
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Model.TencentAccessToken">
+            <summary>
+            Access Toekn 类，用于表示服务器所返回的 Access Token 对象.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Model.TencentAccessToken.#ctor">
+            <summary>
+            构造函数.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Model.TencentAccessToken.#ctor(System.String)">
+            <summary>
+            构造函数.
+            </summary>
+            <param name="content">请求 Access Token 后, 服务器返回的结果.</param>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.TencentAccessToken.Head">
+            <summary>
+            获取或设置用户头像.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.TencentAccessToken.Name">
+            <summary>
+            获取或设置 Toekn 用户名.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.TencentAccessToken.Open">
+            <summary>
+            当前登录用户标识
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Model.User">
+            <summary>
+            用户 Model，用来表示微博用户的对象.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Model.User.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Birth_Day">
+            <summary>
+            出生天
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Birth_Month">
+            <summary>
+            出生月
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Birth_Year">
+            <summary>
+            出生年
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Birth_Date">
+            <summary>
+            出生年月日
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.City_Code">
+            <summary>
+            城市Id
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Comp">
+            <summary>
+            公司信息列表
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Country_Code">
+            <summary>
+            国家Id
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Edu">
+            <summary>
+            教育信息列表
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Exp">
+            <summary>
+            经验值
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.FansNum">
+            <summary>
+            听众数
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.FavNum">
+            <summary>
+            收藏数
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Head">
+            <summary>
+            头像Url
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.HomeCity_Code">
+            <summary>
+            家乡所在城市Id
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.HomeCountry_Code">
+            <summary>
+            家乡所在国家Id
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.HomePage">
+            <summary>
+            个人主页
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.HomeProvince_Code">
+            <summary>
+            家乡所在省Id
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.HomeTown_Code">
+            <summary>
+            家乡所在城镇Id
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.IdolNum">
+            <summary>
+            收听的人数
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Industry_Code">
+            <summary>
+            行业Id
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Introduction">
+            <summary>
+            个人介绍
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.IsEnt">
+            <summary>
+            是否企业机构
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.IsMyBlack">
+            <summary>
+            是否在我的黑名单中
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.IsMyFans">
+            <summary>
+            是否收听我
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.IsMyIdol">
+            <summary>
+            是否是我收听的人
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.IsRealName">
+            <summary>
+            是否实名认证
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.IsVIP">
+            <summary>
+            是否是认证用户
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Level">
+            <summary>
+            等级
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Location">
+            <summary>
+            所在地.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Mutual_Fans_Num">
+            <summary>
+            互听好友数
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Name">
+            <summary>
+            帐户名.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Nick">
+            <summary>
+            昵称.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.OpenId">
+            <summary>
+            唯一id，与name相对应.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Province_Code">
+            <summary>
+            地区Id
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.RegTime">
+            <summary>
+            注册时间 
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Send_Private_Flag">
+            <summary>
+            是否允许所有人给当前用户发私信
+            </summary>
+            <remarks>0-仅有偶像，1-名人+听众，2-所有人</remarks>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Sex">
+            <summary>
+            性别
+            </summary>
+            <remarks>1-男，2-女，0-未填写</remarks>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.Tag">
+            <summary>
+            标签列表
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.TweetInfo">
+            <summary>
+            最近的一条原创微博信息
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.TweetNum">
+            <summary>
+            发表的微博数量
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.User.VerifyInfo">
+            <summary>
+            认证信息
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Services.OAuthService">
+            <summary>
+            OAuthService 包含了 OAuth 相关 API.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.OAuthService.GetRequestTokenRequest(System.String,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.RequestToken}})">
+            <summary>
+            获取RequestToken.
+            </summary>
+            <param name="callbackUrl">需要回调的Url(用于判断是否验证成功).</param>
+            <param name="callback">回调返回 RequestToken 对象.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.OAuthService.GetAccessTokenRequest(TencentWeiboSDK.Model.RequestToken,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.TencentAccessToken}})">
+            <summary>
+            获取AccessToken.
+            </summary>
+            <param name="requestToken">填入在 GetRequestTokenRequest 里取得的RequestToken.</param>
+            <param name="callback">回调返回AccessToken.</param>
+        </member>
+        <member name="T:TencentWeiboSDK.Deserializer.Json.StatusDeserializer">
+            <summary>
+            Json 格式的微博(Status)对象的反序列化器.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Deserializer.Json.StatusDeserializer.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Deserializer.Json.StatusDeserializer.Read(System.String)">
+            <summary>
+            将微博(Status)的 Json 字符串反序列化成 Status 对象.
+            </summary>
+            <param name="content">需要反符列化的Json字符串</param>
+            <returns>返回 Status 对象</returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Deserializer.Json.StatusDeserializer.ReadList(System.String)">
+            <summary>
+            将微博(Status)的 Json 字符串反序列成 Status 对象列表.
+            </summary>
+            <param name="content">需要读取的Json字符串</param>
+            <returns>返回 StatusCollection 对象</returns>
+        </member>
+        <member name="T:TencentWeiboSDK.Deserializer.Json.UserDeserializer">
+            <summary>
+            Json 格式的用户(User)对象的反序列化器. 
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Deserializer.Json.UserDeserializer.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Deserializer.Json.UserDeserializer.Read(System.String)">
+            <summary>
+            将用户(User)的 Json 字符串反序列化成 User 对象.
+            </summary>
+            <param name="content">需要反符列化的Json字符串</param>
+            <returns>返回 User 对象</returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Deserializer.Json.UserDeserializer.ReadList(System.String)">
+            <summary>
+            将用户(User)的 Json 字符串反序列成 User 对象列表.
+            </summary>
+            <param name="content">需要读取的Json字符串.</param>
+            <returns>返回 User 的列表对象.</returns>
+        </member>
+        <member name="T:TencentWeiboSDK.Deserializer.DeserializerManager">
+            <summary>
+            反序列化器管理器，根据数据类型返回用户所需要的反序列化器.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Deserializer.DeserializerManager.BuildStatusDeserializer">
+            <summary>
+            构造微博(Status)对象的反序列化器.
+            </summary>
+            <returns>返回 StatusDeserializer 对象</returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Deserializer.DeserializerManager.BuildUserDeserializer">
+            <summary>
+            构造用户(User)对象的反序列化器
+            </summary>
+            <returns>返回 UserDeserializer 对象</returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Deserializer.DeserializerManager.BuildResultDeserializer">
+            <summary>
+            构造返回结果(Result)对象的反序列化器
+            </summary>
+            <returns>返回 UserDeserializer 对象</returns>
+        </member>
+        <member name="P:TencentWeiboSDK.Deserializer.DeserializerManager.Instance">
+            <summary>
+            获取反序列化器管理器实例.
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Services.TService">
+            <summary>
+            TService 包含了微博相关 API.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.TService.#ctor">
+            <summary>
+            构造函数.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.TService.#ctor(TencentWeiboSDK.Model.TencentAccessToken)">
+            <summary>
+            构造函数.
+            </summary>
+            <param name="accessToken">
+            指示该 Service 所需要的 AccessToken，优先级高于 OAuthConfigruation.AccessToken, 若该值为 null,
+            SDK 将默认使用 OAuthConfigruation.AccessToken.
+            </param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.TService.Show(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.Status}})">
+            <summary>
+            获取一条微博
+            </summary>
+            <param name="argment">参数列表，Id为必填参数</param>
+            <param name="callback"></param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.TService.Repost(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{System.Boolean}})">
+            <summary>
+            转发一条微博.
+            </summary>
+            <param name="argment">参数列表, Content为必填参数</param>
+            <param name="callback">无返回数据</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.TService.Comment(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{System.Boolean}})">
+            <summary>
+            评论一条微博.
+            </summary>
+            <param name="argment">参数列表, Content为必填参数</param>
+            <param name="callback">无返回数据</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.TService.AddFavorite(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{System.Boolean}})">
+            <summary>
+            收藏一条微博
+            </summary>
+            <param name="argment">参数列表，Id为必填参数</param>
+            <param name="callback">无返回数据</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.TService.DelFavorite(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{System.Boolean}})">
+            <summary>
+            取消收藏一条微博
+            </summary>
+            <param name="argment">参数列表，Id为必填参数</param>
+            <param name="callback">无返回数据</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.TService.Add(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{System.Boolean}})">
+            <summary>
+            发表一条微博.
+            </summary>
+            <param name="argment">参数列表, Content为必填参数</param>
+            <param name="callback">无返回数据</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.TService.AddPic(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{System.Boolean}})">
+            <summary>
+            发表一条带图片的微博.
+            </summary>
+            <param name="argment">参数列表，Content和UploadPic为必填参数.</param>
+            <param name="callback">无返回数据.</param>
+        </member>
+        <member name="T:TencentWeiboSDK.Services.StatusesService">
+            <summary>
+            StatusesService 包含了时间线相关 API.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.StatusesService.#ctor">
+            <summary>
+            构造函数.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.StatusesService.#ctor(TencentWeiboSDK.Model.TencentAccessToken)">
+            <summary>
+            构造函数.
+            </summary>
+            <param name="accessToken">
+            指示该 Service 所需要的 AccessToken，优先级高于 OAuthConfigruation.AccessToken, 若该值为 null,
+            SDK 将默认使用 OAuthConfigruation.AccessToken.
+            </param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.StatusesService.BroadcastTimeline(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.StatusCollection}})">
+            <summary>
+            我发表时间线.
+            </summary>
+            <param name="argment">参数列表, 可以为 null.</param>
+            <param name="callback">回调返回我发表的时间线数据</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.StatusesService.HomeTimeline(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.StatusCollection}})">
+            <summary>
+            主页时间线.
+            </summary>
+            <param name="argment">参数列表, 可以为 null.</param>
+            <param name="callback">回调返回主页时间线数据.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.StatusesService.BroadcastTimelineIds(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.StatusCollection}})">
+            <summary>
+            我发表时间线索引.
+            </summary>
+            <param name="argment">参数列表, 可以为 null.</param>
+            <param name="callback">回调返回我发表时间线索引数据.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.StatusesService.HomeTimelineIds(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.StatusCollection}})">
+            <summary>
+            主页时间线索引.
+            </summary>
+            <param name="argment">参数列表, 可以为 null.</param>
+            <param name="callback">回调返回主页时间线索引数据.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.StatusesService.MentionsTimeline(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.StatusCollection}})">
+            <summary>
+            用户提及时间线.
+            </summary>
+            <param name="argment">参数列表, 可以为 null.</param>
+            <param name="callback">回调返回用户提及时间线数据.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.StatusesService.UserTimeline(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.StatusCollection}})">
+            <summary>
+            获取某用户的最新微博
+            </summary>
+            <param name="argment"></param>
+            <param name="callback"></param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.StatusesService.PublicTimeline(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.StatusCollection}})">
+            <summary>
+            获取广播大厅的最新微博
+            </summary>
+            <param name="argment"></param>
+            <param name="callback"></param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.StatusesService.MentionsTimelineIds(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.StatusCollection}})">
+            <summary>
+            用户提及时间线索引.
+            </summary>
+            <param name="argment">参数列表, 可以为 null.</param>
+            <param name="callback">返回用户提及时间线索引数据.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.StatusesService.FavoritesTimeline(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.StatusCollection}})">
+            <summary>
+            用户收藏时间线.
+            </summary>
+            <param name="argment">参数列表, 可以为 null.</param>
+            <param name="callback">返回用户收藏时间线数据.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.StatusesService.SingleCommentsTimelineIds(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.StatusCollection}})">
+            <summary>
+            微博相关/获取单条微博的转发或点评列表
+            </summary>
+            <param name="argment"></param>
+            <param name="callback"></param>
+        </member>
+        <member name="T:TencentWeiboSDK.Services.UserService">
+            <summary>
+            UserService 包含了帐户相关 API.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.UserService.#ctor">
+            <summary>
+            构造函数.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.UserService.#ctor(TencentWeiboSDK.Model.TencentAccessToken)">
+            <summary>
+            构造函数.
+            </summary>
+            <param name="accessToken">
+            指示该 Service 所需要的 AccessToken，优先级高于 OAuthConfigruation.AccessToken, 若该值为 null,
+            SDK 将默认使用 OAuthConfigruation.AccessToken.
+            </param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.UserService.UserInfo(System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.User}})">
+            <summary>
+            获取自己的详细资料.
+            </summary>
+            <param name="callback">回调返回 User 对象.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.UserService.OtherUserInfo(System.String,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.User}})">
+            <summary>
+            根据用户ID获取用户信息
+            </summary>
+            <param name="name">用户的openId</param>
+            <param name="callback">回调返回User对象</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.UserService.SearchUserInfo(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{System.Collections.Generic.List{TencentWeiboSDK.Model.User}}})">
+            <summary>
+            搜索相关/搜索用户
+            </summary>
+            <param name="callback"></param>
+        </member>
+        <member name="T:TencentWeiboSDK.Services.Util.Callback`1">
+            <summary>
+            Callback 类用于封装异步回调的结果.
+            </summary>
+            <typeparam name="T">回调数据的数据类型.</typeparam>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.Util.Callback`1.#ctor(`0)">
+            <summary>
+            构造函数.
+            </summary>
+            <param name="data">回调数据实例</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.Util.Callback`1.#ctor(System.Boolean,`0,System.String)">
+            <summary>
+            构造函数.
+            </summary>
+            <param name="succeed">指示 Service 是否成功取得数据，默认为 true.</param>
+            <param name="data">回调数据实例, 若无数据返回，该值可以为 null.</param>
+            <param name="innerException">若有网络或数据异常发生，可以使用此参数.</param>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.Callback`1.ExceptionMsg">
+            <summary>
+            获取或设置回调过程中发生的异常.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.Callback`1.Data">
+            <summary>
+            获取或设置回调数据的实例.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.Callback`1.Succeed">
+            <summary>
+            获取或设置是否成功取得数据.
+            </summary>
+            <remarks>
+            默认为 true.
+            </remarks>
+        </member>
+        <member name="T:TencentWeiboSDK.Services.Util.ContentType">
+            <summary>
+            ContentType 枚举指示需要过滤的内容.
+            </summary>
+        </member>
+        <member name="F:TencentWeiboSDK.Services.Util.ContentType.All">
+            <summary>
+            所有类型.
+            </summary>
+        </member>
+        <member name="F:TencentWeiboSDK.Services.Util.ContentType.Text">
+            <summary>
+            带文本.
+            </summary>
+        </member>
+        <member name="F:TencentWeiboSDK.Services.Util.ContentType.Link">
+            <summary>
+            带链接.
+            </summary>
+        </member>
+        <member name="F:TencentWeiboSDK.Services.Util.ContentType.Pictrue">
+            <summary>
+            带图片.
+            </summary>
+        </member>
+        <member name="F:TencentWeiboSDK.Services.Util.ContentType.Video">
+            <summary>
+            带视频.
+            </summary>
+        </member>
+        <member name="F:TencentWeiboSDK.Services.Util.ContentType.Audio">
+            <summary>
+            带音频.
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Services.Util.DataFormat">
+            <summary>
+            数据格式.
+            </summary>
+        </member>
+        <member name="F:TencentWeiboSDK.Services.Util.DataFormat.Json">
+            <summary>
+            Json 格式.
+            </summary>
+        </member>
+        <member name="F:TencentWeiboSDK.Services.Util.DataFormat.Xml">
+            <summary>
+            Xml 格式.
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Util.OAuthHelper">
+            <summary>
+            OAuthHelper 类帮助 Service 解析服务器返回的结果.
+            </summary>
+        </member>
+        <!-- 对于成员“M:TencentWeiboSDK.Util.OAuthHelper.GetQueryParameters(System.String)”忽略有格式错误的 XML 注释 -->
+        <member name="T:TencentWeiboSDK.Util.TokenIso">
+            <summary>
+            TokenIso 用于安全储存 AccessToken.
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Util.SafeIsolatedStorage`1">
+            <summary>
+            SafeIsolatedStorage 类，用于将数据安全储存到用户独立储存空间.
+            </summary>
+            推荐使用该类进行数据存储及读取，因为在存储过程中可能遇到系统崩溃等情况，导致
+            文件的损坏，使用该类可以最大限度保证数据的完整性.
+            <typeparam name="T">需要存储的数据类型.</typeparam>
+        </member>
+        <member name="M:TencentWeiboSDK.Util.SafeIsolatedStorage`1.#ctor">
+            <summary>
+            构造函数.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Util.SafeIsolatedStorage`1.#ctor(System.String)">
+            <summary>
+            构造函数.
+            </summary>
+            <param name="fileName">需要储存的文件名.</param>
+        </member>
+        <member name="M:TencentWeiboSDK.Util.SafeIsolatedStorage`1.Clear">
+            <summary>
+            清除已存储的文件.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Util.SafeIsolatedStorage`1.LoadData">
+            <summary>
+            从用户独立储存空间的文件中读取数据.
+            </summary>
+            <returns>返回读取出来的数据.</returns>
+        </member>
+        <member name="M:TencentWeiboSDK.Util.SafeIsolatedStorage`1.SaveData(`0)">
+            <summary>
+            将数据存储到用户独立储存空间的文件.
+            </summary>
+            <param name="t">需要储存的实例.</param>
+        </member>
+        <member name="P:TencentWeiboSDK.Util.TokenIso.Current">
+            <summary>
+            实例.
+            </summary>
+        </member>
+        <member name="T:TencentWeiboSDK.Services.Util.OAuthException">
+            <summary>
+            当 OAuth 授权时发生任何错误时，则会抛出该异常.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.Util.OAuthException.#ctor(System.String)">
+            <summary>
+            构造函数.
+            </summary>
+            <param name="message">错误信息.</param>
+        </member>
+        <member name="T:TencentWeiboSDK.Services.Util.MissingAppKeyOrAppSecretException">
+            <summary>
+            在 OAuth 授权时，若发现未设置 AppKey 或 AppSecret 则抛出该异常.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.Util.MissingAppKeyOrAppSecretException.#ctor">
+            <summary>
+            构造函数.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.Util.MissingAppKeyOrAppSecretException.#ctor(System.String)">
+            <summary>.
+            构造函数
+            </summary>
+            <param name="message">错误信息.</param>
+        </member>
+        <member name="T:TencentWeiboSDK.Services.Util.MissingAccessTokenExcception">
+            <summary>
+            在 OAuth 授权时，若发现缺少 Access Token 则抛出该异常.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.Util.MissingAccessTokenExcception.#ctor">
+            <summary>
+            构造函数.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.Util.MissingAccessTokenExcception.#ctor(System.String)">
+            <summary>
+            构造函数.
+            </summary>
+            <param name="message">错误信息.</param>
+        </member>
+        <member name="T:TencentWeiboSDK.OAuthConfigruation">
+            <summary>
+            OAuthConfigruation 类用于配置以及验证 OAuth 相关的设置.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.OAuthConfigruation.ClearAccessToken">
+            <summary>
+            清除缓存中和正在使用的 Access Token.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.OAuthConfigruation.Validate">
+            <summary>
+            验证 OAuth 相关的配置信息.
+            </summary>
+            <remarks>
+            1. Authority, AppKey, AppSerect 不允许为空，否则会抛出异常.
+            2. 若 IfSaveAccesstoken == true, SDK 将尝试从用户储存空间中读取 AccessToken，
+            若未找到 AccessToken, 则会抛出 MissingAppKeyOrAppSecretException 异常.
+            3. 若 IfSaveAccessToken ==  false,  则不会验证 AccessToken.
+            </remarks>
+        </member>
+        <member name="P:TencentWeiboSDK.OAuthConfigruation.APP_KEY">
+            <summary>
+            获取或设置你的应用的 App Key.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.OAuthConfigruation.APP_SECRET">
+            <summary>
+            获取或设置你的应用的 App Secret.
+            </summary>
+        </member>
+        <!-- 对于成员“P:TencentWeiboSDK.OAuthConfigruation.Authority”忽略有格式错误的 XML 注释 -->
+        <member name="P:TencentWeiboSDK.OAuthConfigruation.Format">
+            <summary>
+            获取或设置所希望 API 返回的数据格式.
+            </summary>
+            <remarks>
+            默认为 Json
+            </remarks>
+        </member>
+        <member name="P:TencentWeiboSDK.OAuthConfigruation.AccessToken">
+            <summary>
+            获取或设置当前用户的 AccessToken.
+            </summary>
+            <remarks>若 IfSaveAccessToken == true, 则请不要手动设置该值.</remarks>
+        </member>
+        <member name="P:TencentWeiboSDK.OAuthConfigruation.AccessTokens">
+            <summary>
+            获取或设置当前用户的 AccessToken集合.
+            </summary>
+            <remarks>若 IfSaveAccessToken == true, 则请不要手动设置该值.</remarks>
+        </member>
+        <member name="P:TencentWeiboSDK.OAuthConfigruation.IfSaveAccessToken">
+            <summary>
+            获取或设置在用户授权成功后，是否需要 SDK 帮助你储存用户的 AccessToken.
+            </summary>
+            <remarks>
+            true, SDK 将管理 AccessToken, 请不要手动设置 AccessToken.
+            false，请手动设置 AccessToken， 或者在实例化 Service 时，调用带 AccessToken 参数的构造函数.
+            </remarks>
+        </member>
+        <member name="T:TencentWeiboSDK.Services.Util.ServiceArgument">
+            <summary>
+            Service 参数列表.
+            </summary>
+            <remarks>
+            同时请参考 http://wiki.open.t.qq.com/ 设置正确的参数，以及其取值范围.
+            否则可能导致签名错误，或不可意料的异常.
+            </remarks>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.Util.ServiceArgument.#ctor">
+            <summary>
+            构造函数.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.ServiceArgument.PageFlag">
+            <summary>
+            获取或设置分页标识.
+            </summary>
+            <remarks>
+            0：第一页，1：向下翻页，2：向上翻页.
+            </remarks>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.ServiceArgument.PageTime">
+            <summary>
+            获取或设置本页起始时间
+            </summary>
+            <remarks>
+            第一页：填0，向上翻页：填上一次请求返回的第一条记录时间，向下翻页：
+            填上一次请求返回的最后一条记录时间.
+            </remarks>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.ServiceArgument.Reqnum">
+            <summary>
+            获取或设置每次请求记录的条数 .
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.ServiceArgument.Id">
+            <summary>
+            获取或设置用户/微博 Id.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.ServiceArgument.Type">
+            <summary>
+            获取或设置拉取类型 .
+            </summary>
+            <remarks>
+            0x1 原创发表 
+            0x2 转载 
+            0x8 回复 
+            0x10 空回 
+            0x20 提及 
+            0x40 点评 
+            如需拉取多个类型请使用|，如(0x1|0x2)得到3，则type=3即可，填零表示拉取所有类型 .
+            </remarks>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.ServiceArgument.ContentType">
+            <summary>
+            获取或设置内容过滤.
+            </summary>
+            <remarks>
+            0-表示所有类型，1-带文本，2-带链接，4-图片，8-带视频，0x10-带音频.
+            </remarks>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.ServiceArgument.AccessLevel">
+            <summary>
+            获取或设置权限标识。1－表示只显示我发表的，默认填零.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.ServiceArgument.Name">
+            <summary>
+            获取或设置你需要读取的用户的用户名（可选）. 
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.ServiceArgument.FOpenIds">
+            <summary>
+            获取或设置你需要读取的用户名列表，中间用_隔开.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.ServiceArgument.FOpenId">
+            <summary>
+            获取或设置你需要读取的用户的openid（可选）.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.ServiceArgument.StartIndex">
+            <summary>
+            获取或设置起始位置.
+            </summary>
+            <remarks>
+            第一页填0，继续向下翻页：填【reqnum*（page-1）】.
+            </remarks>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.ServiceArgument.Content">
+            <summary>
+            获取或设置微博内容.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.ServiceArgument.Pic">
+            <summary>
+            获取或设置需要上传的 Pic.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.ServiceArgument.Format">
+            <summary>
+            获取或设置返回数据的格式.
+            </summary>
+            <remarks>
+            json或xml, 但暂时只提供Json方式.
+            </remarks>
+        </member>
+        <member name="T:TencentWeiboSDK.Services.Util.UploadPic">
+            <summary>
+            UploadPic 用于"发表带图片的微博" API，帮助用户一键上传图片.
+            </summary>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.Util.UploadPic.#ctor(System.Windows.Media.Imaging.BitmapImage)">
+            <summary>
+            构造函数.
+            </summary>
+            <param name="pic">需要上传的图片对象.</param>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.UploadPic.FullPathName">
+            <summary>
+            获取上传图片的完整路径.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.UploadPic.FileName">
+            <summary>
+            获取上传图片名称.
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Services.Util.UploadPic.Extention">
+            <summary>
+            获取图片的后缀.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{32287EA3-030F-4CFC-826A-80460A9BE708}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TencentWeiboSDK</RootNamespace>
+    <AssemblyName>TencentWeiboSDK</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\SDKLibrary\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT,WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\SDKLibrary\TencentWeiboSDK.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Phone">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Phone.Interop">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\iWeibo.WP7\Libs\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Servicemodel.Web">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="system">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Net">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mscorlib.extensions">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Deserializer\Json\ResultDeserializer.cs" />
+    <Compile Include="Hammock\Attributes\INamedAttribute.cs" />
+    <Compile Include="Hammock\Attributes\IValidatingAttribute.cs" />
+    <Compile Include="Hammock\Attributes\Specialized\EntityAttribute.cs" />
+    <Compile Include="Hammock\Attributes\Specialized\HeaderAttribute.cs" />
+    <Compile Include="Hammock\Attributes\Specialized\ParameterAttribute.cs" />
+    <Compile Include="Hammock\Attributes\Specialized\UserAgentAttribute.cs" />
+    <Compile Include="Hammock\Attributes\Validation\BooleanToIntegerAttribute.cs" />
+    <Compile Include="Hammock\Attributes\Validation\DateTimeFormatAttribute.cs" />
+    <Compile Include="Hammock\Attributes\Validation\RequiredAttribute.cs" />
+    <Compile Include="Hammock\Attributes\Validation\SpecificationAttribute.cs" />
+    <Compile Include="Hammock\Attributes\Validation\ValidationAttribute.cs" />
+    <Compile Include="Hammock\Authentication\Basic\BasicAuthCredentials.cs" />
+    <Compile Include="Hammock\Authentication\IWebCredentials.cs" />
+    <Compile Include="Hammock\Authentication\OAuth\OAuthCredentials.cs" />
+    <Compile Include="Hammock\Authentication\OAuth\OAuthParameterHandling.cs" />
+    <Compile Include="Hammock\Authentication\OAuth\OAuthSignatureMethod.cs" />
+    <Compile Include="Hammock\Authentication\OAuth\OAuthToken.cs" />
+    <Compile Include="Hammock\Authentication\OAuth\OAuthTools.cs" />
+    <Compile Include="Hammock\Authentication\OAuth\OAuthType.cs" />
+    <Compile Include="Hammock\Authentication\OAuth\OAuthWebQuery.cs" />
+    <Compile Include="Hammock\Authentication\OAuth\OAuthWebQueryInfo.cs" />
+    <Compile Include="Hammock\Authentication\OAuth\OAuthWorkflow.cs" />
+    <Compile Include="Hammock\Caching\CacheFactory.cs" />
+    <Compile Include="Hammock\Caching\CacheMode.cs" />
+    <Compile Include="Hammock\Caching\CacheOptions.cs" />
+    <Compile Include="Hammock\Caching\ICache.cs" />
+    <Compile Include="Hammock\Caching\SimpleCache.cs" />
+    <Compile Include="Hammock\Compat\DecompressionMethods.cs" />
+    <Compile Include="Hammock\Compat\GzipHttpWebResponse.cs" />
+    <Compile Include="Hammock\Compat\NameValueCollection.cs" />
+    <Compile Include="Hammock\Compat\Trace.cs" />
+    <Compile Include="Hammock\Extensions\CollectionExtensions.cs" />
+    <Compile Include="Hammock\Extensions\FormatExtensions.cs" />
+    <Compile Include="Hammock\Extensions\OAuthExtensions.cs" />
+    <Compile Include="Hammock\Extensions\ObjectExtensions.cs" />
+    <Compile Include="Hammock\Extensions\ReflectionExtensions.cs" />
+    <Compile Include="Hammock\Extensions\SpecificationExtensions.cs" />
+    <Compile Include="Hammock\Extensions\StringExtensions.cs" />
+    <Compile Include="Hammock\Extensions\TimeExtensions.cs" />
+    <Compile Include="Hammock\Extensions\WebExtensions.cs" />
+    <Compile Include="Hammock\IRestClient.cs" />
+    <Compile Include="Hammock\Model\PropertyChangedBase.cs" />
+    <Compile Include="Hammock\Mono\HttpUtility.cs" />
+    <Compile Include="Hammock\RestBase.cs" />
+    <Compile Include="Hammock\RestCallback.cs" />
+    <Compile Include="Hammock\RestClient.cs" />
+    <Compile Include="Hammock\RestRequest.cs" />
+    <Compile Include="Hammock\RestResponse.cs" />
+    <Compile Include="Hammock\Retries\ConnectionClosed.cs" />
+    <Compile Include="Hammock\Retries\IRetryCondition.cs" />
+    <Compile Include="Hammock\Retries\IRetryCustomCondition.cs" />
+    <Compile Include="Hammock\Retries\NetworkError.cs" />
+    <Compile Include="Hammock\Retries\RetryCondition.cs" />
+    <Compile Include="Hammock\Retries\RetryCustomCondition.cs" />
+    <Compile Include="Hammock\Retries\RetryErrorCondition.cs" />
+    <Compile Include="Hammock\Retries\RetryPolicy.cs" />
+    <Compile Include="Hammock\Retries\RetryResultCondition.cs" />
+    <Compile Include="Hammock\Retries\Timeout.cs" />
+    <Compile Include="Hammock\Serialization\HammockDataContractJsonSerializer.cs" />
+    <Compile Include="Hammock\Serialization\HammockDataContractSerializer.cs" />
+    <Compile Include="Hammock\Serialization\IDeserializer.cs" />
+    <Compile Include="Hammock\Serialization\ISerializer.cs" />
+    <Compile Include="Hammock\Serialization\JsonParser.cs" />
+    <Compile Include="Hammock\Serialization\Utf8Serializer.cs" />
+    <Compile Include="Hammock\Specifications\AndSpecification.cs" />
+    <Compile Include="Hammock\Specifications\CompositeSpecificationBase.cs" />
+    <Compile Include="Hammock\Specifications\HammockSpecification.cs" />
+    <Compile Include="Hammock\Specifications\ISpecification.cs" />
+    <Compile Include="Hammock\Specifications\NotSpecification.cs" />
+    <Compile Include="Hammock\Specifications\OrSpecification.cs" />
+    <Compile Include="Hammock\Streaming\StreamOptions.cs" />
+    <Compile Include="Hammock\Tasks\IRateLimitingRule.cs" />
+    <Compile Include="Hammock\Tasks\IRateLimitStatus.cs" />
+    <Compile Include="Hammock\Tasks\ITaskOptions.cs" />
+    <Compile Include="Hammock\Tasks\ITaskState.cs" />
+    <Compile Include="Hammock\Tasks\ITimedTask.cs" />
+    <Compile Include="Hammock\Tasks\RateLimitingRule.cs" />
+    <Compile Include="Hammock\Tasks\RateLimitType.cs" />
+    <Compile Include="Hammock\Tasks\TaskOptions.cs" />
+    <Compile Include="Hammock\Tasks\TaskState.cs" />
+    <Compile Include="Hammock\Tasks\TimedTask.cs" />
+    <Compile Include="Hammock\Validation\ValidationException.cs" />
+    <Compile Include="Hammock\Validation\ValidEmailSpecification.cs" />
+    <Compile Include="Hammock\Web\BasicAuthWebQuery.cs" />
+    <Compile Include="Hammock\Web\GetOrDelete.cs" />
+    <Compile Include="Hammock\Web\HttpCookieParameter.cs" />
+    <Compile Include="Hammock\Web\HttpPostParameter.cs" />
+    <Compile Include="Hammock\Web\HttpPostParameterType.cs" />
+    <Compile Include="Hammock\Web\IWebQueryInfo.cs" />
+    <Compile Include="Hammock\Web\Mock\IMockable.cs" />
+    <Compile Include="Hammock\Web\Mock\IWebResponse.cs" />
+    <Compile Include="Hammock\Web\Mock\MockHttpWebRequest.cs" />
+    <Compile Include="Hammock\Web\Mock\MockHttpWebResponse.cs" />
+    <Compile Include="Hammock\Web\Mock\MockWebRequestFactory.cs" />
+    <Compile Include="Hammock\Web\Pair.cs" />
+    <Compile Include="Hammock\Web\PostOrPut.cs" />
+    <Compile Include="Hammock\Web\Triplet.cs" />
+    <Compile Include="Hammock\Web\WebCallback.cs" />
+    <Compile Include="Hammock\Web\WebEntity.cs" />
+    <Compile Include="Hammock\Web\WebHeader.cs" />
+    <Compile Include="Hammock\Web\WebHeaderCollection.cs" />
+    <Compile Include="Hammock\Web\WebMethod.cs" />
+    <Compile Include="Hammock\Web\WebPair.cs" />
+    <Compile Include="Hammock\Web\WebPairCollection.cs" />
+    <Compile Include="Hammock\Web\WebParameter.cs" />
+    <Compile Include="Hammock\Web\WebParameterCollection.cs" />
+    <Compile Include="Hammock\Web\WebQuery.Async.cs" />
+    <Compile Include="Hammock\Web\WebQuery.cs" />
+    <Compile Include="Hammock\Web\WebQueryAsyncResult.cs" />
+    <Compile Include="Hammock\Web\WebQueryRequestEventArgs.cs" />
+    <Compile Include="Hammock\Web\WebQueryResponseEventArgs.cs" />
+    <Compile Include="Hammock\Web\WebQueryResult.cs" />
+    <Compile Include="Model\AccessTokens.cs" />
+    <Compile Include="Model\Company.cs" />
+    <Compile Include="Model\Education.cs" />
+    <Compile Include="Model\Pictures.cs" />
+    <Compile Include="Model\Result.cs" />
+    <Compile Include="Model\UserColloection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Controls\OAuthLoginBrowser.xaml.cs">
+      <DependentUpon>OAuthLoginBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Services\FriendsService.cs" />
+    <Compile Include="Model\BaseModel.cs" />
+    <Compile Include="Model\Status.cs" />
+    <Compile Include="Model\StatusCollection.cs" />
+    <Compile Include="Model\Tag.cs" />
+    <Compile Include="Model\Token.cs" />
+    <Compile Include="Model\User.cs" />
+    <Compile Include="Services\OAuthService.cs" />
+    <Compile Include="Deserializer\BaseDeserializer.cs" />
+    <Compile Include="Deserializer\Json\StatusDeserializer.cs" />
+    <Compile Include="Deserializer\Json\UserDeserializer.cs" />
+    <Compile Include="Deserializer\DeserializerManager.cs" />
+    <Compile Include="Services\TService.cs" />
+    <Compile Include="Services\StatusesService.cs" />
+    <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\Util\Callback.cs" />
+    <Compile Include="Services\Util\ContentType.cs" />
+    <Compile Include="Services\Util\Format.cs" />
+    <Compile Include="Services\Util\Helper.cs" />
+    <Compile Include="Util\IsoHelper.cs" />
+    <Compile Include="Services\Util\OAuthException.cs" />
+    <Compile Include="OAuthConfigruation.cs" />
+    <Compile Include="Services\Util\ServiceArgument.cs" />
+    <Compile Include="Services\Util\UploadPic.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Deserializer\Xml\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\OAuthLoginBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

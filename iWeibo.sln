@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iWeibo.WP7", "iWeibo.WP7\iWeibo.WP7.csproj", "{88F91696-9F3D-41B7-862D-0C268BB211D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TencentWeiboSDK", "SDKSrc\TencentWeiboSDK.csproj", "{32287EA3-030F-4CFC-826A-80460A9BE708}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeiboSdk", "WeiboSdk\WeiboSdk.csproj", "{C8BBA7E0-7D2A-491F-ABD9-2144335A3D9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iWeibo.WP7.Adapters", "iWeibo.WP7.Adapters\iWeibo.WP7.Adapters.csproj", "{3A76F086-8CDA-42EA-810C-7EAC217DFDE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iWeibo.WP7.Services", "iWeibo.WP7.Service\iWeibo.WP7.Services.csproj", "{361AD518-9057-4012-B5AA-49492F6E5300}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://coding4u.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = iWeibo.WP7\\iWeibo.WP7.csproj
+		SccProjectName1 = iWeibo.WP7
+		SccLocalPath1 = iWeibo.WP7
+		SccProjectUniqueName2 = SDKSrc\\TencentWeiboSDK.csproj
+		SccProjectName2 = SDKSrc
+		SccLocalPath2 = SDKSrc
+		SccProjectUniqueName3 = WeiboSdk\\WeiboSdk.csproj
+		SccProjectName3 = WeiboSdk
+		SccLocalPath3 = WeiboSdk
+		SccProjectUniqueName4 = iWeibo.WP7.Adapters\\iWeibo.WP7.Adapters.csproj
+		SccProjectName4 = iWeibo.WP7.Adapters
+		SccLocalPath4 = iWeibo.WP7.Adapters
+		SccProjectUniqueName5 = iWeibo.WP7.Service\\iWeibo.WP7.Services.csproj
+		SccProjectName5 = iWeibo.WP7.Service
+		SccLocalPath5 = iWeibo.WP7.Service
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88F91696-9F3D-41B7-862D-0C268BB211D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88F91696-9F3D-41B7-862D-0C268BB211D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88F91696-9F3D-41B7-862D-0C268BB211D2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{88F91696-9F3D-41B7-862D-0C268BB211D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88F91696-9F3D-41B7-862D-0C268BB211D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88F91696-9F3D-41B7-862D-0C268BB211D2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{32287EA3-030F-4CFC-826A-80460A9BE708}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32287EA3-030F-4CFC-826A-80460A9BE708}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32287EA3-030F-4CFC-826A-80460A9BE708}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32287EA3-030F-4CFC-826A-80460A9BE708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8BBA7E0-7D2A-491F-ABD9-2144335A3D9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8BBA7E0-7D2A-491F-ABD9-2144335A3D9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8BBA7E0-7D2A-491F-ABD9-2144335A3D9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8BBA7E0-7D2A-491F-ABD9-2144335A3D9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A76F086-8CDA-42EA-810C-7EAC217DFDE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A76F086-8CDA-42EA-810C-7EAC217DFDE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A76F086-8CDA-42EA-810C-7EAC217DFDE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A76F086-8CDA-42EA-810C-7EAC217DFDE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{361AD518-9057-4012-B5AA-49492F6E5300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{361AD518-9057-4012-B5AA-49492F6E5300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{361AD518-9057-4012-B5AA-49492F6E5300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{361AD518-9057-4012-B5AA-49492F6E5300}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
