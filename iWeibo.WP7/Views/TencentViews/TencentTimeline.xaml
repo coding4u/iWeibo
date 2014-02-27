@@ -7,15 +7,18 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prismInteractivity="clr-namespace:Microsoft.Practices.Prism.Interactivity;assembly=Microsoft.Practices.Prism.Interactivity" 
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
+    Style="{StaticResource TransitionPageStyle}"
     DataContext="{Binding Source={StaticResource ViewModelLocator},Path=TencentTimelineViewModel}"
     shell:SystemTray.IsVisible="True">
+    
     <shell:SystemTray.ProgressIndicator>
         <shell:ProgressIndicator IsIndeterminate="True" IsVisible="{Binding IsSyncing}" Text="数据请求中..."/>
     </shell:SystemTray.ProgressIndicator>
@@ -30,10 +33,27 @@
             <controls:PivotItem Header="主页">
                 <Grid>
                     <toolkit:LongListSelector 
+                        x:Name="HomeTimelineList"
                         IsFlatList="True"
                         ItemsSource="{Binding HomeTimeline}"
                         ItemTemplate="{StaticResource TencentTimelineTemplate}"
+                        SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"
                         >
+                        <i:Interaction.Triggers>
+                            <!--<i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding Path=SelectionChangedCommand}"/>
+                            </i:EventTrigger>-->
+                            <i:EventTrigger EventName="StretchingBottom">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding HomeTimelineCommand}"
+                                    CommandParameter="Next"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="StretchingTop">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding HomeTimelineCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </toolkit:LongListSelector>
                 </Grid>
             </controls:PivotItem>
@@ -42,11 +62,28 @@
             <controls:PivotItem Header="消息">
                 <Grid>
                     <toolkit:LongListSelector
+                        x:Name="MentionsTimelineList"
                         IsFlatList="True"
                         ItemsSource="{Binding MentionsTimeline}"
                         ItemTemplate="{StaticResource TencentTimelineTemplate}"
+                        SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"
                         >
-                        
+                        <i:Interaction.Triggers>
+                            <!--<i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding SelectionChangedCommand}"
+                                    CommandParameter="{Binding Path=SelectedItem,ElementName=MentionsTimelineList}"/>
+                            </i:EventTrigger>-->
+                            <i:EventTrigger EventName="StretchingBottom">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding MentionsTimelineCommand}"
+                                    CommandParameter="Next"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="StretchingTop">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding MentionsTimelineCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </toolkit:LongListSelector>
                 </Grid>
             </controls:PivotItem>
@@ -57,8 +94,24 @@
                         IsFlatList="True"
                         ItemsSource="{Binding FavoritesTimeline}"
                         ItemTemplate="{StaticResource TencentTimelineTemplate}"
+                        SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"
                         >
-                        
+                        <i:Interaction.Triggers>
+                            <!--<i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding SelectionChangedCommand}"
+                                    CommandParameter="{Binding Path=SelectedItem,ElementName=FavoritesTimelineList}"/>
+                            </i:EventTrigger>-->
+                            <i:EventTrigger EventName="StretchingBottom">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding FavoritesTimelineCommand}"
+                                    CommandParameter="Next"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="StretchingTop">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding FavoritesTimelineCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </toolkit:LongListSelector>
                 </Grid>
             </controls:PivotItem>
@@ -74,5 +127,21 @@
             <i:InvokeCommandAction Command="{Binding BackKeyPressCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar >
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.refresh.png" Text="刷新" />
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.edit.png" Text="新微博"   />
+            <!--<shell:ApplicationBarIconButton IconUri="/Resources/Imagess/Appbar/appbar.search.png" Text="搜索"  />-->
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem x:Name="myInfoMeunItem" Text="我的资料" Click="myInfoMeunItem_Click"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+    <i:Interaction.Behaviors>
+        <prismInteractivity:ApplicationBarButtonCommand ButtonText="刷新" CommandBinding="{Binding RefreshCommand}"/>
+        <prismInteractivity:ApplicationBarButtonNavigation ButtonText="新微博" NavigateTo="/Views/PostNew.xaml"/>
+        <!--<prismInteractivity:ApplicationBarButtonNavigation ButtonText="搜索" NavigateTo="/Views/Search.xaml"/>-->
+    </i:Interaction.Behaviors>
+
 </phone:PhoneApplicationPage>

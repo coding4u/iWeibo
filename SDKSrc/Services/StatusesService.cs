@@ -162,7 +162,7 @@ namespace TencentWeiboSDK.Services
         /// </summary>
         /// <param name="argment"></param>
         /// <param name="callback"></param>
-        public void SingleCommentsTimelineIds(ServiceArgument argment, Action<Callback<StatusCollection>> callback)
+        public void SingleCommentsTimeline(ServiceArgument argment, Action<Callback<StatusCollection>> callback)
         {
             this.Get("t/re_list", argment, (request, response, userState) =>
             {

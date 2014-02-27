@@ -23,7 +23,7 @@ namespace iWeibo.WP7.Views.SinaViews
         //public static EventHandler OBrowserNavigated { get; set; }
         //public static EventHandler OBrowserNavigating { get; set; }
 
-        private string accessToken;
+        private SinaAccessToken accessToken;
 
         public SinaLogin()
         {
@@ -55,7 +55,7 @@ namespace iWeibo.WP7.Views.SinaViews
                         TokenSecret = response.refleshToken
                     };
 
-                    accessToken = response.accesssToken;
+                    accessToken = token;
 
                     //保存Token
                     TokenIsoStorage.SinaTokenStorage.SaveData(token);

@@ -77,9 +77,11 @@
         <converters:IntToVisibilityConverter x:Key="IntToVisibilityConverter"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <!--<converters:HeadImageConverter x:Key="HeadImageConverter"/>-->
+        <converters:CreatedAtConverter x:Key="CreatedAtConverter"/>
+        <converters:SourceConverter x:Key="SourceConverter"/>
 
         <DataTemplate x:Key="TencentTimelineTemplate">
-                <Grid Margin="10,10"  HorizontalAlignment="Stretch" MinWidth="435"   >
+                <Grid Margin="10,10"  HorizontalAlignment="Stretch" MinWidth="436"   >
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
@@ -92,8 +94,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid  Grid.Row="0" Grid.Column="0" >
-                        <Image Margin="5,0" x:Name="headImage" Stretch="Uniform" 
-                               Source="{Binding Head}"
+                        <Image Margin="5,0" x:Name="headImage" Stretch="Uniform"
+                               util:LowProfileImageLoader.UriSource="{Binding Head,StringFormat=\{0\}/50}"
                                VerticalAlignment="Top" />
                         <Image Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-5,-5"
                                                Visibility="{Binding IsVIP,Converter={StaticResource IntToVisibilityConverter}}"
@@ -120,9 +122,10 @@
                         </RichTextBox>
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1" Margin="10,10" MaxHeight="200" MaxWidth="200" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Image Stretch="Uniform"  Margin="10,5" x:Name="weiboImage" 
+                    <Image Stretch="Uniform"  Margin="10,5" x:Name="weiboImage" 
                                     Visibility="{Binding HasPic,Converter={StaticResource BoolToVisibilityConverter}}"
-                                    Source="{Binding Path=ImageUrl}"/>
+                                    util:LowProfileImageLoader.UriSource="{Binding Path=ImageUrl, StringFormat=\{0\}/160}"/>
+                    
                     </Grid>
                     <Border Margin="10,0,0,0" Grid.Row="3" Grid.Column="1"  x:Name="RetweetBorder"  HorizontalAlignment="Left" VerticalAlignment="Top"
                                          BorderBrush="{StaticResource PhoneDisabledBrush}"
@@ -135,10 +138,10 @@
                                 </i:Interaction.Behaviors>
                             </RichTextBox>
                             <Grid MaxHeight="200" MaxWidth="200" Margin="10,10" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                <Image Stretch="Uniform"  Margin="10,5" x:Name="RetweetWeiboImage" 
+                            <Image Stretch="Uniform"  Margin="10,5" x:Name="RetweetWeiboImage" 
                                    Visibility="{Binding Path=Source.HasPic,Converter={StaticResource BoolToVisibilityConverter}}"  
-                                   Source="{Binding Path=Source.ImageUrl}"/>
-                            </Grid>
+                                   util:LowProfileImageLoader.UriSource="{Binding Path=Source.ImageUrl,StringFormat=\{0\}/160}"/>
+                        </Grid>
                         </StackPanel>
                     </Border>
                     <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" Opacity="0.6" Margin="10,5">
@@ -148,7 +151,87 @@
                 </Grid>
             </DataTemplate>
 
-            <Style x:Key="TransitionPageStyle" TargetType="phone:PhoneApplicationPage">
+        <DataTemplate x:Key="SinaTimelineTemplate">
+            <Grid Margin="5,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <Image Margin="5,0" Stretch="Uniform" VerticalAlignment="Top" HorizontalAlignment="Left"
+                           util:LowProfileImageLoader.UriSource="{Binding User.ProfileImageUrl}"/>
+                    <Image Margin="0,0,-5,-5" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                           Source="/Resources/Images/Icons/Verifyer.png"
+                           Visibility="{Binding User.Verified,Converter={StaticResource BoolToVisibilityConverter}}"
+                           Height="20" Width="20"/>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
+                               Text="{Binding User.Name}"
+                               Foreground="{StaticResource PhoneAccentBrush}"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Opacity="0.5">
+                        <Image Height="30" Width="30" HorizontalAlignment="Right" Stretch="Uniform"
+                               Source="/Resources/Images/Icons/repost.png"/>
+                        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
+                                   Text="{Binding RepostsCount}"/>
+                        <Image Height="30" Width="30" HorizontalAlignment="Right" Stretch="Uniform"
+                               Source="/Resources/Images/Icons/reply.png"/>
+                        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
+                                   Text="{Binding CommentsCount}"/>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <RichTextBox Margin="5,0,0,0" IsReadOnly="True" FontFamily="{StaticResource PhoneFontFamilyNormal}" FontSize="{StaticResource PhoneFontSizeNormal}">
+                        <i:Interaction.Behaviors>
+                            <util:ConvertContentBehavior Content="{Binding Text}"/>
+                        </i:Interaction.Behaviors>
+                    </RichTextBox>
+                    <!--<TextBlock Margin="5,0,0,0" Text="{Binding  text}" TextWrapping="Wrap" />-->
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="1" MaxHeight="200" MaxWidth="200">
+                    <Image Margin="10,5" Stretch="Uniform"
+                           util:LowProfileImageLoader.UriSource="{Binding ThumbnailPic}"
+                           Visibility="{Binding HasPic,Converter={StaticResource BoolToVisibilityConverter}}"/>
+                </Grid>
+                <Border Margin="10,0,5,5" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                        Visibility="{Binding IsRetweetedStatus,Converter={StaticResource BoolToVisibilityConverter}}" 
+                        BorderBrush="{StaticResource PhoneBorderBrush}" Background="{StaticResource PhoneChromeBrush}">
+                    <StackPanel Margin="10,0,0,0">
+                        <TextBlock Text="{Binding RetweetedStatus.User.Name}" Foreground="{StaticResource PhoneAccentBrush}" Margin="10,5"/>
+                        <RichTextBox TextWrapping="Wrap">
+                            <i:Interaction.Behaviors>
+                                <util:ConvertContentBehavior Content="{Binding RetweetedStatus.Text}"/>
+                            </i:Interaction.Behaviors>
+                        </RichTextBox>
+                        <!--<TextBlock Text="{Binding retweeted_status.text}" TextWrapping="Wrap"/>-->
+                        <Grid MaxHeight="200" MaxWidth="200">
+                            <Image Margin="10,5" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                   util:LowProfileImageLoader.UriSource="{Binding RetweetedStatus.ThumbnailPic}"
+                                   Visibility="{Binding RetweetedStatus.HasPic,Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Opacity="0.5" Margin="10,5">
+                    <TextBlock Text="{Binding CreatedAt,Converter={StaticResource CreatedAtConverter}}" FontSize="14"/>
+                    <TextBlock Text="来自： " Margin="50,0,0,0" FontSize="14"/>
+                    <TextBlock Text="{Binding Source,Converter={StaticResource SourceConverter}}" FontSize="14" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+
+        <Style x:Key="TransitionPageStyle" TargetType="phone:PhoneApplicationPage">
                 <Setter Property="toolkit:TransitionService.NavigationInTransition">
                     <Setter.Value>
                         <toolkit:NavigationInTransition>

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace WeiboSdk.Services
 {
     public class TimelineService:BaseService
     {
-        public TimelineService(string accessToken)
+        public TimelineService(SinaAccessToken accessToken)
             :base(accessToken)
         {
 
@@ -24,7 +25,7 @@ namespace WeiboSdk.Services
         {
             SdkCmdBase cmdArg = new CmdStatusTimeline
             {
-                acessToken = this.AccessToken,
+                acessToken = this.Token,
                 count = count.ToString(),
                 max_id = maxId.ToString(),
                 since_id = sinceId.ToString()
@@ -58,7 +59,7 @@ namespace WeiboSdk.Services
         {
             SdkCmdBase cmdArg = new CmdStatusTimeline
             {
-                acessToken = this.AccessToken,
+                acessToken = this.Token,
                 count = count.ToString(),
                 max_id = maxId.ToString(),
                 since_id = sinceId.ToString()
@@ -91,7 +92,7 @@ namespace WeiboSdk.Services
         {
             SdkCmdBase cmdArg = new CmdStatusTimeline
             {
-                acessToken = this.AccessToken,
+                acessToken = this.Token,
                 count = count.ToString(),
                 max_id = maxId.ToString(),
                 since_id = sinceId.ToString()
@@ -103,8 +104,17 @@ namespace WeiboSdk.Services
                     {
                         if (response.errCode == SdkErrCode.SUCCESS)
                         {
-                            WFavoriteCollection collection;
-                            collection = JsonConvert.DeserializeObject<WFavoriteCollection>(response.content);
+
+                            var collection = new WFavoriteCollection();
+                            var jo = JObject.Parse(response.content);
+                            var ja = jo["favorites"];
+                            collection.TotalNumber = (int)jo["total_number"];
+                            collection.Favorites = new List<WStatus>();
+                            foreach (var j in ja.Children())
+                            {
+                                var status = j["status"].ToObject<WStatus>();
+                                collection.Favorites.Add(status);
+                            }
 
                             action(new Callback<WFavoriteCollection>(collection));
                         }

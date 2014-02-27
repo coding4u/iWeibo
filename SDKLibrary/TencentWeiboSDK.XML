@@ -1263,7 +1263,7 @@
             <param name="argment">参数列表, 可以为 null.</param>
             <param name="callback">返回用户收藏时间线数据.</param>
         </member>
-        <member name="M:TencentWeiboSDK.Services.StatusesService.SingleCommentsTimelineIds(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.StatusCollection}})">
+        <member name="M:TencentWeiboSDK.Services.StatusesService.SingleCommentsTimeline(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{TencentWeiboSDK.Model.StatusCollection}})">
             <summary>
             微博相关/获取单条微博的转发或点评列表
             </summary>

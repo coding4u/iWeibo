@@ -2,22 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WeiboSdk.Models;
 
 namespace WeiboSdk.Services
 {
     public abstract class BaseService
     {
-        public BaseService(string accessToken)
+        public BaseService(SinaAccessToken accessToken)
         {
-            this.accessToken = accessToken;
+            this.token = accessToken.Token;
             this.netEngine = new SdkNetEngine();
         }
 
-        private string accessToken;
+        private string token;
 
-        public string AccessToken
+        public string Token
         {
-            get { return accessToken; }
+            get { return token; }
         }
 
         private SdkNetEngine netEngine;

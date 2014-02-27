@@ -52,6 +52,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BindableApplicationBar, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Coding4Fun.Toolkit.Controls, Version=2.0.7.0, Culture=neutral, PublicKeyToken=c5fd7b72b1a17ce4, processorArchitecture=MSIL" />
     <Reference Include="Funq, Version=1.0.0.0, Culture=neutral, PublicKeyToken=95c13cd3fe8e976a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Expression.Interactions, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -82,15 +83,20 @@
     <Compile Include="Models\TencentModels\TencentConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Resources\Converters\CreatedAtConverter.cs" />
     <Compile Include="Resources\Converters\HeadImageConverter.cs" />
     <Compile Include="Resources\Converters\IntToVisibilityConverter.cs" />
+    <Compile Include="Resources\Converters\SourceConverter.cs" />
     <Compile Include="Resources\Converters\TimeStampConverter.cs" />
     <Compile Include="Services\ContainerLocator.cs" />
     <Compile Include="Util\ConvertContentBehavior.cs" />
     <Compile Include="Util\DataTimeHelper.cs" />
+    <Compile Include="Util\LowProfileImageLoader.cs" />
     <Compile Include="Util\TextBoxAttach.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\PostNewViewModel.cs" />
+    <Compile Include="ViewModels\SinaViewModels\SinaTimelineViewModel.cs" />
+    <Compile Include="ViewModels\TencentViewModels\TencentStatusDetailViewModel.cs" />
     <Compile Include="ViewModels\TencentViewModels\TencentTimelineViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
@@ -111,6 +117,9 @@
     </Compile>
     <Compile Include="Views\TencentViews\TencentLogin.xaml.cs">
       <DependentUpon>TencentLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TencentViews\TencentStatusDetail.xaml.cs">
+      <DependentUpon>TencentStatusDetail.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TencentViews\TencentTimeline.xaml.cs">
       <DependentUpon>TencentTimeline.xaml</DependentUpon>
@@ -133,6 +142,7 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Libs\BindableApplicationBar.dll" />
     <Content Include="Libs\Coding4Fun.Toolkit.Controls.dll" />
     <Content Include="Libs\Funq.dll" />
     <Content Include="Libs\Microsoft.Phone.Controls.Toolkit.dll" />
@@ -169,17 +179,15 @@
     <Content Include="Resources\Images\Icons\User-Profile.png" />
     <Content Include="Resources\Images\Icons\Verifier.png" />
     <Content Include="Resources\Images\Logos\sinalogo.png" />
-    <Content Include="Resources\Images\Logos\sinaLogo_26x26.png" />
-    <Content Include="Resources\Images\Logos\sinaLogo_small.png" />
+    <Content Include="Resources\Images\Logos\sinaLogo26.png" />
+    <Content Include="Resources\Images\Logos\sinaLogo32.png" />
     <Content Include="Resources\Images\Logos\tencentLogo.png" />
-    <Content Include="Resources\Images\Logos\tencentLogo_26x26.png" />
-    <Content Include="Resources\Images\Logos\tencentlogo_large.png" />
-    <Content Include="Resources\Images\Logos\tencentLogo_small.png" />
+    <Content Include="Resources\Images\Logos\tencentlogo26.png" />
+    <Content Include="Resources\Images\Logos\tencentlogo32.png" />
+    <Content Include="Resources\Images\Logos\tencentlogo48.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\SinaViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Views\MainPage.xaml">
       <SubType>Designer</SubType>
@@ -202,6 +210,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TencentViews\TencentLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TencentViews\TencentStatusDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -53,15 +53,7 @@ namespace iWeibo.WP7.Util
             element.Focus();
         }
 
-        private static void SelectAll(ITextBoxController sender)
-        {
-            TextBox element;
-            if (!elements.TryGetValue(sender, out element))
-                throw new ArgumentException("sender");
-            element.Focus();
-            element.SelectAll();
-        }
-
+        
         private static void Select(ITextBoxController sender,int statrt,int length)
         {
             TextBox element;

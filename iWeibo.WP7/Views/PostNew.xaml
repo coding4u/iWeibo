@@ -16,6 +16,7 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     DataContext="{Binding Source={StaticResource ViewModelLocator},Path=PostNewViewModel}"
     mc:Ignorable="d"
+    Style="{StaticResource TransitionPageStyle}"
     shell:SystemTray.IsVisible="True" >
     
     <shell:SystemTray.ProgressIndicator>
@@ -50,7 +51,7 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0">
-                        <TextBox x:Name="statusTextBox"  Height="220" 
+                        <TextBox Height="220" 
                                  Text="{Binding StatusText, Mode=TwoWay}" TextWrapping="Wrap"
                                  util:TextBoxAttach.TextBoxController="{Binding}">
                             <i:Interaction.Behaviors>
@@ -71,12 +72,12 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Row="1">
-                        <toolkit:ToggleSwitch  Header="同时发布到腾讯微博" HorizontalAlignment="Left" Height="112"  VerticalAlignment="Top" Width="456" 
-                                               IsChecked="{Binding IsSendTencent, Mode=TwoWay}"
-                                               IsEnabled="{Binding IsTencentAuthorized}"/>
                         <toolkit:ToggleSwitch  Header="同时发布到新浪微博" HorizontalAlignment="Left" Height="112"  VerticalAlignment="Top" Width="456" 
                                                IsChecked="{Binding IsSendSina,Mode=TwoWay}"
                                                IsEnabled="{Binding IsSinaAuthorized}"/>
+                        <toolkit:ToggleSwitch  Header="同时发布到腾讯微博" HorizontalAlignment="Left" Height="112"  VerticalAlignment="Top" Width="456" 
+                                               IsChecked="{Binding IsSendTencent, Mode=TwoWay}"
+                                               IsEnabled="{Binding IsTencentAuthorized}"/>
                     </StackPanel>
                     <StackPanel Grid.Row="2">
                         <Grid Width="100" HorizontalAlignment="Left" Height="150">

@@ -1,5 +1,6 @@
 ﻿using iWeibo.WP7.Adapters;
 using iWeibo.WP7.Services;
+using iWeibo.WP7.ViewModels.SinaViewModels;
 using iWeibo.WP7.ViewModels.TencentViewModels;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,14 @@ namespace iWeibo.WP7.ViewModels
             get
             {
                 return this.containerLocator.Container.Resolve<TencentTimelineViewModel>();
+            }
+        }
+
+        public SinaTimelineViewModel SinaTimelineViewModel
+        {
+            get
+            {
+                return this.containerLocator.Container.Resolve<SinaTimelineViewModel>();
             }
         }
 

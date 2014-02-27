@@ -12,7 +12,7 @@ namespace WeiboSdk.Services
     public class WUserService:BaseService
     {
 
-        public WUserService(string accessToken)
+        public WUserService(SinaAccessToken accessToken)
             :base(accessToken)
         {
 
@@ -23,7 +23,7 @@ namespace WeiboSdk.Services
         {
             SdkCmdBase cmdBase = new SdkCmdBase
             {
-                acessToken = this.AccessToken
+                acessToken = this.Token
             };
 
             this.NetEngine.RequestCmd(SdkRequestType.GET_UID, cmdBase, (requestType, response) =>
@@ -46,7 +46,7 @@ namespace WeiboSdk.Services
                 {
                     SdkCmdBase cmdBase = new CmdUserInfo
                     {
-                        acessToken = this.AccessToken,
+                        acessToken = this.Token,
                         uid = uid
                     };
 
@@ -74,7 +74,7 @@ namespace WeiboSdk.Services
         {
             SdkCmdBase cmdBase = new CmdUserInfo
             {
-                acessToken = this.AccessToken,
+                acessToken = this.Token,
                 screen_name = name
             };
 

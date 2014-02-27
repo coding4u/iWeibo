@@ -17,14 +17,19 @@ namespace iWeibo.WP7
         public const string MainPageView = "/Views/MainPage.xaml";
         public const string SinaLoginView = "/Views/SinaViews/SinaLogin.xaml";
         public const string SinaTimelineView = "/Views/SinaViews/SinaTimeline.xaml";
+        public const string SinaStatusDetail = "/Views/SinaViews/SinaStatusDetail.xaml";
         public const string TencentLoginView = "/Views/TencentViews/TencentLogin.xaml";
         public const string TencentTimelineView = "/Views/TencentViews/TencentTimeline.xaml";
-
+        public const string TencentStatusDetail = "/Views/TencentViews/TencentStatusDetail.xaml";
         public const string PostNewView = "/Views/PostNew.xaml";
         public const string SettingsPage = "/Views/SettingsPage.xaml";
         #endregion
 
         #region Timeline Storage Path
+        public const string SinaHomeTime = "/Sina/HomeTimeline.dat";
+        public const string SinaMentionsTimeline = "/Sina/MentionsTimeline.dat";
+        public const string SinaFavoritesTimeline = "/Sina/FavoritesTimeline.dat";
+
         public const string TencentHomeTimeline = "/Tencent/HomeTimeline.dat";
         public const string TencentMentionsTimeline = "/Tencent/MentionsTimeline.dat";
         public const string TencentFavoritesTimeline = "/Tencent/FavoritesTimeline.dat";

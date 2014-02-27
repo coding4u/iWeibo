@@ -7,27 +7,93 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:prismInteractivity="clr-namespace:Microsoft.Practices.Prism.Interactivity;assembly=Microsoft.Practices.Prism.Interactivity" 
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
+    Style="{StaticResource TransitionPageStyle}"
+    DataContext="{Binding Source={StaticResource ViewModelLocator},Path=SinaTimelineViewModel}"
     shell:SystemTray.IsVisible="True">
+
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True" IsVisible="{Binding IsSyncing}" Text="数据请求中..."/>
+    </shell:SystemTray.ProgressIndicator>
 
     <!--LayoutRoot 是包含所有页面内容的根网格-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--枢轴控件-->
-        <controls:Pivot Title="{StaticResource SinaTitle}">
+        <controls:Pivot 
+            Title="{StaticResource SinaTitle}"
+            SelectedIndex="{Binding SelectedPivotIndex,Mode=TwoWay}">
             <!--枢轴项一-->
-            <controls:PivotItem Header="项目 1">
-                <Grid/>
+            <controls:PivotItem Header="主页">
+                <Grid>
+                    <toolkit:LongListSelector 
+                        IsFlatList="True"
+                        ItemsSource="{Binding HomeTimeline}"
+                        ItemTemplate="{StaticResource SinaTimelineTemplate}">
+                        
+                    </toolkit:LongListSelector>
+                </Grid>
             </controls:PivotItem>
 
             <!--枢轴项二-->
-            <controls:PivotItem Header="项目 2">
-                <Grid/>
+            <controls:PivotItem Header="消息">
+                <Grid>
+                    <toolkit:LongListSelector 
+                        IsFlatList="True"
+                        ItemsSource="{Binding MentionsTimeline}"
+                        ItemTemplate="{StaticResource SinaTimelineTemplate}">
+                        
+                    </toolkit:LongListSelector>
+                </Grid>
             </controls:PivotItem>
+            
+            <!--枢轴项三-->
+            <controls:PivotItem Header="收藏">
+                <Grid>
+                    <toolkit:LongListSelector
+                        IsFlatList="True"
+                        ItemsSource="{Binding FavoritesTimeline}"
+                        ItemTemplate="{StaticResource SinaTimelineTemplate}">
+                        
+                    </toolkit:LongListSelector>
+                </Grid>
+            </controls:PivotItem>
+
         </controls:Pivot>
     </Grid>
-    
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding PageLoadedCommand}"/>
+        </i:EventTrigger>
+        <i:EventTrigger  EventName="BackKeyPress">
+            <i:InvokeCommandAction Command="{Binding BackKeyPressCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar >
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.refresh.png" Text="刷新" />
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.edit.png" Text="新微博"   />
+            <!--<shell:ApplicationBarIconButton IconUri="/Resources/Imagess/Appbar/appbar.search.png" Text="搜索"  />-->
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem x:Name="myInfoMeunItem" Text="我的资料" Click="myInfoMeunItem_Click"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+    <i:Interaction.Behaviors>
+        <prismInteractivity:ApplicationBarButtonCommand ButtonText="刷新" CommandBinding="{Binding RefreshCommand}"/>
+        <!--<prismInteractivity:ApplicationBarButtonCommand ButtonText="新微博" CommandBinding="{Binding CreteNewCommand}"/>-->
+        <prismInteractivity:ApplicationBarButtonNavigation ButtonText="新微博" NavigateTo="/Views/PostNew.xaml"/>
+        <!--<prismInteractivity:ApplicationBarButtonNavigation ButtonText="搜索" NavigateTo="/Views/Search.xaml"/>-->
+    </i:Interaction.Behaviors>       
+
+
+
 </phone:PhoneApplicationPage>

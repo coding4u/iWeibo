@@ -84,6 +84,12 @@
 
         </Grid>
     </Grid>
+    <!--<i:Interaction.Triggers>
+        <i:EventTrigger EventName="BackKeyPress">
+            <i:InvokeCommandAction Command="{Binding BackKeyPressCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>-->
+    
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar Mode="Minimized">
             <shell:ApplicationBar.MenuItems>

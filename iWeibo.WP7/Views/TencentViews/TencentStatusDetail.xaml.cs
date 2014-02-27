@@ -11,18 +11,13 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 
-namespace iWeibo.WP7.Views.SinaViews
+namespace iWeibo.WP7.Views.TencentViews
 {
-    public partial class SinaTimeline : PhoneApplicationPage
+    public partial class TencentStatusDetail : PhoneApplicationPage
     {
-        public SinaTimeline()
+        public TencentStatusDetail()
         {
             InitializeComponent();
-        }
-
-        private void myInfoMeunItem_Click(object sender, EventArgs e)
-        {
-            //this.NavigationService.Navigate(new Uri(
         }
     }
 }

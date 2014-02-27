@@ -28,13 +28,18 @@ namespace iWeibo.WP7
         /// <returns>电话应用程序的根框架。</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
 
+        private ViewModels.ViewModelLocator ViewModelLocator
+        {
+            get { return (ViewModels.ViewModelLocator)this.Resources["ViewModelLocator"]; }
+        }
+
         /// <summary>
         /// Application 对象的构造函数。
         /// </summary>
         public App()
         {
             // Global handler for uncaught exceptions. 
-            UnhandledException += Application_UnhandledException;
+            //UnhandledException += Application_UnhandledException;
 
             // Standard Silverlight initialization
             InitializeComponent();
@@ -49,11 +54,11 @@ namespace iWeibo.WP7
                 Application.Current.Host.Settings.EnableFrameRateCounter = true;
 
                 // 显示在每个帧中重绘的应用程序区域。
-                //Application.Current.Host.Settings.EnableRedrawRegions = true；
+                //Application.Current.Host.Settings.EnableRedrawRegions = true;
 
                 // Enable non-production analysis visualization mode, 
                 // 该模式显示递交给 GPU 的包含彩色重叠区的页面区域。
-                //Application.Current.Host.Settings.EnableCacheVisualization = true；
+                //Application.Current.Host.Settings.EnableCacheVisualization = true;
 
                 // Disable the application idle detection by setting the UserIdleDetectionMode property of the
                 // application's PhoneApplicationService object to Disabled.
@@ -113,6 +118,7 @@ namespace iWeibo.WP7
         // 此代码在停用应用程序时不执行
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
+            this.ViewModelLocator.Dispose();
         }
 
         // 导航失败时执行的代码
@@ -148,7 +154,8 @@ namespace iWeibo.WP7
 
             // 创建框架但先不将它设置为 RootVisual；这允许初始
             // 屏幕保持活动状态，直到准备呈现应用程序时。
-            RootFrame = new PhoneApplicationFrame();
+            //RootFrame = new PhoneApplicationFrame();
+            RootFrame = new TransitionFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 
             // 处理导航故障

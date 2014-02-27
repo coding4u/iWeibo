@@ -10,7 +10,7 @@ namespace WeiboSdk.Services
     public class WStatusService:BaseService
     {
 
-        public WStatusService(string accessToken)
+        public WStatusService(SinaAccessToken accessToken)
             :base(accessToken)
         {
             
@@ -21,7 +21,7 @@ namespace WeiboSdk.Services
         {
             SdkCmdBase cmdBase = new CmdStatus
             {
-                acessToken = this.AccessToken,
+                acessToken = this.Token,
                 id = id
             };
 
@@ -55,7 +55,7 @@ namespace WeiboSdk.Services
        {
            SdkCmdBase cmdArg = new CmdStatusRepost
            {
-               acessToken = this.AccessToken,
+               acessToken = this.Token,
                id = id,
                status = status,
                is_comment = isComment.ToString()
@@ -77,7 +77,7 @@ namespace WeiboSdk.Services
        {
            SdkCmdBase cmdArg = new CmdStatusComment
            {
-               acessToken = this.AccessToken,
+               acessToken = this.Token,
                id = id,
                comment=comment,
                comment_ori=commentOri.ToString()
@@ -97,7 +97,7 @@ namespace WeiboSdk.Services
        {
            SdkCmdBase cmdArg = new CmdStatus
            {
-               acessToken = this.AccessToken,
+               acessToken = this.Token,
                id = id
            };
            this.NetEngine.RequestCmd(SdkRequestType.FAVORITES_CREATE, cmdArg, (requestType, response) =>
@@ -115,7 +115,7 @@ namespace WeiboSdk.Services
        {
            SdkCmdBase cmdArg = new CmdStatus
            {
-               acessToken = this.AccessToken,
+               acessToken = this.Token,
                id = id
            };
            this.NetEngine.RequestCmd(SdkRequestType.FAVORITES_DESTROY, cmdArg, (requestType, response) =>
@@ -133,7 +133,7 @@ namespace WeiboSdk.Services
        {
            SdkCmdBase cmdArg = new CmdUploadMessage
            {
-               acessToken = this.AccessToken,
+               acessToken = this.Token,
                status = status
            };
            this.NetEngine.RequestCmd(SdkRequestType.UPLOAD_MESSAGE, cmdArg, (requestType, response) =>
@@ -152,7 +152,7 @@ namespace WeiboSdk.Services
        {
            SdkCmdBase cmdArg = new CmdUploadMsgWithPic
            {
-               acessToken = this.AccessToken,
+               acessToken = this.Token,
                pic = pic,
                status = status
            };
@@ -167,7 +167,7 @@ namespace WeiboSdk.Services
         {
             SdkCmdBase cmdBase = new CmdStatus
             {
-                acessToken = this.AccessToken,
+                acessToken = this.Token,
                 id = id
             };
 

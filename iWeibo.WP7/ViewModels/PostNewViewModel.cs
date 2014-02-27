@@ -12,6 +12,7 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using TencentWeiboSDK.Model;
 using TencentWeiboSDK.Services;
 using TencentWeiboSDK.Services.Util;
 using WeiboSdk;
@@ -25,10 +26,15 @@ namespace iWeibo.WP7.ViewModels
         #region Fields
 
         private IPhotoChooserTask photoChoosertask;
-        private IMessageBox messageBox;
 
         public event FocusEventHandler Focus;
         public event SelectEventHandler Select;
+
+        private bool isTencentSent = false;
+        private bool isSinaSent = false;
+        private bool isNavigated = false;
+
+        private Stream photoStream;
 
         #endregion
 
@@ -48,6 +54,7 @@ namespace iWeibo.WP7.ViewModels
                 {
                     isSendTencent = value;
                     RaisePropertyChanged(() => this.IsSendTencent);
+                    SendCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -66,6 +73,7 @@ namespace iWeibo.WP7.ViewModels
                 {
                     isSendSina = value;
                     RaisePropertyChanged(() => this.IsSendSina);
+                    SendCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -245,6 +253,7 @@ namespace iWeibo.WP7.ViewModels
             }
         }
 
+
         #endregion
 
         #region DelegateCommands
@@ -261,12 +270,11 @@ namespace iWeibo.WP7.ViewModels
         public PostNewViewModel(
             INavigationService navigationService,
             IPhoneApplicationServiceFacade phoneApplicationServiceFacade,
-            IPhotoChooserTask photoChooserTask,
-            IMessageBox messageBox)
+            IPhotoChooserTask photoChooserTask
+            )
             :base(navigationService,phoneApplicationServiceFacade,new Uri(Constants.PostNewView,UriKind.Relative))
         {
             this.photoChoosertask = photoChooserTask;
-            this.messageBox = messageBox;
 
             // Subscribe to handle new photo stream
             Observable.FromEvent<SettablePhotoResult>(h => this.photoChoosertask.Completed += h, h => this.photoChoosertask.Completed -= h)
@@ -308,7 +316,7 @@ namespace iWeibo.WP7.ViewModels
                     this.IsSinaAuthorized = SinaConfig.Validate();
                     this.IsSendSina = this.IsSinaAuthorized;
                     this.IsSendTencent = this.IsTencentAuthorized;
-
+                    //OnPageResumeFromTombstoning();
                 });
             this.ClearTextCommand = new DelegateCommand(() => StatusText = "");
             this.ClearPicCommand = new DelegateCommand(() =>
@@ -323,7 +331,7 @@ namespace iWeibo.WP7.ViewModels
                         SendSina();
                     if (IsSendTencent)
                         SendTencent();
-                }, () => !this.IsSending && !string.IsNullOrEmpty(StatusText) && !(StatusText.Length > 140));
+                }, () => !this.IsSending && !string.IsNullOrEmpty(StatusText) && !(StatusText.Length > 140) && (IsSendTencent || IsSendSina));
 
             this.ChoosePhotoCommand = new DelegateCommand(this.ChoosePhoto, () => !this.ChoosingPhoto);
             this.AddTopicCommand = new DelegateCommand(() =>
@@ -338,6 +346,7 @@ namespace iWeibo.WP7.ViewModels
                 });
         }
 
+
         #endregion
 
         #region Methods
@@ -345,65 +354,82 @@ namespace iWeibo.WP7.ViewModels
         {
             IsSending = true;
             UploadPic pic = (null != BMP) ? new UploadPic(BMP) : null;
-            ToastPrompt toast = new ToastPrompt();
+            ToastPrompt tencentToast = new ToastPrompt();
+            tencentToast.MillisecondsUntilHidden = 2000;
+            tencentToast.ImageSource = new BitmapImage(new Uri(@"/Resources/Images/Logos/tencentlogo32.png", UriKind.Relative));
+            tencentToast.Completed += tencentToast_Completed;
+            tencentToast.Title = "发送成功...";
 
             new Thread(() =>
                 {
-                    TService tService=new TService();
+                    TService tService = new TService(TokenIsoStorage.TencentTokenStorage.LoadData<TencentAccessToken>());
 
                     if (null != pic)
                     {
-                        tService.Add(
+                        tService.AddPic(
                             new ServiceArgument() { Content = StatusText, Pic = pic }, (callback) =>
                                 {
-                                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                        {
+                                            if (callback.Succeed)
                                             {
-                                                if (callback.Succeed)
-                                                {
-                                                    toast.Title = "发送成功...";
-                                                }
-                                                else
-                                                {
-                                                    toast.Title = "发送失败...";
-                                                    toast.Message = callback.ExceptionMsg;
-                                                }
-                                                toast.Show();
-                                            });
+                                                isTencentSent = true;
+                                                tencentToast.Show();
+                                            }
+                                            else
+                                            {
+                                                MessageBox.Show("发送失败，请稍后重试...", "腾讯微博", MessageBoxButton.OK);
+                                            }
+                                            this.IsSending = false;
+                                        });
                                 });
                     }
                     else
                     {
-                        tService.AddPic(new ServiceArgument() { Content = StatusText }, (callback) =>
+                        tService.Add(new ServiceArgument() { Content = StatusText }, (callback) =>
                             {
                                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                                     {
                                         if (callback.Succeed)
                                         {
-                                            toast.Title = "发送成功...";
+                                            isTencentSent = true;
                                         }
                                         else
                                         {
-                                            toast.Title = "发送失败...";
-                                            toast.Message = callback.ExceptionMsg;
+                                            MessageBox.Show("发送失败，请稍后重试..."+callback.ExceptionMsg, "腾讯微博", MessageBoxButton.OK);
                                         }
-                                        toast.Show();
-
+                                        tencentToast.Show();
+                                        this.IsSending = false;
                                     });
                             });
                     }
                 }).Start();
         }
 
+        private void tencentToast_Completed(object sender, PopUpEventArgs<string, PopUpResult> e)
+        {
+            if (isTencentSent&&!isNavigated)
+            {
+                if (!IsSendSina || isSinaSent)
+                {
+                    CleanUpAndGoBack();
+                }
+            }
+        }
+
         private void SendSina()
         {
             IsSending = true;
             UploadPicture pic = (null != BMP) ? new WeiboSdk.UploadPicture(BMP) : null;
-            ToastPrompt toast = new ToastPrompt(); 
+            ToastPrompt sinaToast = new ToastPrompt();
+            sinaToast.MillisecondsUntilHidden = 2000;
+            sinaToast.ImageSource = new BitmapImage(new Uri(@"/Resources/Images/Logos/sinalogo32.png", UriKind.Relative));
+            sinaToast.Completed+=sinaToast_Completed;
+            sinaToast.Title = "发送成功...";
 
             new Thread(() =>
                 {
-                    string token = TokenIsoStorage.SinaTokenStorage.LoadData<SinaAccessToken>().Token;
-                    WStatusService wService = new WStatusService(token);
+                    WStatusService wService = new WStatusService(TokenIsoStorage.SinaTokenStorage.LoadData<SinaAccessToken>());
                     if (pic != null)
                     {
                         wService.AddPic(StatusText, pic, callback =>
@@ -412,14 +438,13 @@ namespace iWeibo.WP7.ViewModels
                                 {
                                     if (callback.Succeed)
                                     {
-                                        toast.Title = "发送成功...";
+                                        isSinaSent = true;
+                                        sinaToast.Show();
                                     }
                                     else
                                     {
-                                        toast.Title = "发送失败...";
-                                        toast.Message = callback.ErrorMsg;
+                                        MessageBox.Show("发送失败，" + callback.ErrorMsg, "新浪微博", MessageBoxButton.OK);
                                     }
-                                    toast.Show();
                                     this.IsSending = false;
                                 });
                             });
@@ -432,20 +457,30 @@ namespace iWeibo.WP7.ViewModels
                                 {
                                     if (callback.Succeed)
                                     {
-                                        toast.Title = "发送成功...";
+                                        isSinaSent = true;
+                                        sinaToast.Show();
                                     }
                                     else
                                     {
-                                        toast.Title = "发送失败...";
-                                        toast.Message = callback.ErrorMsg;
+                                        MessageBox.Show("发送失败，" + callback.ErrorMsg, "新浪微博", MessageBoxButton.OK);
                                     }
-                                    toast.Show();
                                     this.IsSending = false;
                                 });
                             });
                     }
 
                 }).Start();
+        }
+
+        private void sinaToast_Completed(object sender, PopUpEventArgs<string, PopUpResult> e)
+        {
+            if (isSinaSent&&!isNavigated)
+            {
+                if (!IsSendTencent || isTencentSent)
+                {
+                    CleanUpAndGoBack();
+                }
+            }
         }
 
         private void HandelTextChange()
@@ -475,11 +510,8 @@ namespace iWeibo.WP7.ViewModels
 
         private void SetImageSource(Stream chosenPhoto)
         {
-            //SavingPicFile = true;
-            BitmapImage tmpImg = new BitmapImage();
-            tmpImg.SetSource(chosenPhoto);
-            BMP = tmpImg;
-
+            this.BMP = new BitmapImage();
+            this.BMP.SetSource(chosenPhoto);
             // Store the image bytes.
             byte[] imageBytes = new byte[chosenPhoto.Length];
             chosenPhoto.Read(imageBytes, 0, imageBytes.Length);
@@ -490,21 +522,48 @@ namespace iWeibo.WP7.ViewModels
             // Create an image from the stream.
             var imageSource = PictureDecoder.DecodeJpeg(chosenPhoto);
             this.Picture = imageSource;
+        }
 
-            // //Save the stream
+        private void CleanUp()
+        {
+            this.PhoneApplicationServiceFacade.Remove("StatusText");
+            this.PhoneApplicationServiceFacade.Remove("ChosenPhoto");
+        }
 
-            //var isoFile = IsolatedStorageFile.GetUserStoreForApplication();
-            //using (var stream = isoFile.CreateFile(fileName))
-            //{
-            //    stream.Write(imageBytes, 0, imageBytes.Length);
-            //}
-
-            //SavingPicFile = false;
+        private void CleanUpAndGoBack()
+        {
+            CleanUp();
+            if (this.NavigationService.CanGoBack)
+            {
+                this.NavigationService.GoBack();
+                this.isNavigated = true;
+            }
         }
 
         public override void OnPageResumeFromTombstoning()
         {
-            //throw new NotImplementedException();
+            //this.StatusText = PhoneApplicationServiceFacade.Load<string>("StatusText");
+            //this.BMP = PhoneApplicationServiceFacade.Load<BitmapImage>("ChosenPhoto");
+            //if (this.BMP != null)
+            //{
+            //    this.BMP.ImageOpened += (o, args) =>
+            //        {
+            //            this.Picture = new WriteableBitmap(o as BitmapImage);
+            //            //this.Picture.Pixels
+            //        };
+            //}
+        }
+
+        public override void OnPageDeactivation(bool isIntentionalNavigation)
+        {
+            //base.OnPageDeactivation(isIntentionalNavigation);
+            //if (isIntentionalNavigation&&(this.isTencentSent||isSinaSent))
+            //{
+            //    this.Dispose();
+            //    return;
+            //}
+            //this.PhoneApplicationServiceFacade.Save("StatusText", this.StatusText);
+            //this.PhoneApplicationServiceFacade.Save("ChosenPhoto", this.BMP);
         }
 
         #endregion

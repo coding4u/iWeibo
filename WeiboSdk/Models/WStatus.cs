@@ -172,16 +172,16 @@ namespace WeiboSdk.Models
         /// <summary>
         /// 图片是否包含gif格式 
         /// </summary>
-        public bool IsGIF
-        {
-            get
-            {
-                if (HasPic && PicUrls.Any(a => a.ToString().EndsWith(".gif")))
-                    return true;
-                else
-                    return false;
-            }
-        }
+        //public bool IsGIF
+        //{
+        //    get
+        //    {
+        //        if (HasPic && PicUrls.Any(a => a.ToString().EndsWith(".gif")))
+        //            return true;
+        //        else
+        //            return false;
+        //    }
+        //}
     }
 
     public class PicUrl

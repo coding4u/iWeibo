@@ -17,6 +17,8 @@ namespace iWeibo.WP7.ViewModels
         public DelegateCommand EnterSinaCommand { get; set; }
         public DelegateCommand EnterTencentCommand { get; set; }
         public DelegateCommand EnterPostNewCommand { get; set; }
+        //public DelegateCommand BackKeyPressCommand { get; set; }
+
         public MainPageViewModel(
             INavigationService navigationService,
             IPhoneApplicationServiceFacade phoneApplicationFacade)
@@ -25,6 +27,7 @@ namespace iWeibo.WP7.ViewModels
             EnterSinaCommand = new DelegateCommand(EnterSina);
             EnterTencentCommand = new DelegateCommand(EnterTencent);
             EnterPostNewCommand = new DelegateCommand(EnterPostNew);
+            //BackKeyPressCommand = new DelegateCommand(OnBackKeyPress);
         }
 
         private void EnterSina()
@@ -57,6 +60,12 @@ namespace iWeibo.WP7.ViewModels
             this.NavigationService.Navigate(new Uri(Constants.PostNewView, UriKind.Relative));
         }
 
+        //private bool leaving = false;
+
+        //private void OnBackKeyPress()
+        //{
+
+        //}
 
         public override void OnPageResumeFromTombstoning()
         {

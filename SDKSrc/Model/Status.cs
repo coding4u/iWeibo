@@ -672,7 +672,7 @@ namespace TencentWeiboSDK.Model
         {
             get
             {
-                return Image == null ? "" : Image[0]+"/160";
+                return Image == null ? "" : Image[0];
             }
         }
 

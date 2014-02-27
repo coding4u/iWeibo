@@ -1,6 +1,7 @@
 ﻿using Funq;
 using iWeibo.WP7.Adapters;
 using iWeibo.WP7.ViewModels;
+using iWeibo.WP7.ViewModels.SinaViewModels;
 using iWeibo.WP7.ViewModels.TencentViewModels;
 using System;
 using System.Collections.Generic;
@@ -43,26 +44,33 @@ namespace iWeibo.WP7.Services
         {
             this.Container.Register<IPhoneApplicationServiceFacade>(c => new PhoneApplicationServiceFacade());
             this.Container.Register<INavigationService>(c => new ApplicationFrameNavigationService(((App)Application.Current).RootFrame));
-            this.Container.Register<IMessageBox>(c => new MessageBoxAdapter());
             this.Container.Register<IPhotoChooserTask>(c => new PhotoChooserTaskAdapter());
 
             //View Model
             this.Container.Register(
                 c => new MainPageViewModel(
                     c.Resolve<INavigationService>(),
-                    c.Resolve<IPhoneApplicationServiceFacade>()));
+                    c.Resolve<IPhoneApplicationServiceFacade>()))
+                    .ReusedWithin(ReuseScope.None);
 
             this.Container.Register(
                 c => new TencentTimelineViewModel(
                     c.Resolve<INavigationService>(),
-                    c.Resolve<IPhoneApplicationServiceFacade>()));
+                    c.Resolve<IPhoneApplicationServiceFacade>()))
+                    .ReusedWithin(ReuseScope.None);
+
+            this.Container.Register(
+                c => new SinaTimelineViewModel(
+                    c.Resolve<INavigationService>(),
+                    c.Resolve<IPhoneApplicationServiceFacade>()))
+                    .ReusedWithin(ReuseScope.None);
 
             this.Container.Register(
                 c => new PostNewViewModel(
                     c.Resolve<INavigationService>(),
                     c.Resolve<IPhoneApplicationServiceFacade>(),
-                    c.Resolve<IPhotoChooserTask>(),
-                    c.Resolve<IMessageBox>()));
+                    c.Resolve<IPhotoChooserTask>()))
+                    .ReusedWithin(ReuseScope.None);
 
         }
 

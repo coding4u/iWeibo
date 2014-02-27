@@ -16,6 +16,8 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
 {
     public class TencentTimelineViewModel:ViewModel
     {
+        #region Properties
+
         private bool isSyncing;
 
         public bool IsSyncing
@@ -49,9 +51,29 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
             }
         }
 
+        private Status selectedStatus;
+
+        public Status SelectedStatus
+        {
+            get
+            {
+                return selectedStatus;
+            }
+            set
+            {
+                selectedStatus = value;
+                RaisePropertyChanged(() => this.SelectedStatus);
+                HandleSelectedStatusChange();
+            }
+        }
+        
         public ObservableCollection<Status> HomeTimeline { get; set; }
         public ObservableCollection<Status> MentionsTimeline { get; set; }
         public ObservableCollection<Status> FavoritesTimeline { get; set; }
+
+        #endregion
+
+        #region Fields
 
         private IsoStorage htStorage = new IsoStorage(Constants.TencentHomeTimeline);
         private IsoStorage mtStorage = new IsoStorage(Constants.TencentMentionsTimeline);
@@ -64,81 +86,117 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
 
         private int requestNumber=20;
 
-        private StatusesService statusesService = new StatusesService();
+        private StatusesService statusesService = new StatusesService(TokenIsoStorage.TencentTokenStorage.LoadData<TencentAccessToken>());
+
+        #endregion
+
+        #region DelegateCommands
 
         public DelegateCommand PageLoadedCommand { get; set; }
+        public DelegateCommand RefreshCommand { get; set; }
         public DelegateCommand<string> HomeTimelineCommand { get; set; }
         public DelegateCommand<string> MentionsTimelineCommand { get; set; }
         public DelegateCommand<string> FavoritesTimelineCommand { get; set; }
         public DelegateCommand BackKeyPressCommand { get; set; }
 
+        //public DelegateCommand SelectionChangedCommand { get; set; }
+        
+        #endregion
 
+        #region Constructor
 
         public TencentTimelineViewModel(
             INavigationService navigationService,
             IPhoneApplicationServiceFacade phoneApplicationServiceFacade)
             :base(navigationService,phoneApplicationServiceFacade,new Uri(Constants.TencentTimelineView,UriKind.Relative))
         {
+            this.HomeTimeline = new ObservableCollection<Status>();
+            this.MentionsTimeline = new ObservableCollection<Status>();
+            this.FavoritesTimeline = new ObservableCollection<Status>();
+
+
             this.PageLoadedCommand = new DelegateCommand(LoadDataFromCache, () => !this.IsSyncing);
 
-            this.HomeTimeline = new ObservableCollection<Status>();
-            this.HomeTimelineCommand = new DelegateCommand<string>(parameter =>
+            this.RefreshCommand = new DelegateCommand(Refresh, () => !this.IsSyncing);
+
+            this.HomeTimelineCommand = new DelegateCommand<string>(p =>
                 {
-                    if (parameter == "Refresh")
-                        GetHomeTimeline();
-                    else
+                    if (p == "Next")
                         GetHomeTimeline(1, ht_lastTimeStamp);
+                    else
+                        GetHomeTimeline();
                 }, p => (!this.IsSyncing));
 
-            this.MentionsTimeline = new ObservableCollection<Status>();
-            this.MentionsTimelineCommand = new DelegateCommand<string>(parameter =>
+            this.MentionsTimelineCommand = new DelegateCommand<string>(p =>
                 {
-                    if (parameter == "Refresh")
-                        GetMentionsTimeline();
-                    else
+                    if (p == "Next")
                         GetMentionsTimeline(1, mt_lastTimeStamp);
+                    else
+                        GetMentionsTimeline();
                 }, p => (!this.IsSyncing));
 
-            this.FavoritesTimeline = new ObservableCollection<Status>();
-            this.FavoritesTimelineCommand = new DelegateCommand<string>(parameter =>
+            this.FavoritesTimelineCommand = new DelegateCommand<string>(p =>
                 {
-                    if (parameter == "Refresh")
-                        GetFavoritesTimeline();
-                    else
+                    if (p == "Next")
                         GetFavoritesTimeline(1, ft_lastTimeStamp);
+                    else
+                        GetFavoritesTimeline();
                 }, p => (!this.IsSyncing));
 
             this.BackKeyPressCommand = new DelegateCommand(OnBackKeyPress,()=>true);
+
+            //this.SelectionChangedCommand = new DelegateCommand(()=>
+            //    {
+            //        if (this.SelectedStatus != null)
+            //        {
+            //            var id = this.SelectedStatus.Id;
+            //            new IsoStorage(Constants.TencentSelectedStatus).SaveData(this.SelectedStatus);
+            //            this.NavigationService.Navigate(new Uri(Constants.TencentStatusDetail + "?id=" + id, UriKind.Relative));
+            //        }
+            //    }, () => true);
                 
         }
 
+        #endregion
+
+        #region Methods
+
         private void LoadDataFromCache()
         {
-            this.IsSyncing = true;
             StatusCollection collection;
             if (HomeTimeline.Count <= 0)
             {
-                htStorage.TryLoadData<StatusCollection>(out collection);
-                if (collection.Count > 0)
-                {
+                if(htStorage.TryLoadData<StatusCollection>(out collection))
                     collection.ForEach(a => HomeTimeline.Add(a));
-                }
                 else
-                {
                     GetHomeTimeline();
-                }
             }
             if (MentionsTimeline.Count <= 0)
             {
-                mtStorage.TryLoadData<StatusCollection>(out collection);
-                collection.ForEach(a => MentionsTimeline.Add(a));
+                if (mtStorage.TryLoadData<StatusCollection>(out collection))
+                    collection.ForEach(a => MentionsTimeline.Add(a));
             }
             if (FavoritesTimeline.Count <= 0)
             {
-                ftStorage.TryLoadData<StatusCollection>(out collection);
-                collection.ForEach(a => FavoritesTimeline.Add(a));
+                if (ftStorage.TryLoadData<StatusCollection>(out collection))
+                    collection.ForEach(a => FavoritesTimeline.Add(a));
             }
-            this.IsSyncing = false;
+        }
+
+        private void Refresh()
+        {
+            switch (SelectedPivotIndex)
+            {
+                case 0:
+                    GetHomeTimeline();
+                    break;
+                case 1:
+                    GetMentionsTimeline();
+                    break;
+                case 2:
+                    GetFavoritesTimeline();
+                    break;
+            }
         }
 
         private void GetHomeTimeline(int pageFlag=0,long pageTime=0)
@@ -254,6 +312,16 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
             }
         }
 
+        private void HandleSelectedStatusChange()
+        {
+            if (this.SelectedStatus != null)
+            {
+                var id = this.SelectedStatus.Id;
+                new IsoStorage(Constants.TencentSelectedStatus).SaveData(this.SelectedStatus);
+                this.NavigationService.Navigate(new Uri(Constants.TencentStatusDetail + "?id=" + id, UriKind.Relative));
+            }
+        }
+
         private void OnBackKeyPress()
         {
             this.NavigationService.Navigate(new Uri(Constants.MainPageView, UriKind.Relative));
@@ -263,5 +331,7 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
         {
             //throw new NotImplementedException();
         }
+
+        #endregion
     }
 }
