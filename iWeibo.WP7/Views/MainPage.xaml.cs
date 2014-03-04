@@ -1,4 +1,5 @@
 ﻿using Coding4Fun.Toolkit.Controls;
+using Meituan.Client.Utilities;
 using Microsoft.Phone.Controls;
 using System;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace iWeibo.WP7.Views
         public MainPage()
         {
             InitializeComponent();
+            MemoryDiagnosticsHelper.Start(new TimeSpan(0, 0, 1), true);
         }
 
         private bool isLeaving = false;

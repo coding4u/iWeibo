@@ -23,6 +23,7 @@ namespace iWeibo.WP7
         public const string TencentStatusDetail = "/Views/TencentViews/TencentStatusDetail.xaml";
         public const string PostNewView = "/Views/PostNew.xaml";
         public const string SettingsPage = "/Views/SettingsPage.xaml";
+        public const string PictureView = "/Views/PictureView.xaml";
         #endregion
 
         #region Timeline Storage Path

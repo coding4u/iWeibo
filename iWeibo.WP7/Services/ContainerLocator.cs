@@ -45,6 +45,7 @@ namespace iWeibo.WP7.Services
             this.Container.Register<IPhoneApplicationServiceFacade>(c => new PhoneApplicationServiceFacade());
             this.Container.Register<INavigationService>(c => new ApplicationFrameNavigationService(((App)Application.Current).RootFrame));
             this.Container.Register<IPhotoChooserTask>(c => new PhotoChooserTaskAdapter());
+            this.Container.Register<IMessageBox>(c=>new MessageBoxAdapter());
 
             //View Model
             this.Container.Register(
@@ -70,6 +71,19 @@ namespace iWeibo.WP7.Services
                     c.Resolve<INavigationService>(),
                     c.Resolve<IPhoneApplicationServiceFacade>(),
                     c.Resolve<IPhotoChooserTask>()))
+                    .ReusedWithin(ReuseScope.None);
+
+            this.Container.Register(
+                c => new TencentStatusDetailViewModel(
+                    c.Resolve<INavigationService>(),
+                    c.Resolve<IPhoneApplicationServiceFacade>(),
+                    c.Resolve<IMessageBox>()))
+                    .ReusedWithin(ReuseScope.None);
+
+            this.Container.Register(
+                c => new PictureViewViewModel(
+                    c.Resolve<INavigationService>(),
+                    c.Resolve<IPhoneApplicationServiceFacade>()))
                     .ReusedWithin(ReuseScope.None);
 
         }

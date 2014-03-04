@@ -166,20 +166,29 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
             StatusCollection collection;
             if (HomeTimeline.Count <= 0)
             {
-                if(htStorage.TryLoadData<StatusCollection>(out collection))
+                if (htStorage.TryLoadData<StatusCollection>(out collection))
+                {
                     collection.ForEach(a => HomeTimeline.Add(a));
+                    ht_lastTimeStamp = collection.LastTimeStamp;
+                }
                 else
                     GetHomeTimeline();
             }
             if (MentionsTimeline.Count <= 0)
             {
                 if (mtStorage.TryLoadData<StatusCollection>(out collection))
+                {
                     collection.ForEach(a => MentionsTimeline.Add(a));
+                    mt_lastTimeStamp = collection.LastTimeStamp;
+                }
             }
             if (FavoritesTimeline.Count <= 0)
             {
                 if (ftStorage.TryLoadData<StatusCollection>(out collection))
+                {
                     collection.ForEach(a => FavoritesTimeline.Add(a));
+                    ft_lastTimeStamp = collection.LastTimeStamp;
+                }
             }
         }
 
@@ -319,6 +328,8 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
                 var id = this.SelectedStatus.Id;
                 new IsoStorage(Constants.TencentSelectedStatus).SaveData(this.SelectedStatus);
                 this.NavigationService.Navigate(new Uri(Constants.TencentStatusDetail + "?id=" + id, UriKind.Relative));
+                
+                this.SelectedStatus = null;
             }
         }
 

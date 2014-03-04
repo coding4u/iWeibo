@@ -76,7 +76,6 @@
         <converters:TimeStampConverter x:Key="TimeStampConverter"/>
         <converters:IntToVisibilityConverter x:Key="IntToVisibilityConverter"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <!--<converters:HeadImageConverter x:Key="HeadImageConverter"/>-->
         <converters:CreatedAtConverter x:Key="CreatedAtConverter"/>
         <converters:SourceConverter x:Key="SourceConverter"/>
 
@@ -148,7 +147,12 @@
                         <TextBlock Text="{Binding TimeStamp, Converter={StaticResource TimeStampConverter}}" FontSize="14"/>
                         <TextBlock Text="{Binding From}" FontSize="14" Margin="20,0,0,0"/>
                     </StackPanel>
-                </Grid>
+                <!--<i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                        <i:InvokeCommandAction Command="{Binding ShowSelectedStatusCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>-->
+            </Grid>
             </DataTemplate>
 
         <DataTemplate x:Key="SinaTimelineTemplate">

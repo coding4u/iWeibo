@@ -63,6 +63,7 @@
     <Reference Include="Microsoft.Phone.Reactive" />
     <Reference Include="Microsoft.Practices.Prism, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.Prism.Interactivity, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System.Observable" />
     <Reference Include="System.Runtime.Serialization" />
@@ -88,12 +89,18 @@
     <Compile Include="Resources\Converters\IntToVisibilityConverter.cs" />
     <Compile Include="Resources\Converters\SourceConverter.cs" />
     <Compile Include="Resources\Converters\TimeStampConverter.cs" />
+    <Compile Include="Resources\UserControls\ProgressBarWithText.xaml.cs">
+      <DependentUpon>ProgressBarWithText.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\ContainerLocator.cs" />
     <Compile Include="Util\ConvertContentBehavior.cs" />
     <Compile Include="Util\DataTimeHelper.cs" />
     <Compile Include="Util\LowProfileImageLoader.cs" />
+    <Compile Include="Util\MemoryDiagnosticsHelper.cs" />
+    <Compile Include="Util\MTPivot.cs" />
     <Compile Include="Util\TextBoxAttach.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\PictureViewViewModel.cs" />
     <Compile Include="ViewModels\PostNewViewModel.cs" />
     <Compile Include="ViewModels\SinaViewModels\SinaTimelineViewModel.cs" />
     <Compile Include="ViewModels\TencentViewModels\TencentStatusDetailViewModel.cs" />
@@ -102,6 +109,9 @@
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PictureView.xaml.cs">
+      <DependentUpon>PictureView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PostNew.xaml.cs">
       <DependentUpon>PostNew.xaml</DependentUpon>
@@ -189,7 +199,15 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="Resources\UserControls\ProgressBarWithText.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PictureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

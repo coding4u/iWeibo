@@ -11,6 +11,7 @@
     xmlns:prismInteractivity="clr-namespace:Microsoft.Practices.Prism.Interactivity;assembly=Microsoft.Practices.Prism.Interactivity" 
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:customcontrol="clr-namespace:Meituan.Client.Controls.CustomControl"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -26,9 +27,14 @@
     <!--LayoutRoot 是包含所有页面内容的根网格-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--枢轴控件-->
-        <controls:Pivot 
-            Title="{StaticResource TencentTitle}"
+        <customcontrol:MTPivot 
             SelectedIndex="{Binding SelectedPivotIndex,Mode=TwoWay}">
+            <customcontrol:MTPivot.Title>
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="48" Width="48" Stretch="Uniform" Source="/Resources/Images/Logos/tencentlogo48.png"/>
+                    <TextBlock Text="{StaticResource TencentTitle}"  Margin="5,0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </customcontrol:MTPivot.Title>
             <!--枢轴项一-->
             <controls:PivotItem Header="主页">
                 <Grid>
@@ -116,7 +122,7 @@
                 </Grid>
             </controls:PivotItem>
 
-        </controls:Pivot>
+        </customcontrol:MTPivot>
     </Grid>
     
     <i:Interaction.Triggers>

@@ -565,7 +565,7 @@
         </member>
         <member name="P:TencentWeiboSDK.Model.Status.Https_Head">
             <summary>
-            
+            Https_Head
             </summary>
         </member>
         <member name="P:TencentWeiboSDK.Model.Status.Id">
@@ -596,6 +596,11 @@
         <member name="P:TencentWeiboSDK.Model.Status.Longitude">
             <summary>
             经度
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.LikeCount">
+            <summary>
+            微博赞数量
             </summary>
         </member>
         <member name="P:TencentWeiboSDK.Model.Status.Location">
@@ -645,7 +650,7 @@
         </member>
         <member name="P:TencentWeiboSDK.Model.Status.Self">
             <summary>
-            是否自已发的的微博
+            是否自已发的的微博,0-不是，1-是
             </summary>
         </member>
         <member name="P:TencentWeiboSDK.Model.Status.Source">
@@ -658,6 +663,11 @@
             微博状态，0-正常，1-系统删除，2-审核中，3-用户删除，4-根删除
             </summary>
         </member>
+        <member name="P:TencentWeiboSDK.Model.Status.StoreTime">
+            <summary>
+            添加到收藏的时间
+            </summary>
+        </member>
         <member name="P:TencentWeiboSDK.Model.Status.Text">
             <summary>
             微博内容
@@ -665,7 +675,7 @@
         </member>
         <member name="P:TencentWeiboSDK.Model.Status.TimeStamp">
             <summary>
-            发表时间
+            发表时间戳
             </summary>
         </member>
         <member name="P:TencentWeiboSDK.Model.Status.Type">
@@ -675,7 +685,27 @@
         </member>
         <member name="P:TencentWeiboSDK.Model.Status.IsFavorite">
             <summary>
-            （自定义属性）是否已添加到收藏
+            （自定义只读属性）此微博是否已添加到收藏
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.IsSelf">
+            <summary>
+            （自定义只读属性）是否是自己发的微博
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.HasPic">
+            <summary>
+            （自定义只读属性）此微博是否包含图片
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.ImageUrl">
+            <summary>
+            （自定义只读属性）此微博图片的地址
+            </summary>
+        </member>
+        <member name="P:TencentWeiboSDK.Model.Status.IsRetweetedStatus">
+            <summary>
+            （自定义只读属性）此微博是否是转发的微博
             </summary>
         </member>
         <member name="T:TencentWeiboSDK.Model.StatusCollection">
@@ -824,11 +854,6 @@
         <member name="P:TencentWeiboSDK.Model.User.Birth_Year">
             <summary>
             出生年
-            </summary>
-        </member>
-        <member name="P:TencentWeiboSDK.Model.User.Birth_Date">
-            <summary>
-            出生年月日
             </summary>
         </member>
         <member name="P:TencentWeiboSDK.Model.User.City_Code">
@@ -1138,6 +1163,13 @@
             </summary>
             <param name="argment">参数列表，Id为必填参数</param>
             <param name="callback"></param>
+        </member>
+        <member name="M:TencentWeiboSDK.Services.TService.Delete(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{System.Boolean}})">
+            <summary>
+            删除一条微博
+            </summary>
+            <param name="argment">参数列表，id为必填参数</param>
+            <param name="callback">无返回数据</param>
         </member>
         <member name="M:TencentWeiboSDK.Services.TService.Repost(TencentWeiboSDK.Services.Util.ServiceArgument,System.Action{TencentWeiboSDK.Services.Util.Callback{System.Boolean}})">
             <summary>

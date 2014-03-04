@@ -62,6 +62,22 @@ namespace TencentWeiboSDK.Services
         }
 
         /// <summary>
+        /// 删除一条微博
+        /// </summary>
+        /// <param name="argment">参数列表，id为必填参数</param>
+        /// <param name="callback">无返回数据</param>
+        public void Delete(ServiceArgument argment, Action<Callback<bool>> callback)
+        {
+            this.Post("t/del", argment, (request, response, userState) =>
+                {
+                    if (null != callback)
+                    {
+                        InternalCallback(response, callback);
+                    }
+                });
+        }
+
+        /// <summary>
         /// 转发一条微博.
         /// </summary>
         /// <param name="argment">参数列表, Content为必填参数</param>

@@ -39,25 +39,22 @@ namespace TencentWeiboSDK.Deserializer.Json
         /// <returns>返回 StatusCollection 对象</returns>
         public override List<Status> ReadList(string content)
         {
-            if (content == "")
-                return new List<Status>();
+            //if (content == "")
+            //    return new StatusCollection();
 
             var jo = JObject.Parse(content);
 
             if (jo["data"].ToString() == "")
-                return new List<Status>();
+                return new StatusCollection();
 
             var jInfo = jo["data"]["info"];
             StatusCollection list = new StatusCollection();
-            Status status = null;
-            //bean修改
             if (jInfo != null)
             {
                 foreach (var j in jInfo.Children())
                 {
-                    status = j.ToObject<Status>();
 
-                    list.Add(status);
+                    list.Add(j.ToObject<Status>());
                 }
             }            
 

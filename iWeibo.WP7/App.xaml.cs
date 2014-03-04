@@ -51,7 +51,7 @@ namespace iWeibo.WP7
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // 显示当前帧速率计数器。
-                Application.Current.Host.Settings.EnableFrameRateCounter = true;
+                //Application.Current.Host.Settings.EnableFrameRateCounter = true;
 
                 // 显示在每个帧中重绘的应用程序区域。
                 //Application.Current.Host.Settings.EnableRedrawRegions = true;

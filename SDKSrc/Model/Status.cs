@@ -1,49 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace TencentWeiboSDK.Model
 {
     /// <summary>
     /// 微博的 Model, 用于表示微博的对象.
     /// </summary>
+    [DataContract]
     public class Status : BaseModel
     {
-        private string city_code = string.Empty;
         private int count = 0;
-        private string country_code = string.Empty;
-        private string emotiontype = string.Empty;
-        private string emotionurl = string.Empty;
-        private string from = string.Empty;
-        private string fromurl;
-        private string geo = string.Empty;
-        private string head = string.Empty;
-        private string https_head = string.Empty;
-        private string id = string.Empty;
-        private List<string> image = null;
-        private int isrealname = 0;
-        private int isvip = 0;
-        private string jing = string.Empty;
-        private string latitude = string.Empty;
         private int likecount = 0;
-        private string location = string.Empty;
-        private string longitude = string.Empty;
         private int mcount = 0;
-        //private Music music = null;
-        private string name = string.Empty;
-        private string nick = string.Empty;
-        private string openid = string.Empty;
-        private string origtext = string.Empty;
-        private Pictures pic = null;
-        private string province_code = string.Empty;
-        private int readcount = 0;
-        private int self = 0;
-        private Status source = null;
-        private int status = 0;
-        private string text = string.Empty;
-        private long timestamp = 0;
-        private int type = 0;
-        //private Video video=null
-        private string wei = string.Empty;
 
         /// <summary>
         /// 构造函数
@@ -54,25 +24,13 @@ namespace TencentWeiboSDK.Model
         /// <summary>
         /// 城市代码
         /// </summary>
-        public string City_Code
-        {
-            get
-            {
-                return city_code;
-            }
-            set
-            {
-                if (value != city_code)
-                {
-                    city_code = value;
-                    NotifyPropertyChanged("City_Code");
-                }
-            }
-        }
+        [DataMember(Name="city_code")]
+        public string City_Code { get; set; }
 
         /// <summary>
         /// 微博被转次数
         /// </summary>
+        [DataMember(Name="count")]
         public int Count
         {
             get
@@ -92,264 +50,113 @@ namespace TencentWeiboSDK.Model
         /// <summary>
         /// 国家代码
         /// </summary>
-        public string Country_Code
-        {
-            get
-            {
-                return country_code;
-            }
-            set
-            {
-                if (value != country_code)
-                {
-                    country_code = value;
-                    NotifyPropertyChanged("Country_Code");
-                }
-            }
-        }
+        [DataMember(Name="country_code")]
+        public string Country_Code { get; set; }
+
 
         /// <summary>
         /// 心情类型
         /// </summary>
-        public string EmotionType
-        {
-            get
-            {
-                return emotiontype;
-            }
-            set
-            {
-                if (value != emotiontype)
-                {
-                    emotiontype = value;
-                    NotifyPropertyChanged("EmotionType");
-                }
-            }
-        }
+        [DataMember(Name="emotiontype")]
+        public string EmotionType { get; set; }
 
         /// <summary>
         /// 心情图片url
         /// </summary>
-        public string EmotionUrl
-        {
-            get
-            {
-                return emotionurl;
-            }
-            set
-            {
-                if (value != emotionurl)
-                {
-                    emotionurl = value;
-                    NotifyPropertyChanged("EmotionUrl");
-                }
-            }
-        }
+        [DataMember(Name="emotionurl")]
+        public string EmotionUrl { get; set; }
+
         /// <summary>
         /// 来源
         /// </summary>
-        public string From
-        {
-            get
-            {
-                return from;
-            }
-            set
-            {
-                if (value != from)
-                {
-                    from = value;
-                    NotifyPropertyChanged("From");
-                }
-            }
-        }
+        [DataMember(Name="from")]
+        public string From { get; set; }
+
 
         /// <summary>
         /// 来源url
         /// </summary>
-        public string FromUrl
-        {
-            get
-            {
-                return fromurl;
-            }
-            set
-            {
-                if (value != fromurl)
-                {
-                    fromurl = value;
-                    NotifyPropertyChanged("FromUrl");
-                }
-            }
-        }
+        [DataMember(Name = "fromurl")]
+        public string FromUrl { get; set; }
+
 
         /// <summary>
         /// 发表者地理信息
         /// </summary>
-        public string Geo
-        {
-            get
-            {
-                return geo;
-            }
-            set
-            {
-                if (value != geo)
-                {
-                    geo = value;
-                    NotifyPropertyChanged("Geo");
-                }
-            }
-        }
+        [DataMember(Name = "geo")]
+        public object Geo { get; set; }
+
 
         /// <summary>
         /// 发表者头像url
         /// </summary>
-        public string Head
-        {
-            get
-            {
-                return head+@"/50";
-            }
-            set
-            {
-                if (value != head)
-                {
-                    head = value;
-                    NotifyPropertyChanged("Head");
-                }
-            }
-        }
+        [DataMember(Name = "head")]
+        public string Head { get; set; }
+
 
         /// <summary>
-        /// 
+        /// Https_Head
         /// </summary>
-        public string Https_Head
-        {
-            get
-            {
-                return https_head;
-            }
-            set
-            {
-                if (value != https_head)
-                {
-                    https_head = value;
-                    NotifyPropertyChanged("Https_Head");
-                }
-            }
-        }
+        [DataMember(Name = "https_head")]
+        public string Https_Head { get; set; }
+
 
         /// <summary>
         /// 微博唯一id
         /// </summary>
-        public string Id
-        {
-            get
-            {
-                return id;
-            }
-            set
-            {
-                if (value != id)
-                {
-                    id = value;
-                    NotifyPropertyChanged("Id");
-                }
-            }
-        }
+        [DataMember(Name = "id")]
+        public string Id { get; set; }
 
         /// <summary>
         /// 图片url列表
         /// </summary>
-        public List<string> Image
-        {
-            get
-            {
-                return image;
-            }
-            set
-            {
-                if (value != image)
-                {
-                    image = value;
-                    NotifyPropertyChanged("Image");
-                }
-            }
-        }
+        [DataMember(Name = "image")]
+        public List<string> Image { get; set; }
+
 
         /// <summary>
         /// 是否实名认证，0-老用户，1-已实名认证，2-未实名认证,
         /// </summary>
-        public int IsRealName
-        {
-            get
-            {
-                return isrealname;
-            }
-            set
-            {
-                if (value != isrealname)
-                {
-                    isrealname = value;
-                    NotifyPropertyChanged("IsRealName");
-                }
-            }
-        }
+        [DataMember(Name = "isrealname")]
+        public int IsRealName { get; set; }
+
 
         /// <summary>
         /// 是否微博认证用户，0-不是，1-是
         /// </summary>
-        public int IsVIP
-        {
-            get
-            {
-                return isvip;
-            }
-            set
-            {
-                if (value != isvip)
-                {
-                    isvip = value;
-                    NotifyPropertyChanged("IsVIP");
-                }
-            }
-        }
+        [DataMember(Name = "isvip")]
+        public int IsVIP { get; set; }
+
         
         /// <summary>
         /// 纬度
         /// </summary>
-        public string Latitude
-        {
-            get
-            {
-                return latitude;
-            }
-            set
-            {
-                if (value != latitude)
-                {
-                    latitude = value;
-                    NotifyPropertyChanged("Latitude");
-                }
-            }
-        }
+        [DataMember(Name = "latitude")]
+        public string Latitude { get; set; }
+
 
         /// <summary>
         /// 经度
         /// </summary>
-        public string Longitude
+        [DataMember(Name = "longitude")]
+        public string Longitude { get; set; }
+
+        /// <summary>
+        /// 微博赞数量
+        /// </summary>
+        [DataMember(Name="likecount")]
+        public int LikeCount
         {
             get
             {
-                return longitude;
+                return likecount;
             }
             set
             {
-                if (value != longitude)
+                if (value != likecount)
                 {
-                    longitude = value;
-                    NotifyPropertyChanged("Longitude");
+                    likecount = value;
+                    NotifyPropertyChanged("LikeCount");
                 }
             }
         }
@@ -357,25 +164,14 @@ namespace TencentWeiboSDK.Model
         /// <summary>
         /// 发表者所在地
         /// </summary>
-        public string Location
-        {
-            get
-            {
-                return location;
-            }
-            set
-            {
-                if (value != location)
-                {
-                    location = value;
-                    NotifyPropertyChanged("Location");
-                }
-            }
-        }
+        [DataMember(Name = "location")]
+        public string Location { get; set; }
+
 
         /// <summary>
         /// 点评次数
         /// </summary>
+        [DataMember(Name="mcount")]
         public int MCount
         {
             get
@@ -392,274 +188,129 @@ namespace TencentWeiboSDK.Model
             }
         }
 
+
         /// <summary>
         /// 发表人帐户名
         /// </summary>
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-            set
-            {
-                if (value != name)
-                {
-                    name = value;
-                    NotifyPropertyChanged("Name");
-                }
-            }
-        }
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
 
         /// <summary>
         /// 发表人昵称
         /// </summary>
-        public string Nick
-        {
-            get
-            {
-                return nick;
-            }
-            set
-            {
-                if (value != nick)
-                {
-                    nick = value;
-                    NotifyPropertyChanged("Nick");
-                }
-            }
-        }
+        [DataMember(Name = "nick")]
+        public string Nick { get; set; }
+
 
         /// <summary>
         /// 用户唯一id，与name相对应
         /// </summary>
-        public string OpenId
-        {
-            get
-            {
-                return openid;
-            }
-            set
-            {
-                if (value != openid)
-                {
-                    openid = value;
-                    NotifyPropertyChanged("OpenId");
-                }
-            }
-        }
+        [DataMember(Name = "openid")]
+        public string OpenId { get; set; }
+
 
         /// <summary>
         /// 原始内容
         /// </summary>
-        public string OrigText
-        {
-            get
-            {
-                return origtext;
-            }
-            set
-            {
-                if (value != origtext)
-                {
-                    origtext = value;
-                    NotifyPropertyChanged("OrigText");
-                }
-            }
-        }
+        [DataMember(Name = "origtext")]
+        public string OrigText { get; set; }
+
 
         /// <summary>
         /// 图片信息列表
         /// </summary>
-        public Pictures Pic
-        {
-            get
-            {
-                return pic;
-            }
-            set
-            {
-                if (value != pic)
-                {
-                    pic = value;
-                    NotifyPropertyChanged("Pic");
-                }
-            }
-        }
+        [DataMember(Name = "pic")]
+        public Pictures Pic { get; set; }
+
 
         /// <summary>
         /// 省份代码
         /// </summary>
-        public string Province_Code
-        {
-            get
-            {
-                return province_code;
-            }
-            set
-            {
-                if (value != province_code)
-                {
-                    province_code = value;
-                    NotifyPropertyChanged("Province_Code");
-                }
-            }
-        }
+        [DataMember(Name = "province_code")]
+        public string Province_Code { get; set; }
+
         
         /// <summary>
         /// 
         /// </summary>
-        public int ReadCount
-        {
-            get
-            {
-                return readcount;
-            }
-            set
-            {
-                if (value != readcount)
-                {
-                    readcount = value;
-                    NotifyPropertyChanged("ReadCount");
-                }
-            }
-        }
+        [DataMember(Name = "readcount")]
+        public int ReadCount { get; set; }
+
 
         /// <summary>
-        /// 是否自已发的的微博
+        /// 是否自已发的的微博,0-不是，1-是
         /// </summary>
-        public int Self
-        {
-            get
-            {
-                return self;
-            }
-            set
-            {
-                if (value != self)
-                {
-                    self = value;
-                    NotifyPropertyChanged("Self");
-                }
-            }
-        }
+        [DataMember(Name = "self")]
+        public int Self { get; set; }
+
 
         /// <summary>
         /// 当type=2时，source即为源tweet
         /// </summary>
-        public Status Source
-        {
-            get
-            {
-                return source;
-            }
-            set
-            {
-                if (value != source)
-                {
-                    source = value;
-                    NotifyPropertyChanged("Source");
-                }
-            }
-        }
+        [DataMember(Name = "source")]
+        public Status Source { get; set; }
+
 
         /// <summary>
         /// 微博状态，0-正常，1-系统删除，2-审核中，3-用户删除，4-根删除
         /// </summary>
-        public int State
-        {
-            get
-            {
-                return status;
-            }
-            set
-            {
-                if (value != status)
-                {
-                    status = value;
-                    NotifyPropertyChanged("State");
-                }
-            }
-        }
+        [DataMember(Name="status")]
+        public int State { get; set; }
+
+        /// <summary>
+        /// 添加到收藏的时间
+        /// </summary>
+        [DataMember(Name="storetime")]
+        public string StoreTime { get; set; }
+
 
         /// <summary>
         /// 微博内容
         /// </summary>      
-        public string Text
-        {
-            get
-            {
-                return text;
-            }
-            set
-            {
-                if (value != text)
-                {
-                    text = value;
-                    NotifyPropertyChanged("Text");
-                }
-            }
-        }
+        [DataMember(Name = "text")]
+        public string Text { get; set; }
+
 
         /// <summary>
-        /// 发表时间
+        /// 发表时间戳
         /// </summary>
-        public long TimeStamp
-        {
-            get
-            {
-                return timestamp;
-            }
-            set
-            {
-                if (value != timestamp)
-                {
-                    timestamp = value;
-                    NotifyPropertyChanged("TimeStamp");
-                }
-            }
-        }
+        [DataMember(Name = "timestamp")]
+        public long TimeStamp { get; set; }
+
 
         /// <summary>
         /// 微博类型，1-原创发表，2-转载，3-私信，4-回复，5-空回，6-提及，7-评论
         /// </summary>
-        public int Type
-        {
-            get
-            {
-                return type;
-            }
-            set
-            {
-                if (value != type)
-                {
-                    type = value;
-                    NotifyPropertyChanged("Type");
-                }
-            }
-        }
+        [DataMember(Name = "type")]
+        public int Type { get; set; }
 
 
-        private bool isFavorite=false;
         /// <summary>
-        /// （自定义属性）是否已添加到收藏
+        /// （自定义只读属性）此微博是否已添加到收藏
         /// </summary>
         public bool IsFavorite
         {
             get
             {
-                return isFavorite;
-            }
-            set
-            {
-                if (value != isFavorite)
-                {
-                    isFavorite = value;
-                    NotifyPropertyChanged("IsFavorite");
-                }
+                return string.IsNullOrEmpty(StoreTime) ? false : true;
             }
         }
 
+        /// <summary>
+        /// （自定义只读属性）是否是自己发的微博
+        /// </summary>
+        public bool IsSelf
+        {
+            get
+            {
+                return Self == 1 ? true : false;
+            }
+        }
+
+        /// <summary>
+        /// （自定义只读属性）此微博是否包含图片
+        /// </summary>
         public bool HasPic
         {
             get
@@ -668,6 +319,9 @@ namespace TencentWeiboSDK.Model
             }
         }
 
+        /// <summary>
+        /// （自定义只读属性）此微博图片的地址
+        /// </summary>
         public string ImageUrl
         {
             get
@@ -676,6 +330,9 @@ namespace TencentWeiboSDK.Model
             }
         }
 
+        /// <summary>
+        /// （自定义只读属性）此微博是否是转发的微博
+        /// </summary>
         public bool IsRetweetedStatus
         {
             get

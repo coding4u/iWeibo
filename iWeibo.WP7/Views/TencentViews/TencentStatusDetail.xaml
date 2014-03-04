@@ -13,9 +13,11 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:prismInteractivity="clr-namespace:Microsoft.Practices.Prism.Interactivity;assembly=Microsoft.Practices.Prism.Interactivity" 
     xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
+    xmlns:customcontrol="clr-namespace:Meituan.Client.Controls.CustomControl"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
+    DataContext="{Binding Source={StaticResource ViewModelLocator},Path=TencentStatusDetailViewModel}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
     
@@ -49,95 +51,107 @@
                 </Grid>
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Name="TencentStatusDetailTemplate">
-            <Grid Margin="5,10" >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="60"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Row="0" Grid.Column="0">
-                    <Image x:Name="imgHead" Stretch="Uniform" VerticalAlignment="Top"
-                           util:LowProfileImageLoader.UriSource="{Binding Head,StringFormat=\{0\}/50}" />
-                    <Image Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,-5"
-                                               Visibility="{Binding IsVIP,Converter={StaticResource IntToVisibilityConverter}}"
-                                               Source="/Resources/Images/Icons/authen.png" Height="20" Width="20"/>
-                </Grid>
-                <Grid Grid.Row="0" Grid.Column="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" x:Name="txtOrign" Text="{Binding Nick}"   Margin="10,0" VerticalAlignment="Center" FontSize="24" Foreground="{StaticResource PhoneAccentBrush}" />
-                    <StackPanel Grid.Column="1" Orientation="Horizontal"  Opacity="0.6"  HorizontalAlignment="Right" Margin="0,0,10,0">
-                        <Image Height="30" Width="30" Stretch="Uniform" Source="/Resources/Images/Icons/repost.png" HorizontalAlignment="Right"/>
-                        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding Count}"/>
-                        <Image Height="30" Width="30" Stretch="Uniform" Source="/Resources/Images/Icons/reply.png" HorizontalAlignment="Right"/>
-                        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding MCount}"/>
-                    </StackPanel>
-                </Grid>
-                <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10">
-                    <RichTextBox Margin="10,5" Opacity="0.8">
-                        <i:Interaction.Behaviors>
-                            <util:ConvertContentBehavior Content="{Binding OrigText}"/>
-                        </i:Interaction.Behaviors>
-                    </RichTextBox>
-                </Grid>
-                <Grid Grid.Row="2" Grid.ColumnSpan="2"  >
-                    <Image  Stretch="Uniform"  Margin="10,0" HorizontalAlignment="Center" VerticalAlignment="Top"
-                                    util:LowProfileImageLoader.UriSource="{Binding Path=ImageUrl, StringFormat=\{0\}/460}"
-                                    Visibility="{Binding HasPic,Converter={StaticResource BoolToVisibilityConverter}}"
-                                    MaxWidth="400" MaxHeight="300"  />
-                </Grid>
-                <Border Margin="10,0" Grid.Row="3" Grid.ColumnSpan="2"  x:Name="RetweetBorder"  HorizontalAlignment="Left" VerticalAlignment="Top" 
-                                    BorderBrush="{StaticResource PhoneBorderBrush}" 
-                                    Visibility="{Binding Path=IsRetweetedStatus,Converter={StaticResource BoolToVisibilityConverter}}" Background="{StaticResource PhoneChromeBrush}">
-                    <StackPanel Margin="0,10">
-                        <TextBlock  TextWrapping="NoWrap" Text="{Binding Source.Nick}" Foreground="{StaticResource PhoneAccentBrush}" />
-                        <RichTextBox Opacity="0.8" TextWrapping="Wrap" IsReadOnly="True" Margin="5,10">
-                            <i:Interaction.Behaviors >
-                                <util:ConvertContentBehavior Content="{Binding Source.OrigText}" />
-                            </i:Interaction.Behaviors>
-                        </RichTextBox>
-                        <Image Stretch="Uniform" Margin="10,0" HorizontalAlignment="Center" VerticalAlignment="Top" MaxHeight="300" MaxWidth="400"
-                                           util:LowProfileImageLoader.UriSource="{Binding Path=Source.ImageUrl, StringFormat=\{0\}/460}"
-                                           Visibility="{Binding Path=Source.HasPic,Converter={StaticResource BoolToVisibilityConverter}}"/>
-                    </StackPanel>
-                </Border>
-                <Grid Grid.Row="4" Grid.ColumnSpan="2" Opacity="0.6" Margin="10,10" >
-                    <StackPanel  Orientation="Horizontal" >
-                        <TextBlock Text="{Binding TimeStamp, Converter={StaticResource TimeStampConverter}}" Margin="10,0,0,0" FontSize="16"/>
-                        <TextBlock Text="来自：" FontSize="16" Margin="10,0,0,0"/>
-                        <TextBlock Text="{Binding From}" FontSize="16"/>
-                        <TextBlock Text="{Binding Location}" FontSize="16" HorizontalAlignment="Right" Margin="50,0,10,0"/>
-                    </StackPanel>
-                </Grid>
-            </Grid>
-        </DataTemplate>
+        
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot 是包含所有页面内容的根网格-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--枢轴控件-->
-        <controls:Pivot 
+        <customcontrol:MTPivot 
             SelectedIndex="{Binding SelectedPivotIndex,Mode=TwoWay}">
-            <controls:Pivot.Title>
+            <customcontrol:MTPivot.Title>
                 <StackPanel Orientation="Horizontal">
                     <Image Height="48" Width="48" Stretch="Uniform" Source="/Resources/Images/Logos/tencentlogo48.png"/>
                     <TextBlock Text="{StaticResource TencentTitle}"  Margin="5,0" VerticalAlignment="Center"/>
                 </StackPanel>
-            </controls:Pivot.Title>
+            </customcontrol:MTPivot.Title>
 
             <!--枢轴项一-->
             <controls:PivotItem Header="详情">
                 <Grid>
-                    <ScrollViewer DataContext="{Binding Status}" ContentTemplate="{StaticResource TencentStatusDetailTemplate}"/>
+                    <ScrollViewer DataContext="{Binding Status}" >
+                        <Grid Margin="5,10" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="0" Grid.Column="0">
+                                <Image x:Name="imgHead" Stretch="Uniform" VerticalAlignment="Top"
+                           util:LowProfileImageLoader.UriSource="{Binding Head,StringFormat=\{0\}/50}" />
+                                <Image Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,-5"
+                                               Visibility="{Binding IsVIP,Converter={StaticResource IntToVisibilityConverter}}"
+                                               Source="/Resources/Images/Icons/authen.png" Height="20" Width="20"/>
+                            </Grid>
+                            <Grid Grid.Row="0" Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" x:Name="txtOrign" Text="{Binding Nick}"   Margin="10,0" VerticalAlignment="Center" FontSize="24" Foreground="{StaticResource PhoneAccentBrush}" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal"  Opacity="0.6"  HorizontalAlignment="Right" Margin="0,0,10,0">
+                                    <Image Height="30" Width="30" Stretch="Uniform" Source="/Resources/Images/Icons/repost.png" HorizontalAlignment="Right"/>
+                                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding Count}"/>
+                                    <Image Height="30" Width="30" Stretch="Uniform" Source="/Resources/Images/Icons/reply.png" HorizontalAlignment="Right"/>
+                                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding MCount}"/>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10">
+                                <RichTextBox Margin="10,5" Opacity="0.8">
+                                    <i:Interaction.Behaviors>
+                                        <util:ConvertContentBehavior Content="{Binding OrigText}"/>
+                                    </i:Interaction.Behaviors>
+                                </RichTextBox>
+                            </Grid>
+                            <Grid Grid.Row="2" Grid.ColumnSpan="2"  >
+                                <Image  Stretch="Uniform"  Margin="10,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                    util:LowProfileImageLoader.UriSource="{Binding Path=ImageUrl, StringFormat=\{0\}/460}"
+                                    Visibility="{Binding HasPic,Converter={StaticResource BoolToVisibilityConverter}}"
+                                    MaxWidth="400" MaxHeight="300"  >
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Tap">
+                                            <i:InvokeCommandAction Command="{Binding Path=DataContext.ViewPictureCommand, ElementName=LayoutRoot}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                            </Grid>
+                            <Border Margin="10,0" Grid.Row="3" Grid.ColumnSpan="2"  x:Name="RetweetBorder"  HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                    BorderBrush="{StaticResource PhoneBorderBrush}" 
+                                    Visibility="{Binding Path=IsRetweetedStatus,Converter={StaticResource BoolToVisibilityConverter}}" Background="{StaticResource PhoneChromeBrush}">
+                                <StackPanel Margin="0,10">
+                                    <TextBlock  TextWrapping="NoWrap" Text="{Binding Source.Nick}" Foreground="{StaticResource PhoneAccentBrush}" />
+                                    <RichTextBox Opacity="0.8" TextWrapping="Wrap" IsReadOnly="True" Margin="5,10">
+                                        <i:Interaction.Behaviors >
+                                            <util:ConvertContentBehavior Content="{Binding Source.OrigText}" />
+                                        </i:Interaction.Behaviors>
+                                    </RichTextBox>
+                                    <Image Stretch="Uniform" Margin="10,0" HorizontalAlignment="Center" VerticalAlignment="Top" MaxHeight="300" MaxWidth="400"
+                                           util:LowProfileImageLoader.UriSource="{Binding Path=Source.ImageUrl, StringFormat=\{0\}/160}"
+                                           Visibility="{Binding Path=Source.HasPic,Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Tap">
+                                                <i:InvokeCommandAction Command="{Binding Path=DataContext.ViewPictureCommand, ElementName=LayoutRoot}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Image>
+                                </StackPanel>
+                            </Border>
+                            <Grid Grid.Row="4" Grid.ColumnSpan="2" Opacity="0.6" Margin="10,10" >
+                                <StackPanel  Orientation="Horizontal" >
+                                    <TextBlock Text="{Binding TimeStamp, Converter={StaticResource TimeStampConverter}}" Margin="10,0,0,0" FontSize="16"/>
+                                    <TextBlock Text="来自：" FontSize="16" Margin="10,0,0,0"/>
+                                    <TextBlock Text="{Binding From}" FontSize="16"/>
+                                    <TextBlock Text="{Binding Location}" FontSize="16" HorizontalAlignment="Right" Margin="50,0,10,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </ScrollViewer>
                 </Grid>
             </controls:PivotItem>
 
@@ -150,44 +164,53 @@
                         ItemTemplate="{StaticResource TencentCommentsTemplate}"
                         >
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="StretchingButtom">
+                            <i:EventTrigger EventName="StretchingBottom">
+                                <i:InvokeCommandAction Command="{Binding CommentsTimelineCommand}" CommandParameter="Next"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="StretchingTop">
                                 <i:InvokeCommandAction Command="{Binding CommentsTimelineCommand}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>                        
                     </toolkit:LongListSelector>
                 </Grid>
             </controls:PivotItem>
-        </controls:Pivot>
+        </customcontrol:MTPivot>
     </Grid>
     
-    <bar:Bindable.ApplicationBar>
-        <bar:BindableApplicationBar>
-            <bar:BindableApplicationBarButton 
+        <bar:Bindable.ApplicationBar >
+            <bar:BindableApplicationBar IsMenuEnabled="True" IsVisible="True" Mode="Default">
+                <bar:BindableApplicationBarButton 
                 Text="刷新"
                 IconUri="/Resources/Images/AppBar/appbar.refresh.png"
                 Command="{Binding RefreshCommand}"/>
-            <bar:BindableApplicationBarButton 
+                <bar:BindableApplicationBarButton 
                 Text="评论"
                 IconUri="/Resources/Images/AppBar/appbar.comment.png"
                 Command="{Binding CommentCommand}"/>
-            <bar:BindableApplicationBarButton 
+                <bar:BindableApplicationBarButton 
                 Text="转发"
                 IconUri="/Resources/Images/AppBar/appbar.forward.png"
                 Command="{Binding RepostCommand}"/>
-            <bar:BindableApplicationBarButton 
-                Text="{Binding FavoriteText}"
-                IconUri="{Binding FavoriteIconUri}"
+                <bar:BindableApplicationBarButton 
+                Text="{Binding FavoriteText,StringFormat=\{0\}收藏,FallbackValue=添加}"
+                IconUri="{Binding FavoriteIconUri,StringFormat=/Resources/Images/AppBar/appbar.\{0\}.png, FallbackValue=favor}"
                 Command="{Binding FavoriteCommand}"/>
-            <bar:BindableApplicationBar.MenuItems>
-                <bar:BindableApplicationBarMenuItem
+                <bar:BindableApplicationBar.MenuItems>
+                    <bar:BindableApplicationBarMenuItem
                     Text="复制"
                     Command="{Binding CopyCommand}"/>
-                <bar:BindableApplicationBarMenuItem
+                    <bar:BindableApplicationBarMenuItem
                     Text="删除"
-                    Command="{Binding DeleteCommand}"/> 
-            </bar:BindableApplicationBar.MenuItems>
-                                              
-        </bar:BindableApplicationBar>
-    </bar:Bindable.ApplicationBar>
+                    Command="{Binding DeleteCommand}"/>
+                </bar:BindableApplicationBar.MenuItems>
+
+            </bar:BindableApplicationBar>
+        </bar:Bindable.ApplicationBar>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding PageLoadedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     
 </phone:PhoneApplicationPage>

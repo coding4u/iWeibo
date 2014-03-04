@@ -35,6 +35,14 @@ namespace iWeibo.WP7.ViewModels
             }
         }
 
+        public TencentStatusDetailViewModel TencentStatusDetailViewModel
+        {
+            get
+            {
+                return this.containerLocator.Container.Resolve<TencentStatusDetailViewModel>();
+            }
+        }
+
         public SinaTimelineViewModel SinaTimelineViewModel
         {
             get
@@ -48,6 +56,14 @@ namespace iWeibo.WP7.ViewModels
             get
             {
                 return this.containerLocator.Container.Resolve<PostNewViewModel>();
+            }
+        }
+
+        public PictureViewViewModel PictureViewViewModel
+        {
+            get
+            {
+                return this.containerLocator.Container.Resolve<PictureViewViewModel>();
             }
         }
 

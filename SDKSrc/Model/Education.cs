@@ -1,97 +1,28 @@
 ﻿
+using System.Runtime.Serialization;
 namespace TencentWeiboSDK.Model
 {
+    [DataContract]
     public class Education:BaseModel
     {
-        private int departmentid = 0;
-        private int id = 0;
-        private int level = 0;
-        private int schoolid=0;
-        private int year = 0;
-
         public Education()
         {
-
         }
 
-        public int DepartmentId
-        {
-            get
-            {
-                return departmentid;
-            }
-            set
-            {
-                if (value != departmentid)
-                {
-                    departmentid = value;
-                    NotifyPropertyChanged("DepartmentId");
-                }
-            }
-        }
+        [DataMember(Name = "departmentid")]
+        public int DepartmentId { get; set; }
 
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-            set
-            {
-                if (value != id)
-                {
-                    id = value;
-                    NotifyPropertyChanged("Id");
-                }
-            }
-        }
+        [DataMember(Name = "id")]
+        public int Id { get; set; }
 
-        public int Level
-        {
-            get
-            {
-                return level;
-            }
-            set
-            {
-                if (value != level)
-                {
-                    level = value;
-                    NotifyPropertyChanged("Level");
-                }
-            }
-        }
+        [DataMember(Name = "level")]
+        public int Level { get; set; }
 
-        public int SchoolId
-        {
-            get
-            {
-                return schoolid;
-            }
-            set
-            {
-                if (value != schoolid)
-                {
-                    schoolid = value;
-                    NotifyPropertyChanged("SchoolId");
-                }
-            }
-        }
+        [DataMember(Name = "schoolid")]
+        public int SchoolId { get; set; }
 
-        public int Year
-        {
-            get
-            {
-                return year;
-            }
-            set
-            {
-                if (value != year)
-                {
-                    year = value;
-                    NotifyPropertyChanged("Year");
-                }
-            }
-        }
+        [DataMember(Name="year")]
+        public int Year { get; set; }
+
     }
 }

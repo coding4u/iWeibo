@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using iWeibo.WP7.ViewModels.TencentViewModels;
 
 namespace iWeibo.WP7.Views.TencentViews
 {
@@ -18,6 +19,13 @@ namespace iWeibo.WP7.Views.TencentViews
         public TencentStatusDetail()
         {
             InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            var viewModel = this.DataContext as TencentStatusDetailViewModel;
+            viewModel.StatusId = this.NavigationContext.QueryString.ContainsKey("id") ? this.NavigationContext.QueryString["id"] : "";
         }
     }
 }
