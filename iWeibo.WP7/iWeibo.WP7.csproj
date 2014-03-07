@@ -102,7 +102,10 @@
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\PictureViewViewModel.cs" />
     <Compile Include="ViewModels\PostNewViewModel.cs" />
+    <Compile Include="ViewModels\SinaViewModels\SinaRepostPageViewMode.cs" />
+    <Compile Include="ViewModels\SinaViewModels\SinaStatusDetailViewModel.cs" />
     <Compile Include="ViewModels\SinaViewModels\SinaTimelineViewModel.cs" />
+    <Compile Include="ViewModels\TencentViewModels\TencentRepostPageViewModel.cs" />
     <Compile Include="ViewModels\TencentViewModels\TencentStatusDetailViewModel.cs" />
     <Compile Include="ViewModels\TencentViewModels\TencentTimelineViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
@@ -122,11 +125,20 @@
     <Compile Include="Views\SinaViews\SinaLogin.xaml.cs">
       <DependentUpon>SinaLogin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SinaViews\SinaRepostPage.xaml.cs">
+      <DependentUpon>SinaRepostPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SinaViews\SinaStatusDetail.xaml.cs">
+      <DependentUpon>SinaStatusDetail.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SinaViews\SinaTimeline.xaml.cs">
       <DependentUpon>SinaTimeline.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TencentViews\TencentLogin.xaml.cs">
       <DependentUpon>TencentLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TencentViews\TencentRepostPage.xaml.cs">
+      <DependentUpon>TencentRepostPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TencentViews\TencentStatusDetail.xaml.cs">
       <DependentUpon>TencentStatusDetail.xaml</DependentUpon>
@@ -223,11 +235,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SinaViews\SinaRepostPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SinaViews\SinaStatusDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SinaViews\SinaTimeline.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TencentViews\TencentLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TencentViews\TencentRepostPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

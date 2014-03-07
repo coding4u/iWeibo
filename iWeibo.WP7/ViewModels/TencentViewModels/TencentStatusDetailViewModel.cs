@@ -111,23 +111,7 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
             }
         }
 
-        private bool canDelete;
-
-        public bool CanDelete
-        {
-            get
-            {
-                return canDelete;
-            }
-            set
-            {
-                if (value != canDelete)
-                {
-                    canDelete = value;
-                    RaisePropertyChanged(() => this.CanDelete);
-                }
-            }
-        }
+        public bool CanDelete { get; set; }
 
         public ObservableCollection<Status> CommentsTimeline { get; set; }
 
@@ -140,7 +124,7 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
         public DelegateCommand CopyCommand { get; set; }
         public DelegateCommand DeleteCommand { get; set; }
         public DelegateCommand ViewPictureCommand { get; set; }
-
+        
 
         public string StatusId { get; set; }
         
@@ -149,7 +133,7 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
             INavigationService navigationService,
             IPhoneApplicationServiceFacade phoneApplicationServiceFacade,
             IMessageBox messageBox)
-            :base(navigationService,phoneApplicationServiceFacade,new Uri(Constants.TencentStatusDetail,UriKind.Relative))
+            :base(navigationService,phoneApplicationServiceFacade,new Uri(Constants.TencentStatusDetailView,UriKind.Relative))
         {
             this.messageBox = messageBox;
             this.CommentsTimeline = new ObservableCollection<Status>();
@@ -161,6 +145,7 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
                     {
                         this.Status = s;
                         this.CanDelete = s.IsSelf;
+                        this.DeleteCommand.RaiseCanExecuteChanged();
                     }
                     else
                         GetStatus();
@@ -173,8 +158,16 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
                     else
                         GetCommentsTimeline();
                 }, p => !this.IsSyncing);
-            this.CommentCommand = new DelegateCommand(() => { });
-            this.RepostCommand = new DelegateCommand(() => { });
+            this.CommentCommand = new DelegateCommand(() =>
+                {
+                    this.NavigationService.Navigate(new Uri(Constants.TencentRepostPageView + "?id=" + this.Status.Id + "&type=comment", UriKind.Relative));
+                });
+
+            this.RepostCommand = new DelegateCommand(() =>
+                {
+                    this.NavigationService.Navigate(new Uri(Constants.TencentRepostPageView + "?id=" + this.Status.Id + "&type=repost", UriKind.Relative));
+                });
+
             this.CopyCommand = new DelegateCommand(CopyStatus);
             this.DeleteCommand = new DelegateCommand(DeleteStatus, () => this.CanDelete && !this.IsSyncing);
             this.FavoriteCommand = new DelegateCommand(() =>
@@ -188,10 +181,11 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
             this.ViewPictureCommand = new DelegateCommand(() =>
                 {
                     if (this.Status.HasPic)
-                        this.NavigationService.Navigate(new Uri(Constants.PictureView + "?PicUrl=" + this.Status.ImageUrl, UriKind.Relative));
+                        this.NavigationService.Navigate(new Uri(Constants.PictureView + "?PicUrl=" + this.Status.ImageUrl+@"/460", UriKind.Relative));
                     else
-                        this.NavigationService.Navigate(new Uri(Constants.PictureView + "?PicUrl=" + this.Status.Source.ImageUrl, UriKind.Relative));
+                        this.NavigationService.Navigate(new Uri(Constants.PictureView + "?PicUrl=" + this.Status.Source.ImageUrl+@"/460", UriKind.Relative));
                 });
+
         }
 
         private void Refresh()
@@ -237,6 +231,7 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
                                 {
                                     this.Status = callback.Data;
                                     this.CanDelete = callback.Data.IsSelf;
+                                    this.DeleteCommand.RaiseCanExecuteChanged();
                                 }
                                 else
                                 {
@@ -381,7 +376,6 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
 
         void toast_Completed(object sender, PopUpEventArgs<string, PopUpResult> e)
         {
-            if (this.Status == null)
                 if (this.NavigationService.CanGoBack)
                     this.NavigationService.GoBack();
         }

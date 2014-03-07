@@ -1,5 +1,6 @@
 ﻿using Coding4Fun.Toolkit.Controls;
 using iWeibo.WP7.Adapters;
+using Microsoft.Phone;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Xna.Framework.Media;
 using System;
@@ -105,6 +106,9 @@ namespace iWeibo.WP7.ViewModels
 
         public string PictureUrl { get; set; }
 
+        public bool IsSaved { get; set; }
+
+        
         public DelegateCommand PageLoadedCommand { get; set; }
 
         public DelegateCommand SaveCommand { get; set; }
@@ -117,51 +121,68 @@ namespace iWeibo.WP7.ViewModels
             : base(navigationService, phoneApplicationServiceFacade, new Uri(Constants.PictureView, UriKind.Relative))
         {
             this.PageLoadedCommand=new DelegateCommand(DownloadPicture);
-            this.SaveCommand = new DelegateCommand(() => { });
+            this.SaveCommand = new DelegateCommand(SavePicture, () => !this.IsSaved);
         }
 
         private void DownloadPicture()
         {
             webClient = new WebClient();
+            webClient.OpenReadCompleted += webClient_OpenReadCompleted;
+
             webClient.DownloadProgressChanged += webClient_DownloadProgressChanged;
-            webClient.DownloadStringCompleted += webClient_DownloadStringCompleted;
+            //webClient.DownloadStringCompleted += webClient_DownloadStringCompleted;
             if (!string.IsNullOrEmpty(this.PictureUrl))
             {
-                webClient.DownloadStringAsync(new Uri(this.PictureUrl));
+                webClient.OpenReadAsync(new Uri(this.PictureUrl));
+                //webClient.DownloadStringAsync(new Uri(this.PictureUrl));
                 this.IsDownloading = true;
             }
         }
 
-        private void webClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        void webClient_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
             this.IsDownloading = false;
-
-            if(e.Cancelled==true)
-            {
-                return ;
-            }
-            if (e.Error != null)
+            if (e.Cancelled || e.Error != null)
             {
                 return;
             }
-
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
-            {
-                var str = e.Result;
-                BitmapImage bmp = new BitmapImage();
-
-                bmp.CreateOptions = BitmapCreateOptions.None;
-
-                bmp.ImageOpened += bmp_ImageOpened;
-                bmp.UriSource = new Uri(this.PictureUrl);
-
-            });
+            byte[] imageBytes = new byte[e.Result.Length];
+            e.Result.Read(imageBytes, 0, imageBytes.Length);
+            e.Result.Seek(0, SeekOrigin.Begin);
+            var imageSource = PictureDecoder.DecodeJpeg(e.Result);
+            this.Picture = imageSource;
         }
 
-        private void bmp_ImageOpened(object sender, RoutedEventArgs e)
-        {
-            this.Picture = new WriteableBitmap(sender as BitmapImage);
-        }
+        //private void webClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        //{
+        //    this.IsDownloading = false;
+
+        //    if(e.Cancelled==true)
+        //    {
+        //        return ;
+        //    }
+        //    if (e.Error != null)
+        //    {
+        //        return;
+        //    }
+
+        //    Deployment.Current.Dispatcher.BeginInvoke(() =>
+        //    {
+        //        var str = e.Result;
+        //        BitmapImage bmp = new BitmapImage();
+
+        //        bmp.CreateOptions = BitmapCreateOptions.None;
+
+        //        bmp.ImageOpened += bmp_ImageOpened;
+        //        bmp.UriSource = new Uri(this.PictureUrl);
+
+        //    });
+        //}
+
+        //private void bmp_ImageOpened(object sender, RoutedEventArgs e)
+        //{
+        //    this.Picture = new WriteableBitmap(sender as BitmapImage);
+        //}
 
         private void webClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
@@ -179,9 +200,7 @@ namespace iWeibo.WP7.ViewModels
 
                 string lName = DateTime.Now.ToString("yyyyMMddhhmmss") + ".jpg";
 
-
                 // 将WriteableBitmap转换为JPEG流编码，并储存到独立存储里.
-
                 Extensions.SaveJpeg(this.Picture, fileStream, this.Picture.PixelWidth, this.Picture.PixelHeight, 0, 100);
                 fileStream.Seek(0, SeekOrigin.Begin);
                 fileStream.Seek(0, SeekOrigin.Current);
@@ -189,6 +208,10 @@ namespace iWeibo.WP7.ViewModels
                 //把图片加在WP7 手机的媒体库.
                 Picture pic = library.SavePicture(lName, fileStream);
                 //fileStream.Close();
+
+                this.IsSaved = true;
+                this.SaveCommand.RaiseCanExecuteChanged();
+
                 toast.Message = "保存成功...";
                 toast.Show();
             }

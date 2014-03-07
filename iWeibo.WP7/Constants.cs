@@ -17,12 +17,14 @@ namespace iWeibo.WP7
         public const string MainPageView = "/Views/MainPage.xaml";
         public const string SinaLoginView = "/Views/SinaViews/SinaLogin.xaml";
         public const string SinaTimelineView = "/Views/SinaViews/SinaTimeline.xaml";
-        public const string SinaStatusDetail = "/Views/SinaViews/SinaStatusDetail.xaml";
+        public const string SinaStatusDetailView = "/Views/SinaViews/SinaStatusDetail.xaml";
         public const string TencentLoginView = "/Views/TencentViews/TencentLogin.xaml";
         public const string TencentTimelineView = "/Views/TencentViews/TencentTimeline.xaml";
-        public const string TencentStatusDetail = "/Views/TencentViews/TencentStatusDetail.xaml";
+        public const string TencentStatusDetailView = "/Views/TencentViews/TencentStatusDetail.xaml";
+        public const string TencentRepostPageView = "/Views/TencentViews/TencentRepostPage.xaml";
+
         public const string PostNewView = "/Views/PostNew.xaml";
-        public const string SettingsPage = "/Views/SettingsPage.xaml";
+        public const string SettingsPageView = "/Views/SettingsPage.xaml";
         public const string PictureView = "/Views/PictureView.xaml";
         #endregion
 

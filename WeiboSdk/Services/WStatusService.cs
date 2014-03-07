@@ -16,7 +16,11 @@ namespace WeiboSdk.Services
             
         }
 
-
+        /// <summary>
+        /// 根据Id获取一条微博信息
+        /// </summary>
+        /// <param name="id">微博唯一ID</param>
+        /// <param name="action">回调</param>
         public void GetStatus(string id, Action<Callback<WStatus>> action)
         {
             SdkCmdBase cmdBase = new CmdStatus

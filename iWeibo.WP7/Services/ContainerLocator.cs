@@ -63,7 +63,15 @@ namespace iWeibo.WP7.Services
             this.Container.Register(
                 c => new SinaTimelineViewModel(
                     c.Resolve<INavigationService>(),
-                    c.Resolve<IPhoneApplicationServiceFacade>()))
+                    c.Resolve<IPhoneApplicationServiceFacade>(),
+                    c.Resolve<IMessageBox>()))
+                    .ReusedWithin(ReuseScope.None);
+
+            this.Container.Register(
+                c => new SinaStatusDetailViewModel(
+                    c.Resolve<INavigationService>(),
+                    c.Resolve<IPhoneApplicationServiceFacade>(),
+                    c.Resolve<IMessageBox>()))
                     .ReusedWithin(ReuseScope.None);
 
             this.Container.Register(
@@ -75,6 +83,13 @@ namespace iWeibo.WP7.Services
 
             this.Container.Register(
                 c => new TencentStatusDetailViewModel(
+                    c.Resolve<INavigationService>(),
+                    c.Resolve<IPhoneApplicationServiceFacade>(),
+                    c.Resolve<IMessageBox>()))
+                    .ReusedWithin(ReuseScope.None);
+
+            this.Container.Register(
+                c => new TencentRepostPageViewModel(
                     c.Resolve<INavigationService>(),
                     c.Resolve<IPhoneApplicationServiceFacade>(),
                     c.Resolve<IMessageBox>()))

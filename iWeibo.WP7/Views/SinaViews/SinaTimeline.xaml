@@ -10,11 +10,13 @@
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:prismInteractivity="clr-namespace:Microsoft.Practices.Prism.Interactivity;assembly=Microsoft.Practices.Prism.Interactivity" 
+    xmlns:customcontrol="clr-namespace:Meituan.Client.Controls.CustomControl"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
+    toolkit:TiltEffect.IsTiltEnabled="True"
     Style="{StaticResource TransitionPageStyle}"
     DataContext="{Binding Source={StaticResource ViewModelLocator},Path=SinaTimelineViewModel}"
     shell:SystemTray.IsVisible="True">
@@ -26,17 +28,38 @@
     <!--LayoutRoot 是包含所有页面内容的根网格-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--枢轴控件-->
-        <controls:Pivot 
-            Title="{StaticResource SinaTitle}"
+        <customcontrol:MTPivot 
             SelectedIndex="{Binding SelectedPivotIndex,Mode=TwoWay}">
+            <customcontrol:MTPivot.Title>
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="26" Width="26" Stretch="Uniform" Source="/Resources/Images/Logos/sinalogo26.png"/>
+                    <TextBlock Text="{StaticResource SinaTitle}"  Margin="5,0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </customcontrol:MTPivot.Title> 
             <!--枢轴项一-->
             <controls:PivotItem Header="主页">
                 <Grid>
                     <toolkit:LongListSelector 
                         IsFlatList="True"
                         ItemsSource="{Binding HomeTimeline}"
-                        ItemTemplate="{StaticResource SinaTimelineTemplate}">
+                        ItemTemplate="{StaticResource SinaTimelineTemplate}"
+                        SelectedItem="{Binding SelectedStatus, Mode=TwoWay}">
                         
+                        <i:Interaction.Triggers>
+                            <!--<i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding Path=SelectionChangedCommand}"/>
+                            </i:EventTrigger>-->
+                            <i:EventTrigger EventName="StretchingBottom">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding HomeTimelineCommand}"
+                                    CommandParameter="Next"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="StretchingTop">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding HomeTimelineCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </toolkit:LongListSelector>
                 </Grid>
             </controls:PivotItem>
@@ -47,8 +70,24 @@
                     <toolkit:LongListSelector 
                         IsFlatList="True"
                         ItemsSource="{Binding MentionsTimeline}"
-                        ItemTemplate="{StaticResource SinaTimelineTemplate}">
-                        
+                        ItemTemplate="{StaticResource SinaTimelineTemplate}"
+                        SelectedItem="{Binding SelectedStatus, Mode=TwoWay}">
+                        <i:Interaction.Triggers>
+                            <!--<i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding SelectionChangedCommand}"
+                                    CommandParameter="{Binding Path=SelectedItem,ElementName=MentionsTimelineList}"/>
+                            </i:EventTrigger>-->
+                            <i:EventTrigger EventName="StretchingBottom">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding MentionsTimelineCommand}"
+                                    CommandParameter="Next"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="StretchingTop">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding MentionsTimelineCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </toolkit:LongListSelector>
                 </Grid>
             </controls:PivotItem>
@@ -59,13 +98,29 @@
                     <toolkit:LongListSelector
                         IsFlatList="True"
                         ItemsSource="{Binding FavoritesTimeline}"
-                        ItemTemplate="{StaticResource SinaTimelineTemplate}">
-                        
+                        ItemTemplate="{StaticResource SinaTimelineTemplate}"
+                        SelectedItem="{Binding SelectedStatus, Mode=TwoWay}">
+                        <i:Interaction.Triggers>
+                        <!--<i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding SelectionChangedCommand}"
+                                    CommandParameter="{Binding Path=SelectedItem,ElementName=FavoritesTimelineList}"/>
+                            </i:EventTrigger>-->
+                        <i:EventTrigger EventName="StretchingBottom">
+                            <i:InvokeCommandAction 
+                                    Command="{Binding FavoritesTimelineCommand}"
+                                    CommandParameter="Next"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="StretchingTop">
+                            <i:InvokeCommandAction 
+                                    Command="{Binding FavoritesTimelineCommand}"/>
+                        </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </toolkit:LongListSelector>
                 </Grid>
             </controls:PivotItem>
 
-        </controls:Pivot>
+        </customcontrol:MTPivot>
     </Grid>
 
     <i:Interaction.Triggers>

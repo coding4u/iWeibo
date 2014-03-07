@@ -43,11 +43,27 @@ namespace iWeibo.WP7.ViewModels
             }
         }
 
+        public TencentRepostPageViewModel TencentRepostPageViewModel
+        {
+            get
+            {
+                return this.containerLocator.Container.Resolve<TencentRepostPageViewModel>();
+            }
+        }
+
         public SinaTimelineViewModel SinaTimelineViewModel
         {
             get
             {
                 return this.containerLocator.Container.Resolve<SinaTimelineViewModel>();
+            }
+        }
+
+        public SinaStatusDetailViewModel SinaStatusDetailViewModel
+        {
+            get
+            {
+                return this.containerLocator.Container.Resolve<SinaStatusDetailViewModel>();
             }
         }
 

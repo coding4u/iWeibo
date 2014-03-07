@@ -4,6 +4,7 @@ using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -32,6 +33,10 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
                 {
                     isSyncing = value;
                     RaisePropertyChanged(() => this.IsSyncing);
+                    this.RefreshCommand.RaiseCanExecuteChanged();
+                    this.HomeTimelineCommand.RaiseCanExecuteChanged();
+                    this.MentionsTimelineCommand.RaiseCanExecuteChanged();
+                    this.FavoritesTimelineCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -98,6 +103,8 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
         public DelegateCommand<string> MentionsTimelineCommand { get; set; }
         public DelegateCommand<string> FavoritesTimelineCommand { get; set; }
         public DelegateCommand BackKeyPressCommand { get; set; }
+        public DelegateCommand<object> PictureViewCommand { get; set; }
+        
 
         //public DelegateCommand SelectionChangedCommand { get; set; }
         
@@ -115,7 +122,7 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
             this.FavoritesTimeline = new ObservableCollection<Status>();
 
 
-            this.PageLoadedCommand = new DelegateCommand(LoadDataFromCache, () => !this.IsSyncing);
+            this.PageLoadedCommand = new DelegateCommand(LoadDataFromCache);
 
             this.RefreshCommand = new DelegateCommand(Refresh, () => !this.IsSyncing);
 
@@ -144,6 +151,11 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
                 }, p => (!this.IsSyncing));
 
             this.BackKeyPressCommand = new DelegateCommand(OnBackKeyPress,()=>true);
+
+            //this.PictureViewCommand = new DelegateCommand<object>((o) =>
+            //    {
+            //        Debug.WriteLine(o.GetType().ToString());
+            //    });
 
             //this.SelectionChangedCommand = new DelegateCommand(()=>
             //    {
@@ -327,7 +339,7 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
             {
                 var id = this.SelectedStatus.Id;
                 new IsoStorage(Constants.TencentSelectedStatus).SaveData(this.SelectedStatus);
-                this.NavigationService.Navigate(new Uri(Constants.TencentStatusDetail + "?id=" + id, UriKind.Relative));
+                this.NavigationService.Navigate(new Uri(Constants.TencentStatusDetailView + "?id=" + id, UriKind.Relative));
                 
                 this.SelectedStatus = null;
             }
@@ -335,7 +347,9 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
 
         private void OnBackKeyPress()
         {
-            this.NavigationService.Navigate(new Uri(Constants.MainPageView, UriKind.Relative));
+            if (this.NavigationService.CanGoBack)
+                this.NavigationService.GoBack();
+            //this.NavigationService.Navigate(new Uri(Constants.MainPageView, UriKind.Relative));
         }
 
         public override void OnPageResumeFromTombstoning()

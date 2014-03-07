@@ -15,9 +15,10 @@ namespace iWeibo.WP7.Views
     public partial class PictureView : PhoneApplicationPage
     {
 
-        bool isDragging;
-        bool isPinching;
-        Point ptPinchPositionStart;
+        private const double doubleTapScale = 2;
+        private bool isDouble = false;
+        private Point point;
+        private double initialScale = 1f;
 
         public PictureView()
         {
@@ -29,99 +30,136 @@ namespace iWeibo.WP7.Views
         {
             base.OnNavigatedTo(e);
             var viewModel = this.DataContext as PictureViewViewModel;
-            viewModel.PictureUrl = this.NavigationContext.QueryString.ContainsKey("PicUrl") ? this.NavigationContext.QueryString["PicUrl"]+@"/2000" : "";
+            viewModel.PictureUrl = this.NavigationContext.QueryString.ContainsKey("PicUrl") ? this.NavigationContext.QueryString["PicUrl"]: "";
         }
 
 
-        void OnGestureListenerDragStarted(object sender, DragStartedGestureEventArgs args)
-        {
-            isDragging = args.OriginalSource == image;
-        }
 
-        void OnGestureListenerDragDelta(object sender, DragDeltaGestureEventArgs args)
+        private void GestureListener_DoubleTap(object sender, GestureEventArgs e)
         {
-            if (isDragging)
+            if (transform.ScaleX < doubleTapScale)
             {
-                translateTransform.X += args.HorizontalChange;
-                translateTransform.Y += args.VerticalChange;
+
+                double s = doubleTapScale;
+                rest_s_x.To = s;
+                rest_s_y.To = s;
+                rest_s.Begin();
+                transform.ScaleY = s;
+                transform.ScaleX = s;
+                isDouble = true;
+            }
+            else
+            {
+                double s = 1f;
+                rest_s_x.To = s;
+                rest_s_y.To = s;
+                rest_s.Begin();
+                transform.ScaleY = s;
+                transform.ScaleX = s;
+                isDouble = false;
+                reset();
+            }
+
+        }
+
+        private void reset()
+        {
+            if (transform.ScaleX < 1)
+            {
+                rest_s_x.To = 1;
+                rest_s_y.To = 1;
+                rest_s.Begin();
+                transform.ScaleY = transform.ScaleX = 1f;
+            }
+            else if (transform.ScaleX > 3)
+            {
+                rest_s_x.To = 3;
+                rest_s_y.To = 3;
+                rest_s.Begin();
+                transform.ScaleY = transform.ScaleX = 3f;
+            }
+            double tsx = (transform.ScaleX - 1) * image.ActualWidth / 2;
+            double tsy = (transform.ScaleY - 1) * image.ActualHeight / 2;
+            rest_x_t.To = transform.TranslateX;
+            double x = transform.TranslateX - tsx;
+            if (x > 0)
+            {
+                rest_x_t.To = tsx;
+            }
+            double x2 = transform.TranslateX + tsx;
+            if (x2 < 0)
+            {
+                rest_x_t.To = -tsx;
+            }
+            rest_y_t.To = transform.TranslateY;
+            double y = transform.TranslateY - tsy;
+            if (y > 0)
+            {
+                rest_y_t.To = tsy;
+            }
+            double y2 = transform.TranslateY + tsy;
+            if (y2 < 0)
+            {
+                rest_y_t.To = -tsy;
+            }
+            if (x > 0 || x2 < 0 || y > 0 || y2 < 0)
+            {
+                rest_t.Begin();
+                transform.TranslateX = tsx;
+                transform.TranslateY = tsy;
             }
         }
 
-        void OnGestureListenerDragCompleted(object sender, DragCompletedGestureEventArgs args)
+        private void GestureListener_DragStarted(object sender, DragStartedGestureEventArgs e)
         {
-            if (isDragging)
+            point = new Point(transform.TranslateX, transform.TranslateY);
+        }
+
+        private void GestureListener_DragDelta(object sender, DragDeltaGestureEventArgs e)
+        {
+            var p = e.GetPosition(sender as UIElement);
+            point.X += e.HorizontalChange;
+            point.Y += e.VerticalChange;
+            animx.To = point.X;
+            animy.To = point.Y;
+            story.Begin();
+        }
+
+        private void GestureListener_DragCompleted(object sender, DragCompletedGestureEventArgs e)
+        {
+            reset();
+        }
+
+        private void GestureListener_PinchStarted(object sender, PinchStartedGestureEventArgs e)
+        {
+            rest_s.Stop();
+            initialScale = transform.ScaleX;
+        }
+
+        private void GestureListener_PinchDelta(object sender, PinchGestureEventArgs e)
+        {
+            var s = initialScale * e.DistanceRatio;
+            if (s > 4f)
             {
-                TransferTransforms();
-                isDragging = false;
+                s = 4f;
             }
+            animx_s.To = s;
+            animy_s.To = s;
+            story_s.Begin();
         }
 
-        void OnGestureListenerPinchStarted(object sender, PinchStartedGestureEventArgs args)
+        private void GestureListener_PinchCompleted(object sender, PinchGestureEventArgs e)
         {
-            isPinching = args.OriginalSource == image;
-
-            if (isPinching)
+            if (transform.ScaleX <= 1)
             {
-                // Set transform centers
-                Point ptPinchCenter = args.GetPosition(image);
-                ptPinchCenter = previousTransform.Transform(ptPinchCenter);
-
-                scaleTransform.CenterX = ptPinchCenter.X;
-                scaleTransform.CenterY = ptPinchCenter.Y;
-
-                ptPinchPositionStart = args.GetPosition(this);
+                isDouble = false;
             }
-        }
-
-        void OnGestureListenerPinchDelta(object sender, PinchGestureEventArgs args)
-        {
-            if (args.DistanceRatio > 2.0)
+            else
             {
-                return;
+                isDouble = true;
             }
-            if (isPinching)
-            {
-                // Set scaling
-                scaleTransform.ScaleX = args.DistanceRatio;
-                scaleTransform.ScaleY = args.DistanceRatio;
-
-                // Set translation
-                Point ptPinchPosition = args.GetPosition(this);
-                translateTransform.X = ptPinchPosition.X - ptPinchPositionStart.X;
-                translateTransform.Y = ptPinchPosition.Y - ptPinchPositionStart.Y;
-            }
+            reset();
         }
-
-        void OnGestureListenerPinchCompleted(object sender, PinchGestureEventArgs args)
-        {
-            if (isPinching)
-            {
-                TransferTransforms();
-                isPinching = false;
-            }
-        }
-
-        void TransferTransforms()
-        {
-            previousTransform.Matrix = Multiply(previousTransform.Matrix, currentTransform.Value);
-
-            // Set current transforms to default values
-            scaleTransform.ScaleX = scaleTransform.ScaleY = 1;
-            scaleTransform.CenterX = scaleTransform.CenterY = 0;
-
-            translateTransform.X = translateTransform.Y = 0;
-        }
-
-        Matrix Multiply(Matrix A, Matrix B)
-        {
-            return new Matrix(A.M11 * B.M11 + A.M12 * B.M21,
-                              A.M11 * B.M12 + A.M12 * B.M22,
-                              A.M21 * B.M11 + A.M22 * B.M21,
-                              A.M21 * B.M12 + A.M22 * B.M22,
-                              A.OffsetX * B.M11 + A.OffsetY * B.M21 + B.OffsetX,
-                              A.OffsetX * B.M12 + A.OffsetY * B.M22 + B.OffsetY);
-        }
-
 
     }
 }

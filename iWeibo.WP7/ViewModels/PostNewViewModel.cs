@@ -92,6 +92,7 @@ namespace iWeibo.WP7.ViewModels
                 {
                     isSending = value;
                     RaisePropertyChanged(() => this.IsSending);
+                    SendCommand.RaiseCanExecuteChanged();
                 }
             }
         }

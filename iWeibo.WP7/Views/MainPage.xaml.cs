@@ -48,7 +48,7 @@ namespace iWeibo.WP7.Views
 
         private void AppBarMenuSettings_Click(object sender, EventArgs e)
         {
-            this.NavigationService.Navigate(new Uri(Constants.SettingsPage, UriKind.Relative));
+            this.NavigationService.Navigate(new Uri(Constants.SettingsPageView, UriKind.Relative));
         }
 
 

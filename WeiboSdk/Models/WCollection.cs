@@ -12,8 +12,8 @@ namespace WeiboSdk.Models
         [DataMember(Name="next_cursor")]
         public long NextCursor { get; set; }
 
-        [DataMember(Name="previous_cursor")]
-        public long PreviousCursor { get; set; }
+        //[DataMember(Name="previous_cursor")]
+        //public long PreviousCursor { get; set; }
 
         [DataMember(Name="total_number")]
         public int TotalNumber { get; set; }
@@ -33,6 +33,15 @@ namespace WeiboSdk.Models
         [DataMember(Name = "statuses")]
         public List<WStatus> Statuses { get; set; }
 
+        public long PreviousCursor
+        {
+            get
+            {
+                return this.Statuses.FirstOrDefault().Id;
+            }
+        }
+        
+
     }
 
     [DataContract]
@@ -41,6 +50,14 @@ namespace WeiboSdk.Models
         [DataMember(Name="comments")]
         public List<WStatus> Comments { get; set; }
 
+        public long PreviousCursor
+        {
+            get
+            {
+                return this.Comments.FirstOrDefault().Id;
+            }
+        }
+
     }
 
     [DataContract]
@@ -48,6 +65,14 @@ namespace WeiboSdk.Models
     {
         [DataMember(Name="favorites")]
         public List<WStatus> Favorites { get; set; }
+
+        public long PreviousCursor
+        {
+            get
+            {
+                return this.Favorites.FirstOrDefault().Id;
+            }
+        }
 
     }
 }
