@@ -202,16 +202,22 @@ namespace TencentWeiboSDK.Services
             {
                 if (null != action)
                 {
-                    var jo = JObject.Parse(response.Content);
-                    int ret = jo["ret"].ToObject<int>();
-                    string msg = jo["msg"].ToObject<string>();
-                    if (ret == 0)
-                    {
-                        action(new Callback<bool>(true));
-                    }
+                    if (string.IsNullOrEmpty(response.Content))
+                        action(new Callback<bool>(""));
                     else
                     {
-                        action(new Callback<bool>(msg));
+
+                        var jo = JObject.Parse(response.Content);
+                        int ret = jo["ret"].ToObject<int>();
+                        string msg = jo["msg"].ToObject<string>();
+                        if (ret == 0)
+                        {
+                            action(new Callback<bool>(true));
+                        }
+                        else
+                        {
+                            action(new Callback<bool>(msg));
+                        }
                     }
                 }
             }

@@ -143,7 +143,8 @@ namespace WeiboSdk.Services
                             var collection = new WFavoriteCollection();
                             var jo = JObject.Parse(response.content);
                             var ja = jo["favorites"];
-                            collection.NextCursor = (long)jo["next_cursor"];
+                            if (jo["next_cursor"] != null)
+                                collection.NextCursor = (long)jo["next_cursor"];
                             collection.TotalNumber = (int)jo["total_number"];
                             collection.Favorites = new List<WStatus>();
                             foreach (var j in ja.Children())

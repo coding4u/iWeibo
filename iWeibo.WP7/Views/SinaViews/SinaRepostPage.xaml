@@ -14,11 +14,14 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
+    DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=SinaRepostPageViewModel}"
     mc:Ignorable="d"
+    Style="{StaticResource TransitionPageStyle}"
+    toolkit:TiltEffect.IsTiltEnabled="True"
     shell:SystemTray.IsVisible="True">
 
     <shell:SystemTray.ProgressIndicator>
-        <shell:ProgressIndicator x:Name="Indicator" IsIndeterminate="True" IsVisible="{Binding IsSending}" Text="正在发送..."/>
+        <shell:ProgressIndicator  IsIndeterminate="True" IsVisible="{Binding IsSending}" Text="正在发送..."/>
     </shell:SystemTray.ProgressIndicator>
 
     <!--LayoutRoot 是包含所有页面内容的根网格-->
@@ -75,6 +78,12 @@
         <!--<prismInteractivity:ApplicationBarButtonCommand ButtonText="提及" CommandBinding="{Binding AtSomeOneCommand}"/>-->
         <prismInteractivity:ApplicationBarButtonCommand ButtonText="话题" CommandBinding="{Binding AddTopicCommand}"/>
     </i:Interaction.Behaviors>
+    
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding PageLoadedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
 
 </phone:PhoneApplicationPage>

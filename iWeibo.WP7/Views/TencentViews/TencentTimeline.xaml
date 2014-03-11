@@ -17,6 +17,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     Style="{StaticResource TransitionPageStyle}"
+    toolkit:TiltEffect.IsTiltEnabled="True"
     DataContext="{Binding Source={StaticResource ViewModelLocator},Path=TencentTimelineViewModel}"
     shell:SystemTray.IsVisible="True">
     
@@ -31,7 +32,7 @@
             SelectedIndex="{Binding SelectedPivotIndex,Mode=TwoWay}">
             <customcontrol:MTPivot.Title>
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="48" Width="48" Stretch="Uniform" Source="/Resources/Images/Logos/tencentlogo48.png"/>
+                    <Image Height="32" Width="32" Stretch="Uniform" Source="/Resources/Images/Logos/tencentlogo48.png"/>
                     <TextBlock Text="{StaticResource TencentTitle}"  Margin="5,0" VerticalAlignment="Center"/>
                 </StackPanel>
             </customcontrol:MTPivot.Title>
@@ -139,9 +140,9 @@
             <shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.refresh.png" Text="刷新" />
             <shell:ApplicationBarIconButton IconUri="/Resources/Images/AppBar/appbar.edit.png" Text="新微博"   />
             <!--<shell:ApplicationBarIconButton IconUri="/Resources/Imagess/Appbar/appbar.search.png" Text="搜索"  />-->
-            <shell:ApplicationBar.MenuItems>
+            <!--<shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem x:Name="myInfoMeunItem" Text="我的资料" Click="myInfoMeunItem_Click"/>
-            </shell:ApplicationBar.MenuItems>
+            </shell:ApplicationBar.MenuItems>-->
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
     <i:Interaction.Behaviors>

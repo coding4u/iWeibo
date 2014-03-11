@@ -64,7 +64,6 @@
     <Compile Include="IsoStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SafeIsoStorage.cs" />
-    <Compile Include="TiltEffect.cs" />
     <Compile Include="TokenIsoStorage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />

@@ -4,25 +4,22 @@ using iWeibo.WP7.Services;
 using iWeibo.WP7.Util;
 using Microsoft.Practices.Prism.Commands;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows;
-using TencentWeiboSDK.Model;
-using TencentWeiboSDK.Services;
-using TencentWeiboSDK.Services.Util;
+using WeiboSdk.Models;
+using WeiboSdk.Services;
 
-namespace iWeibo.WP7.ViewModels.TencentViewModels
+namespace iWeibo.WP7.ViewModels.SinaViewModels
 {
-    public class TencentRepostPageViewModel:ViewModel,ITextBoxController
+    public class SinaRepostPageViewModel:ViewModel,ITextBoxController
     {
-
         public event FocusEventHandler Focus;
+
         public event SelectEventHandler Select;
 
         private IMessageBox messageBox;
-        private TService tService = new TService(TokenIsoStorage.TencentTokenStorage.LoadData<TencentAccessToken>());
+
+        private WStatusService statusService = new WStatusService(TokenIsoStorage.SinaTokenStorage.LoadData<SinaAccessToken>());
 
         private bool isSending;
 
@@ -42,6 +39,8 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
                 }
             }
         }
+
+        public string StatusId { get; set; }
 
         private bool isRepost;
 
@@ -79,6 +78,7 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
                 }
             }
         }
+
 
         private int wordsCounter=140;
 
@@ -134,50 +134,54 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
             }
         }
 
-        public string StatusId { get; set; }
-        
+
+
         public DelegateCommand PageLoadedCommand { get; set; }
+
         public DelegateCommand ClearTextCommand { get; set; }
+
         public DelegateCommand SendCommand { get; set; }
+
         public DelegateCommand AddTopicCommand { get; set; }
 
-                
-        public TencentRepostPageViewModel(
+
+        public SinaRepostPageViewModel(
             INavigationService navigationService,
             IPhoneApplicationServiceFacade phoneApplicationServiceFacade,
             IMessageBox messageBox)
-            : base(navigationService, phoneApplicationServiceFacade, new Uri(Constants.TencentRepostPageView, UriKind.Relative))
+            :base(navigationService,phoneApplicationServiceFacade,new Uri(Constants.SinaRepostPageView,UriKind.Relative))
         {
+
             this.messageBox = messageBox;
 
             this.PageLoadedCommand = new DelegateCommand(() =>
+            {
+                if (Focus != null)
                 {
-                    if (Focus != null)
-                    {
-                        Focus(this);
-                    }
-                });
+                    Focus(this);
+                }
+            });
 
             this.ClearTextCommand = new DelegateCommand(() => { this.RepostText = ""; });
 
             this.SendCommand = new DelegateCommand(() =>
-                {
-                    if (this.IsRepost)
-                        Repost();
-                    else
-                        Comment();
-                }, () => !this.IsSending && !string.IsNullOrEmpty(RepostText) && !(RepostText.Length > 140));
+            {
+                if (this.IsRepost)
+                    Repost();
+                else
+                    Comment();
+            }, () => !this.IsSending && !string.IsNullOrEmpty(RepostText) && !(RepostText.Length > 140));
 
             this.AddTopicCommand = new DelegateCommand(() =>
+            {
+                if (this.Select != null)
                 {
-                    if (this.Select != null)
-                    {
-                        int start = string.IsNullOrEmpty(RepostText) ? 1 : RepostText.Length + 1;
-                        int length = 7;
-                        RepostText += "#在此处输入话题#";
-                        Select(this, start, length);
-                    }
-                });
+                    int start = string.IsNullOrEmpty(RepostText) ? 1 : RepostText.Length + 1;
+                    int length = 7;
+                    RepostText += "#在此处输入话题#";
+                    Select(this, start, length);
+                }
+            });
         }
 
         private void HandleTextChange()
@@ -196,13 +200,13 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
             this.SendCommand.RaiseCanExecuteChanged();
         }
 
+
         private void Repost()
         {
             this.IsSending = true;
             new Thread(() =>
                 {
-                    tService.Repost(new ServiceArgument() { Reid = this.StatusId, Content = this.RepostText },
-                        callback =>
+                    statusService.Repost(this.StatusId, this.RepostText, 0, callback =>
                         {
                             Deployment.Current.Dispatcher.BeginInvoke(() =>
                                 {
@@ -215,23 +219,25 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
                                     }
                                     else
                                     {
-                                        this.messageBox.Show(callback.ExceptionMsg, "转发失败", MessageBoxButton.OK);
+                                        this.messageBox.Show(callback.ErrorMsg, "转发失败", MessageBoxButton.OK);
                                     }
 
                                     this.IsSending = false;
                                 });
                         });
                 }).Start();
+
         }
+
 
 
         private void Comment()
         {
             this.IsSending = true;
+
             new Thread(() =>
                 {
-                    tService.Comment(new ServiceArgument() { Reid = this.StatusId, Content = this.RepostText },
-                        callback =>
+                    statusService.Comment(this.StatusId, this.RepostText, 0, callback =>
                         {
                             Deployment.Current.Dispatcher.BeginInvoke(() =>
                                 {
@@ -244,8 +250,9 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
                                     }
                                     else
                                     {
-                                        this.messageBox.Show(callback.ExceptionMsg, "评论失败", MessageBoxButton.OK);
+                                        this.messageBox.Show(callback.ErrorMsg, "评论失败", MessageBoxButton.OK);
                                     }
+
                                     this.IsSending = false;
                                 });
                         });
@@ -253,15 +260,19 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
         }
 
 
+
         void toast_Completed(object sender, PopUpEventArgs<string, PopUpResult> e)
         {
             if (this.NavigationService.CanGoBack)
                 this.NavigationService.GoBack();
+            else
+                this.NavigationService.Navigate(new Uri(Constants.SinaTimelineView, UriKind.Relative));
         }
 
         public override void OnPageResumeFromTombstoning()
         {
             //throw new NotImplementedException();
         }
+
     }
 }

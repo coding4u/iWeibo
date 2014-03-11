@@ -2,6 +2,7 @@
 using Microsoft.Practices.Prism.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -59,6 +60,7 @@ namespace iWeibo.WP7.ViewModels
         ~ViewModel()
         {
             this.Dispose();
+            Debug.WriteLine("call ~ViewModel...");
         }
 
         protected bool IsResumingFromTombstoning

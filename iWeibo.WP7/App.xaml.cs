@@ -17,6 +17,7 @@ using WeiboSdk;
 using iWeibo.WP7.Models.TencentModels;
 using iWeibo.WP7.Models.SinaModels;
 using System.IO.IsolatedStorage;
+using Meituan.Client.Utilities;
 
 namespace iWeibo.WP7
 {
@@ -50,6 +51,9 @@ namespace iWeibo.WP7
             // 调试时显示图形分析信息。
             if (System.Diagnostics.Debugger.IsAttached)
             {
+                //显示内存使用计数器
+                MemoryDiagnosticsHelper.Start(new TimeSpan(0, 0, 1), true);
+
                 // 显示当前帧速率计数器。
                 //Application.Current.Host.Settings.EnableFrameRateCounter = true;
 

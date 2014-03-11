@@ -17,6 +17,7 @@
     DataContext="{Binding Source={StaticResource ViewModelLocator},Path=PostNewViewModel}"
     mc:Ignorable="d"
     Style="{StaticResource TransitionPageStyle}"
+    toolkit:TiltEffect.IsTiltEnabled="True"
     shell:SystemTray.IsVisible="True" >
     
     <shell:SystemTray.ProgressIndicator>
@@ -37,8 +38,9 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel 包含应用程序的名称和页标题-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="新微博" Style="{StaticResource PhoneTextNormalStyle}"/>
+        <StackPanel Grid.Row="0" Margin="12,17,0,28" Orientation="Horizontal">
+            <Image Height="48" Width="48" Source="/Resources/Images/Icons/Message-Edit.png" Stretch="UniformToFill" />
+            <TextBlock Text="新微博" Style="{StaticResource PhoneTextNormalStyle}" Margin="5,0,0,0" VerticalAlignment="Center"/>
         </StackPanel>
 
         <!--ContentPanel - 在此处放置其他内容-->
@@ -62,7 +64,8 @@
                             <TextBlock Height="30" TextAlignment="Right" Margin="30,0,0,0"
                                        Text="{Binding WordsCount}"
                                        Foreground="{Binding WordsCountColor}"/>
-                            <Image Source="/Resources/Images/Icons/Cancel.png" Stretch="Uniform">
+                            <Image Source="/Resources/Images/Icons/Cancel.png" Stretch="Uniform"
+                                   Visibility="{Binding HasText,Converter={StaticResource BoolToVisibilityConverter}}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Tap">
                                         <i:InvokeCommandAction Command="{Binding ClearTextCommand}"/>

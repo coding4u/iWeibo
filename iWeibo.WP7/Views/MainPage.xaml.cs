@@ -12,7 +12,6 @@ namespace iWeibo.WP7.Views
         public MainPage()
         {
             InitializeComponent();
-            MemoryDiagnosticsHelper.Start(new TimeSpan(0, 0, 1), true);
         }
 
         private bool isLeaving = false;

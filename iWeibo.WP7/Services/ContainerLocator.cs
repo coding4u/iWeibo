@@ -75,6 +75,13 @@ namespace iWeibo.WP7.Services
                     .ReusedWithin(ReuseScope.None);
 
             this.Container.Register(
+                c => new SinaRepostPageViewModel(
+                    c.Resolve<INavigationService>(),
+                    c.Resolve<IPhoneApplicationServiceFacade>(),
+                    c.Resolve<IMessageBox>()))
+                    .ReusedWithin(ReuseScope.None);
+
+            this.Container.Register(
                 c => new PostNewViewModel(
                     c.Resolve<INavigationService>(),
                     c.Resolve<IPhoneApplicationServiceFacade>(),
@@ -99,6 +106,13 @@ namespace iWeibo.WP7.Services
                 c => new PictureViewViewModel(
                     c.Resolve<INavigationService>(),
                     c.Resolve<IPhoneApplicationServiceFacade>()))
+                    .ReusedWithin(ReuseScope.None);
+
+            this.Container.Register(
+                c => new SettingsViewModel(
+                    c.Resolve<INavigationService>(),
+                    c.Resolve<IPhoneApplicationServiceFacade>(),
+                    c.Resolve<IMessageBox>()))
                     .ReusedWithin(ReuseScope.None);
 
         }

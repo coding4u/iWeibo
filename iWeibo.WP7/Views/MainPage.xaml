@@ -6,7 +6,6 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:services="clr-namespace:iWeibo.WP7.Services;assembly=iWeibo.WP7.Services"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:prismInteractivity="clr-namespace:Microsoft.Practices.Prism.Interactivity;assembly=Microsoft.Practices.Prism.Interactivity"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
@@ -17,19 +16,22 @@
     mc:Ignorable="d"
     DataContext="{Binding Source={StaticResource ViewModelLocator},Path=MainPageViewModel}"
     Style="{StaticResource TransitionPageStyle}"
-    services:TiltEffect.IsTiltEnabled="True"
+    toolkit:TiltEffect.IsTiltEnabled="True"
     BackKeyPress="PhoneApplicationPage_BackKeyPress"
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot 是包含所有页面内容的根网格-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
+        <!--<Grid.Background>
+            <ImageBrush Stretch="Uniform" ImageSource="/Resources/Images/Background/Cloud.jpg" />
+        </Grid.Background>-->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel 包含应用程序的名称和页标题-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel Grid.Row="0" Margin="12,17,0,28" >
             <TextBlock Text="{StaticResource ApplicationTitle}" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock Text="首页" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
@@ -49,8 +51,12 @@
                     <toolkit:HubTile Grid.Row="0" Grid.Column="0" 
                                       x:Name="SinaHubTile"
                                      Height="173" Width="173"
+                                     Margin="0,0,15,15"
+                                     VerticalAlignment="Bottom"
+                                     HorizontalAlignment="Right"
                                      Title="{StaticResource SinaTitle}"
-                                     Source="/Resources/Images/Logos/sinaLogo.png"  >                                   
+                                     Source="/Resources/Images/Logos/sinaLogo.png">
+
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Tap">
                                 <i:InvokeCommandAction Command="{Binding EnterSinaCommand}"/>
@@ -60,6 +66,9 @@
                     <toolkit:HubTile Grid.Row="0" Grid.Column="1"
                                      x:Name="TencentHubTile"
                                      Height="173" Width="173"
+                                     Margin="15,0,0,15"
+                                     VerticalAlignment="Bottom"
+                                     HorizontalAlignment="Left"
                                      Title="{StaticResource TencentTitle}"
                                      Source="/Resources/Images/Logos/tencentLogo.png">
                         <i:Interaction.Triggers>
@@ -71,6 +80,9 @@
                     <toolkit:HubTile Grid.Row="1" Grid.Column="0"
                                      x:Name="CreateNewHubTile"
                                      Height="173" Width="173"
+                                     Margin="0,15,15,0"
+                                     VerticalAlignment="Top"
+                                     HorizontalAlignment="Right"
                                      Title="写微博"
                                      Source="/Resources/Images/Icons/CreatNew.png">
                         <i:Interaction.Triggers>
@@ -89,7 +101,7 @@
             <i:InvokeCommandAction Command="{Binding BackKeyPressCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>-->
-    
+
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar Mode="Minimized">
             <shell:ApplicationBar.MenuItems>

@@ -67,6 +67,14 @@ namespace iWeibo.WP7.ViewModels
             }
         }
 
+        public SinaRepostPageViewModel SinaRepostPageViewModel
+        {
+            get
+            {
+                return this.containerLocator.Container.Resolve<SinaRepostPageViewModel>();
+            }
+        }
+
         public PostNewViewModel PostNewViewModel
         {
             get
@@ -80,6 +88,14 @@ namespace iWeibo.WP7.ViewModels
             get
             {
                 return this.containerLocator.Container.Resolve<PictureViewViewModel>();
+            }
+        }
+
+        public SettingsViewModel SettingsViewModel
+        {
+            get
+            {
+                return this.containerLocator.Container.Resolve<SettingsViewModel>();
             }
         }
 

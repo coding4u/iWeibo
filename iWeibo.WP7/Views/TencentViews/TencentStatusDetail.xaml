@@ -19,6 +19,8 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     DataContext="{Binding Source={StaticResource ViewModelLocator},Path=TencentStatusDetailViewModel}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
+    Style="{StaticResource TransitionPageStyle}"
+    toolkit:TiltEffect.IsTiltEnabled="True"
     shell:SystemTray.IsVisible="True">
     
     <shell:SystemTray.ProgressIndicator>
@@ -44,7 +46,9 @@
                                                Source="/Resources/Images/authen.png" Height="20" Width="20"/>
                 </Grid>
                 <Grid Grid.Row="0" Grid.Column="1" >
-                    <TextBlock Grid.Column="0" Margin="10,0" Text="{Binding Nick}" VerticalAlignment="Center" Foreground="{StaticResource PhoneAccentBrush}"/>
+                    <TextBlock Grid.Column="0" Margin="10,0" Text="{Binding Nick}" VerticalAlignment="Center" 
+                               />
+                               <!--Foreground="{StaticResource PhoneAccentBrush}"/>-->
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="1" >
                     <TextBlock Text="{Binding OrigText}" Margin="10,0" VerticalAlignment="Top" TextWrapping="Wrap"/>
@@ -61,7 +65,7 @@
             SelectedIndex="{Binding SelectedPivotIndex,Mode=TwoWay}">
             <customcontrol:MTPivot.Title>
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="48" Width="48" Stretch="Uniform" Source="/Resources/Images/Logos/tencentlogo48.png"/>
+                    <Image Height="32" Width="32" Stretch="Uniform" Source="/Resources/Images/Logos/tencentlogo48.png"/>
                     <TextBlock Text="{StaticResource TencentTitle}"  Margin="5,0" VerticalAlignment="Center"/>
                 </StackPanel>
             </customcontrol:MTPivot.Title>
@@ -94,7 +98,9 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" x:Name="txtOrign" Text="{Binding Nick}"   Margin="10,0" VerticalAlignment="Center" FontSize="24" Foreground="{StaticResource PhoneAccentBrush}" />
+                                <TextBlock Grid.Column="0" x:Name="txtOrign" Text="{Binding Nick}"   Margin="10,0" VerticalAlignment="Center" FontSize="24" 
+                                           />
+                                           <!--Foreground="{StaticResource PhoneAccentBrush}" />-->
                                 <StackPanel Grid.Column="1" Orientation="Horizontal"  Opacity="0.6"  HorizontalAlignment="Right" Margin="0,0,10,0">
                                     <Image Height="30" Width="30" Stretch="Uniform" Source="/Resources/Images/Icons/repost.png" HorizontalAlignment="Right"/>
                                     <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding Count}"/>
@@ -125,7 +131,9 @@
                                     BorderBrush="{StaticResource PhoneBorderBrush}" 
                                     Visibility="{Binding Path=IsRetweetedStatus,Converter={StaticResource BoolToVisibilityConverter}}" Background="{StaticResource PhoneChromeBrush}">
                                 <StackPanel Margin="0,10">
-                                    <TextBlock  TextWrapping="NoWrap" Text="{Binding Source.Nick}" Foreground="{StaticResource PhoneAccentBrush}" />
+                                    <TextBlock  TextWrapping="NoWrap" Text="{Binding Source.Nick}" 
+                                                />
+                                                <!--Foreground="{StaticResource PhoneAccentBrush}" />-->
                                     <RichTextBox Opacity="0.8" TextWrapping="Wrap" IsReadOnly="True" Margin="5,10">
                                         <i:Interaction.Behaviors >
                                             <util:ConvertContentBehavior Content="{Binding Source.OrigText}" />

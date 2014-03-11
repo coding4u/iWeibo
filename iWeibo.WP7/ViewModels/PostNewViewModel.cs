@@ -34,8 +34,6 @@ namespace iWeibo.WP7.ViewModels
         private bool isSinaSent = false;
         private bool isNavigated = false;
 
-        private Stream photoStream;
-
         #endregion
 
         #region Notification Properties
@@ -148,6 +146,24 @@ namespace iWeibo.WP7.ViewModels
                 {
                     wordsCountColor = value;
                     RaisePropertyChanged(() => this.WordsCountColor);
+                }
+            }
+        }
+
+        private bool hasText;
+
+        public bool HasText
+        {
+            get
+            {
+                return hasText;
+            }
+            set
+            {
+                if (value != hasText)
+                {
+                    hasText = value;
+                    RaisePropertyChanged(() => this.HasText);
                 }
             }
         }
@@ -394,12 +410,12 @@ namespace iWeibo.WP7.ViewModels
                                         if (callback.Succeed)
                                         {
                                             isTencentSent = true;
+                                            tencentToast.Show();
                                         }
                                         else
                                         {
                                             MessageBox.Show("发送失败，请稍后重试..."+callback.ExceptionMsg, "腾讯微博", MessageBoxButton.OK);
                                         }
-                                        tencentToast.Show();
                                         this.IsSending = false;
                                     });
                             });
@@ -485,7 +501,8 @@ namespace iWeibo.WP7.ViewModels
         }
 
         private void HandelTextChange()
-        {           
+        {
+            this.HasText = string.IsNullOrEmpty(this.StatusText) ? false : true;
             WordsCount = 140 - StatusText.Length;
             if (WordsCount < 0)
             {
@@ -527,13 +544,13 @@ namespace iWeibo.WP7.ViewModels
 
         private void CleanUp()
         {
-            this.PhoneApplicationServiceFacade.Remove("StatusText");
-            this.PhoneApplicationServiceFacade.Remove("ChosenPhoto");
+            //this.PhoneApplicationServiceFacade.Remove("StatusText");
+            //this.PhoneApplicationServiceFacade.Remove("ChosenPhoto");
         }
 
         private void CleanUpAndGoBack()
         {
-            CleanUp();
+            //CleanUp();
             if (this.NavigationService.CanGoBack)
             {
                 this.NavigationService.GoBack();

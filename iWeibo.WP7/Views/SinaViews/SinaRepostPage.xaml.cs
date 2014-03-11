@@ -21,7 +21,7 @@ namespace iWeibo.WP7.Views.SinaViews
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            var viewModel = this.DataContext as SinaRepostPageViewMode;
+            var viewModel = this.DataContext as SinaRepostPageViewModel;
 
             string statusId = "";
             this.NavigationContext.QueryString.TryGetValue("id", out statusId);

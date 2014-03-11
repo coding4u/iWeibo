@@ -20,9 +20,9 @@ namespace iWeibo.WP7.Views.SinaViews
             InitializeComponent();
         }
 
-        private void myInfoMeunItem_Click(object sender, EventArgs e)
-        {
-            //this.NavigationService.Navigate(new Uri(
-        }
+        //private void myInfoMeunItem_Click(object sender, EventArgs e)
+        //{
+        //    //
+        //}
     }
 }

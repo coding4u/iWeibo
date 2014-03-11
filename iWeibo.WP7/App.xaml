@@ -105,7 +105,9 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Margin="10,0,0,0" Text="{Binding Nick}"  VerticalAlignment="Center" Foreground="{StaticResource PhoneAccentBrush}"/>
+                    <TextBlock Grid.Column="0" Margin="10,0,0,0" Text="{Binding Nick}"  VerticalAlignment="Center"
+                                   />
+                    <!--Foreground="{StaticResource PhoneAccentBrush}"/>-->
                         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Opacity="0.6" >
                             <Image Height="30" Width="30" Stretch="Uniform" Source="/Resources/Images/Icons/repost.png" HorizontalAlignment="Right"/>
                             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding Count}"/>
@@ -137,7 +139,9 @@
                                          BorderBrush="{StaticResource PhoneDisabledBrush}"
                                         Visibility="{Binding Path=IsRetweetedStatus,Converter={StaticResource BoolToVisibilityConverter}}" Background="{StaticResource PhoneChromeBrush}" >
                         <StackPanel Margin="10,0,0,0" >
-                            <TextBlock x:Name="RetweetUserBlock" TextWrapping="NoWrap" Text="{Binding Source.Nick}" Foreground="{StaticResource PhoneAccentBrush}" />
+                        <TextBlock x:Name="RetweetUserBlock" TextWrapping="NoWrap" Text="{Binding Source.Nick}" 
+                                       />
+                        <!--Foreground="{StaticResource PhoneAccentBrush}" />-->
                             <RichTextBox  TextWrapping="Wrap">
                                 <i:Interaction.Behaviors >
                                     <util:ConvertContentBehavior Content="{Binding Source.OrigText}" />
@@ -181,7 +185,7 @@
                     <Image Margin="5,0" Stretch="Uniform" VerticalAlignment="Top" HorizontalAlignment="Left"
                            util:LowProfileImageLoader.UriSource="{Binding User.ProfileImageUrl}"/>
                     <Image Margin="0,0,-5,-5" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                           Source="/Resources/Images/Icons/Verifyer.png"
+                           Source="/Resources/Images/Icons/Verifier.png"
                            Visibility="{Binding User.Verified,Converter={StaticResource BoolToVisibilityConverter}}"
                            Height="20" Width="20"/>
                 </Grid>
@@ -192,7 +196,8 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
                                Text="{Binding User.Name}"
-                               Foreground="{StaticResource PhoneAccentBrush}"/>
+                               />
+                               <!--Foreground="{StaticResource PhoneAccentBrush}"/>-->
                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Opacity="0.5">
                         <Image Height="30" Width="30" HorizontalAlignment="Right" Stretch="Uniform"
                                Source="/Resources/Images/Icons/repost.png"/>
@@ -221,7 +226,9 @@
                         Visibility="{Binding IsRetweetedStatus,Converter={StaticResource BoolToVisibilityConverter}}" 
                         BorderBrush="{StaticResource PhoneBorderBrush}" Background="{StaticResource PhoneChromeBrush}">
                     <StackPanel Margin="10,0,0,0">
-                        <TextBlock Text="{Binding RetweetedStatus.User.Name}" Foreground="{StaticResource PhoneAccentBrush}" Margin="10,5"/>
+                        <TextBlock Text="{Binding RetweetedStatus.User.Name}"  Margin="10,5"
+                                   />
+                                   <!--Foreground="{StaticResource PhoneAccentBrush}"/>-->
                         <RichTextBox TextWrapping="Wrap">
                             <i:Interaction.Behaviors>
                                 <util:ConvertContentBehavior Content="{Binding RetweetedStatus.Text}"/>

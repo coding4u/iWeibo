@@ -19,6 +19,8 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     DataContext="{Binding Source={StaticResource ViewModelLocator},Path=SinaStatusDetailViewModel}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
+    Style="{StaticResource TransitionPageStyle}"
+    toolkit:TiltEffect.IsTiltEnabled="True"
     shell:SystemTray.IsVisible="True">
 
     <shell:SystemTray.ProgressIndicator>
@@ -29,8 +31,8 @@
         <DataTemplate x:Key="SinaCommentsTemplate">
             <Grid Margin="5,10" >
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="60"/>
@@ -43,7 +45,9 @@
                                                Source="/Resources/Images/Icons/Verifyer.png" Height="20" Width="20"/>
                 </Grid>
                 <Grid Grid.Row="0" Grid.Column="1" >
-                    <TextBlock Grid.Column="0" Margin="10,0" Text="{Binding User.Name}" VerticalAlignment="Center" Foreground="{StaticResource PhoneAccentBrush}"/>
+                    <TextBlock Grid.Column="0" Margin="10,0" Text="{Binding User.Name}" VerticalAlignment="Center" 
+                               />
+                               <!--Foreground="{StaticResource PhoneAccentBrush}"/>-->
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="1" >
                     <TextBlock Text="{Binding Text}" Margin="10,0" VerticalAlignment="Top" TextWrapping="Wrap"/>
@@ -59,7 +63,7 @@
             SelectedIndex="{Binding SelectedPivotIndex,Mode=TwoWay}">
             <customcontrol:MTPivot.Title>
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="48" Width="48" Stretch="Uniform" Source="/Resources/Images/Logos/sinalogo32.png"/>
+                    <Image Height="26" Width="26" Stretch="Uniform" Source="/Resources/Images/Logos/sinalogo26.png"/>
                     <TextBlock Text="{StaticResource SinaTitle}"  Margin="5,0" VerticalAlignment="Center"/>
                 </StackPanel>
             </customcontrol:MTPivot.Title>
@@ -83,14 +87,16 @@
                                 <Image x:Name="imgHead" Stretch="Uniform" util:LowProfileImageLoader.UriSource="{Binding User.ProfileImageUrl}" VerticalAlignment="Top" />
                                 <Image Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,-5"
                                                Visibility="{Binding User.Verified,Converter={StaticResource BoolToVisibilityConverter}}"
-                                               Source="/Resources/Images/Icons/Verifyer.png" Height="20" Width="20"/>
+                                               Source="/Resources/Images/Icons/Verifier.png" Height="20" Width="20"/>
                             </Grid>
                             <Grid Grid.Row="0" Grid.Column="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" x:Name="txtOrign" Text="{Binding User.Name}"   Margin="10,0" VerticalAlignment="Top" FontSize="24" Foreground="{StaticResource PhoneAccentBrush}" />
+                                <TextBlock Grid.Column="0" x:Name="txtOrign" Text="{Binding User.Name}"   Margin="10,0" VerticalAlignment="Top" FontSize="24" 
+                                           />
+                                           <!--Foreground="{StaticResource PhoneAccentBrush}" />-->
                                 <StackPanel Grid.Column="1" Orientation="Horizontal"  Opacity="0.5"  HorizontalAlignment="Right" Margin="0,0,10,0">
                                     <Image Height="30" Width="30" Stretch="Uniform" Source="/Resources/Images/Icons/repost.png" HorizontalAlignment="Right"/>
                                     <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding RepostsCount}"/>
@@ -123,7 +129,8 @@
                                 <StackPanel Margin="10,0">
                                     <TextBlock x:Name="RetweetUserBlock" TextWrapping="NoWrap" 
                                                Text="{Binding RetweetedStatus.User.Name}" 
-                                               Foreground="{StaticResource PhoneAccentBrush}" />
+                                               />
+                                               <!--Foreground="{StaticResource PhoneAccentBrush}" />-->
                                     <RichTextBox  TextWrapping="Wrap" IsReadOnly="True" 
                                                   FontFamily="{StaticResource PhoneFontFamilyNormal}"
                                                   FontSize="{StaticResource PhoneFontSizeNormal}">
@@ -196,9 +203,9 @@
                 <bar:BindableApplicationBarMenuItem
                     Text="复制"
                     Command="{Binding CopyCommand}"/>
-                <bar:BindableApplicationBarMenuItem
+                <!--<bar:BindableApplicationBarMenuItem
                     Text="删除"
-                    Command="{Binding DeleteCommand}"/>
+                    Command="{Binding DeleteCommand}"/>-->
             </bar:BindableApplicationBar.MenuItems>
 
         </bar:BindableApplicationBar>

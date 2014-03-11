@@ -6,31 +6,101 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:customcontrol="clr-namespace:Meituan.Client.Controls.CustomControl"
+    xmlns:util="clr-namespace:iWeibo.WP7.Util"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     Style="{StaticResource TransitionPageStyle}"
+    toolkit:TiltEffect.IsTiltEnabled="True"
+    DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=SettingsViewModel}"
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot 是包含所有页面内容的根网格-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <customcontrol:MTPivot 
+            SelectedIndex="{Binding SelectedPivotIndex,Mode=TwoWay}">
+            <customcontrol:MTPivot.Title>
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="32" Width="32" Stretch="None" Source="/Resources/Images/Icons/Settings.png"/>
+                    <TextBlock Text="设置"  Margin="5,0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </customcontrol:MTPivot.Title>
+            <!--枢轴项一-->
+            <controls:PivotItem Header="帐号">
+                <ScrollViewer>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" Height="50" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Image Height="32" Width="32" Source="/Resources/Images/Logos/sinalogo32.png" Stretch="Uniform" HorizontalAlignment="Left"/>
+                            <TextBlock Text="{Binding SinaUserName}"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <Grid Background="Gray"  Height="180" Width="180">
+                            <Image Stretch="Uniform" util:LowProfileImageLoader.UriSource="{Binding SinaUserPicUrl}" /> 
+                            <toolkit:ContextMenuService.ContextMenu>
+                                <toolkit:ContextMenu>
+                                    <toolkit:MenuItem Header="解除新浪微博帐号绑定"  Command="{Binding DeleteSinaUserCommand}"/>
+                                </toolkit:ContextMenu>
+                            </toolkit:ContextMenuService.ContextMenu>
+                        </Grid>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Height="50" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Image Height="32" Width="32" Source="/Resources/Images/Logos/tencentlogo48.png" Stretch="Uniform" HorizontalAlignment="Left"/>
+                            <TextBlock Text="{Binding TencentUserName}"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        </StackPanel> 
+                        <Grid Background="Gray" Grid.Column="1" Height="180" Width="180">
+                            <Image Stretch="Uniform" util:LowProfileImageLoader.UriSource="{Binding TencentUserPicUrl}" />
+                            <toolkit:ContextMenuService.ContextMenu>
+                                <toolkit:ContextMenu>
+                                    <toolkit:MenuItem Header="解除腾讯微博帐号绑定" Command="{Binding DeleteTencentUserCommand}"/>
+                                </toolkit:ContextMenu>
+                            </toolkit:ContextMenuService.ContextMenu>
+                        </Grid>
+                    </Grid>
+                </ScrollViewer>
 
-        <!--TitlePanel 包含应用程序的名称和页标题-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="{StaticResource ApplicationTitle}" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="设置" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+            </controls:PivotItem>
 
-        <!--ContentPanel - 在此处放置其他内容-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
-        </Grid>
+            <!--枢轴项二-->
+            <controls:PivotItem Header="关于">
+                <ScrollViewer>
+                    <StackPanel>
+                        <RichTextBox IsReadOnly="True" Margin="5,10,5,10">
+                            <RichTextBox.Blocks>
+                                <Paragraph >
+                                    爱微博是一款微博聚合类应用，集成新浪、腾讯两大平台的信息，支持一键发布到多个平台,目前支持主页、提及 、收藏、转发和评论、图片查看等功能。
+                                    后续将加入更多功能。
+                                </Paragraph>
+                                <Paragraph >
+                                    这是我的第一个Windows Phone 应用，由于水平有限，经验欠缺，应用中难免存在许多不足之处，欢迎大家批评与吐槽，并反馈您的宝贵意见。
+                                </Paragraph>
+                            </RichTextBox.Blocks>
+                        </RichTextBox>
+                        <Button Content="建议与批评" Margin="5,10,5,0" Command="{Binding EmailCommand}"/>
+                        <Button Content="评价" Margin="5,10,5,0" Command="{Binding RatingCommand}"/>
+                        <Button Content="检查更新" Margin="5,10,5,0" Command="{Binding MarketDetailCommand}"/>
+ 
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PivotItem>
+        </customcontrol:MTPivot>
     </Grid>
+    
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding PageLoadedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
 </phone:PhoneApplicationPage>

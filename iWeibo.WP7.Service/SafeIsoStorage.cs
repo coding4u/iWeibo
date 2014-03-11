@@ -38,7 +38,7 @@ namespace iWeibo.WP7.Services
             {
                 if (file.FileExists(fileName))
                 {
-                    file.DeleteDirectory(fileName);
+                    file.DeleteFile(fileName);
                 }
                 if (file.FileExists(BackupFileName))
                 {

@@ -131,7 +131,7 @@ namespace iWeibo.WP7.ViewModels.SinaViewModels
         public DelegateCommand RepostCommand { get; set; }
         public DelegateCommand FavoriteCommand { get; set; }
         public DelegateCommand CopyCommand { get; set; }
-        public DelegateCommand DeleteCommand { get; set; }
+        //public DelegateCommand DeleteCommand { get; set; }
         public DelegateCommand ViewPictureCommand { get; set; }
                         
 
@@ -166,11 +166,20 @@ namespace iWeibo.WP7.ViewModels.SinaViewModels
                     else
                         GetCommentsTimeliine();
                 }, p => !this.IsSyncing);
-            this.CommentCommand = new DelegateCommand(() => { },()=>!this.IsSyncing);
-            this.RepostCommand = new DelegateCommand(() => { },()=>!this.IsSyncing);
+
+            this.CommentCommand = new DelegateCommand(() =>
+                {
+                    this.NavigationService.Navigate(new Uri(Constants.SinaRepostPageView + "?id=" + this.Status.Id + "&type=comment", UriKind.Relative));
+                }, () => !this.IsSyncing);
+
+            this.RepostCommand = new DelegateCommand(() =>
+                {
+                    this.NavigationService.Navigate(new Uri(Constants.SinaRepostPageView + "?id=" + this.Status.Id + "&type=repost", UriKind.Relative));
+                }, () => !this.IsSyncing);
+
             this.FavoriteCommand = new DelegateCommand(() =>
                 {
-                    if (this.Status.Favorited)
+                    if (this.FavoriteText.Contains("取消"))
                     {
                         RemoveFavorite();
                     }
@@ -179,6 +188,7 @@ namespace iWeibo.WP7.ViewModels.SinaViewModels
                         AddFavorite();
                     }
                 }, () => !this.IsSyncing);
+
             this.CopyCommand = new DelegateCommand(CopyStatus);
 
             this.ViewPictureCommand = new DelegateCommand(() =>
@@ -280,10 +290,58 @@ namespace iWeibo.WP7.ViewModels.SinaViewModels
 
         private void AddFavorite()
         {
+            this.IsSyncing = true;
+            new Thread(() =>
+                {
+                    statusService.AddFavorite(this.StatusId, callback =>
+                        {
+                            Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                {
+                                    if (callback.Succeed)
+                                    {
+                                        this.FavoriteIconUri = "unfavor";
+                                        this.FavoriteText = "取消";
+                                        var toast = new ToastPrompt();
+                                        toast.Message = "已添加至收藏...";
+                                        toast.Show();
+                                    }
+                                    else
+                                    {
+                                        this.messageBox.Show(callback.ErrorMsg, "添加收藏失败", MessageBoxButton.OK);
+                                    }
+                                    this.IsSyncing = false;
+                                });
+                        });
+                }).Start();
         }
 
         private void RemoveFavorite()
         {
+            this.IsSyncing = true;
+            new Thread(() =>
+            {
+                statusService.DelFavorite(this.StatusId, callback =>
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        if (callback.Succeed)
+                        {
+                            this.FavoriteIconUri = "favor";
+                            this.FavoriteText = "添加";
+                            var toast = new ToastPrompt();
+                            toast.Message = "已取消收藏...";
+                            toast.Show();
+                        }
+                        else
+                        {
+                            this.messageBox.Show(callback.ErrorMsg, "取消收藏失败", MessageBoxButton.OK);
+                        }
+
+                        this.IsSyncing = false;
+                    });
+                });
+            }).Start();
+
         }
 
         private void CopyStatus()

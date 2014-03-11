@@ -16,10 +16,12 @@
     DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=TencentRepostPageViewModel}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
+    Style="{StaticResource TransitionPageStyle}"
+    toolkit:TiltEffect.IsTiltEnabled="True"
     shell:SystemTray.IsVisible="True">
 
     <shell:SystemTray.ProgressIndicator>
-        <shell:ProgressIndicator x:Name="Indicator" IsIndeterminate="True" IsVisible="{Binding IsSending}" Text="正在发送..."/>
+        <shell:ProgressIndicator IsIndeterminate="True" IsVisible="{Binding IsSending}" Text="正在发送..."/>
     </shell:SystemTray.ProgressIndicator>
 
     <!--LayoutRoot 是包含所有页面内容的根网格-->
@@ -31,7 +33,7 @@
 
         <!--TitlePanel 包含应用程序的名称和页标题-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28" Orientation="Horizontal">
-            <Image Height="48" Width="48" Source="/Resources/Images/Logos/tencentlogo48.png" Stretch="Uniform"/>
+            <Image Height="32" Width="32" Source="/Resources/Images/Logos/tencentlogo48.png" Stretch="Uniform"/>
             <TextBlock Text="{StaticResource TencentTitle}"  Style="{StaticResource PhoneTextNormalStyle}" VerticalAlignment="Center"/>
         </StackPanel>
 
@@ -76,5 +78,11 @@
         <!--<prismInteractivity:ApplicationBarButtonCommand ButtonText="提及" CommandBinding="{Binding AtSomeOneCommand}"/>-->
         <prismInteractivity:ApplicationBarButtonCommand ButtonText="话题" CommandBinding="{Binding AddTopicCommand}"/>
     </i:Interaction.Behaviors>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding PageLoadedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
 </phone:PhoneApplicationPage>

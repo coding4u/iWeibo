@@ -15,17 +15,20 @@ namespace iWeibo.WP7
 
         #region Views Path
         public const string MainPageView = "/Views/MainPage.xaml";
+        public const string PostNewView = "/Views/PostNew.xaml";
+        public const string SettingsPageView = "/Views/SettingsPage.xaml";
+        public const string PictureView = "/Views/PictureView.xaml";
+
         public const string SinaLoginView = "/Views/SinaViews/SinaLogin.xaml";
         public const string SinaTimelineView = "/Views/SinaViews/SinaTimeline.xaml";
         public const string SinaStatusDetailView = "/Views/SinaViews/SinaStatusDetail.xaml";
+        public const string SinaRepostPageView = "/Views/SinaViews/SinaRepostPage.xaml";
+
         public const string TencentLoginView = "/Views/TencentViews/TencentLogin.xaml";
         public const string TencentTimelineView = "/Views/TencentViews/TencentTimeline.xaml";
         public const string TencentStatusDetailView = "/Views/TencentViews/TencentStatusDetail.xaml";
         public const string TencentRepostPageView = "/Views/TencentViews/TencentRepostPage.xaml";
 
-        public const string PostNewView = "/Views/PostNew.xaml";
-        public const string SettingsPageView = "/Views/SettingsPage.xaml";
-        public const string PictureView = "/Views/PictureView.xaml";
         #endregion
 
         #region Timeline Storage Path

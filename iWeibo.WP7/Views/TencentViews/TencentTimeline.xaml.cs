@@ -20,9 +20,9 @@ namespace iWeibo.WP7.Views.TencentViews
             InitializeComponent();
         }
 
-        private void myInfoMeunItem_Click(object sender, EventArgs e)
-        {
-            //
-        }
+        //private void myInfoMeunItem_Click(object sender, EventArgs e)
+        //{
+        //    //
+        //}
     }
 }

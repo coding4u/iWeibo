@@ -347,9 +347,7 @@ namespace iWeibo.WP7.ViewModels.TencentViewModels
 
         private void OnBackKeyPress()
         {
-            if (this.NavigationService.CanGoBack)
-                this.NavigationService.GoBack();
-            //this.NavigationService.Navigate(new Uri(Constants.MainPageView, UriKind.Relative));
+            this.NavigationService.Navigate(new Uri(Constants.MainPageView, UriKind.Relative));
         }
 
         public override void OnPageResumeFromTombstoning()
