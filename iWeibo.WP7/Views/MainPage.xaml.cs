@@ -12,6 +12,8 @@ namespace iWeibo.WP7.Views
         public MainPage()
         {
             InitializeComponent();
+            Microsoft.Phone.Controls.TiltEffect.TiltableItems.Add(typeof(HubTile));
+
         }
 
         private bool isLeaving = false;

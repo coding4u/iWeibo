@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TencentWeiboSDK.Model
 {
@@ -29,7 +30,8 @@ namespace TencentWeiboSDK.Model
         {
             get
             {
-                return this[this.Count - 1].TimeStamp;
+                //return this[this.Count - 1].TimeStamp;
+                return this.Count > 0 ? this[this.Count - 1].TimeStamp : 0;
             }
         }
 

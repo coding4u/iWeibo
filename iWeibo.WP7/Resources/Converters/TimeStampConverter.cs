@@ -11,6 +11,9 @@ namespace iWeibo.WP7.Resources.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            if (value == null)
+                return string.Empty;
+
             string text = value.ToString();
             DateTime TimestampLocalZero = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc), TimeZoneInfo.Local);
             long timeStamp = System.Convert.ToInt64(text);

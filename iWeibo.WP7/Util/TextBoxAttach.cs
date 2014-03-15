@@ -12,6 +12,7 @@ namespace iWeibo.WP7.Util
         public static readonly DependencyProperty TextBoxControllerProperty = DependencyProperty.RegisterAttached(
                     "TextBoxController", typeof(ITextBoxController), typeof(TextBoxAttach),
                     new PropertyMetadata(null, OnTextBoxControllerChanged));
+
         public static void SetTextBoxController(UIElement element, ITextBoxController value)
         {
             element.SetValue(TextBoxControllerProperty, value);

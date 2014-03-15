@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{88f91696-9f3d-41b7-862d-0c268bb211d2}" Title="爱微博" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Coding4U" Description="爱微博是一款微博聚合类应用，集成新浪、腾讯两大平台的信息，支持一键发布到多个平台,目前支持主页、提及 、收藏、转发和评论、图片查看等功能。" Publisher="Coding4U">
+  <App xmlns="" ProductID="{88f91696-9f3d-41b7-862d-0c268bb211d2}" Title="爱微博" RuntimeType="Silverlight" Version="1.0.0.1" Genre="apps.normal" Author="Coding4U" Description="爱微博是一款微博聚合类应用，集成新浪、腾讯两大平台的信息，支持一键发布到多个平台,目前支持主页、提及 、收藏、转发和评论、图片查看等功能。" Publisher="Coding4U">
     <IconPath IsRelative="true" IsResource="false">iWeiboLogo62.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_MEDIALIB" />

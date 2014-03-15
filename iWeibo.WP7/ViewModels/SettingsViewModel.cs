@@ -188,7 +188,7 @@ namespace iWeibo.WP7.ViewModels
         private void OpenEmail()
         {
             EmailComposeTask ect = new EmailComposeTask();
-            ect.Subject = "爱微博反馈";
+            ect.Subject = "[爱微博反馈]";
             ect.To = "coding4u@outlook.com";
             ect.Show();
         }
@@ -203,7 +203,7 @@ namespace iWeibo.WP7.ViewModels
         {
             MarketplaceDetailTask mdt = new MarketplaceDetailTask();
             mdt.ContentType = MarketplaceContentType.Applications;
-            mdt.ContentIdentifier = "88f91696-9f3d-41b7-862d-0c268bb211d2";
+            //mdt.ContentIdentifier = "88f91696-9f3d-41b7-862d-0c268bb211d2";
             mdt.Show();
         }
 

@@ -122,7 +122,7 @@
                                 </i:Interaction.Triggers>
                             </Image>
                             <Border Margin="10,0" Grid.Row="3" Grid.ColumnSpan="2"  x:Name="RetweetBorder" 
-                                    HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                    VerticalAlignment="Top" 
                                     BorderBrush="{StaticResource PhoneBorderBrush}"
                                     Background="{StaticResource PhoneChromeBrush}"
                                     Visibility="{Binding IsRetweetedStatus,Converter={StaticResource BoolToVisibilityConverter}}">

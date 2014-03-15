@@ -18,6 +18,7 @@ using iWeibo.WP7.Models.TencentModels;
 using iWeibo.WP7.Models.SinaModels;
 using System.IO.IsolatedStorage;
 using Meituan.Client.Utilities;
+using Microsoft.Phone.Tasks;
 
 namespace iWeibo.WP7
 {
@@ -40,7 +41,7 @@ namespace iWeibo.WP7
         public App()
         {
             // Global handler for uncaught exceptions. 
-            //UnhandledException += Application_UnhandledException;
+            UnhandledException += Application_UnhandledException;
 
             // Standard Silverlight initialization
             InitializeComponent();
@@ -48,11 +49,12 @@ namespace iWeibo.WP7
             // 特定于电话的初始化
             InitializePhoneApplication();
 
+
             // 调试时显示图形分析信息。
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 //显示内存使用计数器
-                MemoryDiagnosticsHelper.Start(new TimeSpan(0, 0, 1), true);
+                //MemoryDiagnosticsHelper.Start(new TimeSpan(0, 0, 1), true);
 
                 // 显示当前帧速率计数器。
                 //Application.Current.Host.Settings.EnableFrameRateCounter = true;
@@ -89,13 +91,13 @@ namespace iWeibo.WP7
         {
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                if (!isf.DirectoryExists("/Tencent/"))
+                if (!isf.DirectoryExists("Tencent"))
                 {
-                    isf.CreateDirectory("/Tencent/");
+                    isf.CreateDirectory("Tencent");
                 }
-                if (!isf.DirectoryExists("/Sina/"))
+                if (!isf.DirectoryExists("Sina"))
                 {
-                    isf.CreateDirectory("/Sina/");
+                    isf.CreateDirectory("Sina");
                 }
             }
         }
@@ -138,11 +140,73 @@ namespace iWeibo.WP7
         // 出现未处理的异常时执行的代码
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
-            if (System.Diagnostics.Debugger.IsAttached)
+            e.Handled = true;
+
+            var exMsg =e.ExceptionObject.Message + Environment.NewLine + e.ExceptionObject.StackTrace;
+
+            ScrollViewer scrollViewer = new ScrollViewer();
+            scrollViewer.Content = new TextBlock()
             {
-                // 出现未处理的异常；强行进入调试器
-                System.Diagnostics.Debugger.Break();
-            }
+                Text = exMsg+Environment.NewLine,
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            CustomMessageBox messageBox = new CustomMessageBox()
+            {
+                Caption = "糟糕，程序似乎崩溃了...",
+                Message = "是否将此信息发送给开发者，以帮助其改进此应用？",
+                Content=scrollViewer,
+                LeftButtonContent = "发送",
+                RightButtonContent = "取消",
+                IsFullScreen = true
+            };
+
+            messageBox.Dismissed += (s1, e1) =>
+                {
+
+                    if (e1.Result == CustomMessageBoxResult.LeftButton)
+                    {
+                        // Send Email
+                        EmailComposeTask ect = new EmailComposeTask();
+                        ect.Subject = "[爱微博反馈]";
+                        ect.Body = exMsg + Environment.NewLine;
+                        ect.To = "coding4u@outlook.com";
+                        ect.Show();
+                    }
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        // 出现未处理的异常；强行进入调试器
+                        System.Diagnostics.Debugger.Break();
+                    }
+                    else
+                    {
+                        //删除后退堆栈中的所有条目，以退出程序
+                        //while (RootFrame.BackStack.Any())
+                        //{
+                        //    RootFrame.RemoveBackEntry();
+                        //}
+
+                        for (int i = 0; i < RootFrame.BackStack.Count()-1; i++)
+                        {
+                            RootFrame.RemoveBackEntry();
+                        }
+                        if (RootFrame.CanGoBack)
+                            RootFrame.GoBack();
+
+                        //var currentPage=((PhoneApplicationPage)RootFrame.Content);
+                        //for (int i = 0; i < currentPage.NavigationService.BackStack.Count()-1; i++)
+                        //{
+                        //    currentPage.NavigationService.RemoveBackEntry();
+                        //}
+                        //if (currentPage.NavigationService.CanGoBack)
+                        //    currentPage.NavigationService.GoBack();
+
+                    }
+
+                };
+
+            messageBox.Show();
+
         }
 
         #region 电话应用程序初始化

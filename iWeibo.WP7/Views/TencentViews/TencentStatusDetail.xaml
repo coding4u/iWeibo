@@ -127,7 +127,8 @@
                                     </i:Interaction.Triggers>
                                 </Image>
                             </Grid>
-                            <Border Margin="10,0" Grid.Row="3" Grid.ColumnSpan="2"  x:Name="RetweetBorder"  HorizontalAlignment="Left" VerticalAlignment="Top" 
+                            <Border Margin="10,0" Grid.Row="3" Grid.ColumnSpan="2"  x:Name="RetweetBorder"  
+                                    VerticalAlignment="Top" 
                                     BorderBrush="{StaticResource PhoneBorderBrush}" 
                                     Visibility="{Binding Path=IsRetweetedStatus,Converter={StaticResource BoolToVisibilityConverter}}" Background="{StaticResource PhoneChromeBrush}">
                                 <StackPanel Margin="0,10">

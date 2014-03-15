@@ -10,14 +10,17 @@ namespace iWeibo.WP7.Resources.Converters
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if ((bool)value)
+            if (value != null)
             {
-                return Visibility.Visible;
+                bool result;
+                if (bool.TryParse(value.ToString(),out result))
+                {
+                    if (result)
+                        return Visibility.Visible;
+                }
             }
-            else
-            {
-                return Visibility.Collapsed;
-            }
+
+            return Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
