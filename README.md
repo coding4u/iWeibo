@@ -1,5 +1,7 @@
 iWeibo
 ======
+iWeibo is a microblogging aggregation type applications, integration Sina, Tencent two platforms information, support one-click publishing to multiple platforms, currently supports homepage, mentioned collection, forwarding and reviews, view pictures and other functions.
+
 This Application is based on Windows Phone 7.1.It use Prism library for Windows Phone to implement MVVM pattern.
 The following outlines the main projects that make up this application:
 
