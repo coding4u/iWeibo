@@ -21,5 +21,6 @@ WeiboSDK                  This project is Sina Weibo's fofficial SDK for Windows
                           I also added some features that are not had, added some models, 
                           and fixes a number of bugs found during debugging.
 
-This is my first formal Windows Phone App,It has been published in the Windows Phone Store.
-No doubt,there are still some need to improvement,you can reach me at coding4u@outlook.com.
+This is my first formal Windows Phone App,It has been published in the Windows Phone Store:
+http://www.windowsphone.com/zh-cn/store/app/爱微博/f75417a7-32c4-4f2d-baa6-78bbabe99056
+No doubt,there are still some need to improve,you can reach me at coding4u@outlook.com.
